@@ -1,0 +1,419 @@
+id;incidentTitle;description;padTypes_id_predicho;tipo_predicho;confianza;fecha;ml_revision;used_for_training;padTypes_id_corregido
+7fd19a9b-407e-49ba-9a12-64ec80a50d84;GCTI / Apoyo con One drive;De su apoyo ya que no puedo acceder a la carpeta nominas en mi sitio de one drive;D937532B-6762-4521-9F60-254D2D2D8B2E;Incidente;0.6301633049200133;2026-03-13 18:35:34.890552;confirmado;True;D937532B-6762-4521-9F60-254D2D2D8B2E
+3a9ddc4d-8adc-4dc6-8cf8-7246407281b2;Innovación GCTI / Ciberseguridad (Ricardo Arvizu);"Buen día.
+
+Se genera ticket, para el registro de actividades de Ricardo Arvizu, sobre el proyecto interno de Ciberseguridad";C87AF0DB-319C-432A-8850-29F46FC36402;Requerimiento;0.4898556318880777;2026-03-13 18:35:34.985275;corregido;True;OTROS
+1002c8ef-91d2-4c44-a868-321614806cea;GCTI / error al exportar de excel;"Hola buen dia
+Estoy teniendo problemas al exportar de SAP a Excel
+
+
+[cid:image001.png@01DCB2C7.6FFA1A50]
+
+C.P. ANA CECILIA MEDINA KU
+CONTADOR
+Grupo Consultores en Tecnología Informática
+Av Andrés García Lavín Esq. Con 43 Y 41  Num 337-B Planta alta
+Mérida, Yucatán. C.P. 97117
+Tel.  (999) 941.87.88 ext  116
+LADA sin costo: 01.800.700.4242
+
+www.gconsultores.com.mx
+
+";D937532B-6762-4521-9F60-254D2D2D8B2E;Incidente;0.6667158245890393;2026-03-13 18:35:34.973960;confirmado;True;D937532B-6762-4521-9F60-254D2D2D8B2E
+ff9a735b-8b54-4f25-9116-702244e0f468;GCTI / Nuevo error en contpaq;"Hola buenas tardes
+
+Me apoyan con el siguiente error:
+
+[cid:image001.png@01DCB258.36BCEED0]
+
+Solo esta pasando con una empresa.
+
+Saludos
+
+C.P. ANA CECILIA MEDINA KU
+CONTADOR
+Grupo Consultores en Tecnología Informática
+Av Andrés García Lavín Esq. Con 43 Y 41  Num 337-B Planta alta
+Mérida, Yucatán. C.P. 97117
+Tel.  (999) 941.87.88 ext  116
+LADA sin costo: 01.800.700.4242
+
+www.gconsultores.com.mx
+
+";D937532B-6762-4521-9F60-254D2D2D8B2E;Incidente;0.6822983064418474;2026-03-13 18:35:34.971493;confirmado;True;D937532B-6762-4521-9F60-254D2D2D8B2E
+cfb7f2d9-cdbe-4d63-a822-9d10cb62db3b;4294-1 / SADASI / BaaS-Revision JobsS;"Se detecto warnings en diferentes Jobs del cliente Sadasi favor de
+revisar";C87AF0DB-319C-432A-8850-29F46FC36402;Requerimiento;0.5063985188670613;2026-03-19 14:45:36.308158;corregido;True;D937532B-6762-4521-9F60-254D2D2D8B2E
+a6ba8c10-a8ab-430a-98da-792448fddb22;4384-1 / Conauto BAAS /  Revisión Jobs;Se detecto warnings en diferentes Jobs del cliente Conauto favor de revisar;D937532B-6762-4521-9F60-254D2D2D8B2E;Incidente;0.5636485481302083;2026-03-19 14:45:36.345286;confirmado;True;D937532B-6762-4521-9F60-254D2D2D8B2E
+01bec8bf-f5ba-4b4d-a8de-c92202a029b0;PasProspect;"De: César Arturo Cruz Corona <cacruzc@conauto.mx> 
+
+Enviado el: jueves, 19 de marzo de 2026 10:55 a. m.
+
+Para: Tomás Téllez Horta <ttellezh@conauto.mx>
+
+Asunto: PasProspect
+
+ 
+
+Hola Tomas
+
+ 
+
+Favor de realizar el despliegue productivo del PASProspect
+
+Anexo .war y programas .r
+
+ 
+
+ 
+
+Saludos y gracias
+
+ 
+
+César  Arturo Cruz Corona 
+
+Lider de Desarrollo 
+
+Tel: 5530050073";C87AF0DB-319C-432A-8850-29F46FC36402;Requerimiento;0.6798800330647018;2026-03-19 14:45:36.353879;corregido;True;OTROS
+0976aadc-4aca-46b7-bd0f-43433c3eeb96;ERROR EN CENTRO;Por este medio solicito apoyo, al iniciar sesion en centro me sigue apareciendo el siguiente mensaje, cierro y abro sesion pero sigue igual;D937532B-6762-4521-9F60-254D2D2D8B2E;Incidente;0.6982673186320442;2026-03-19 14:45:36.375671;confirmado;True;D937532B-6762-4521-9F60-254D2D2D8B2E
+c07cc9e2-f1ae-4013-ac2c-565711b71fd3;EMISION POLIZA GC CONAUTOPCION CONTRATO 100003545;"Buenas tardes
+
+Solicito su apoyo para el contrato de GC Conautopción 100003545 para pago de unidad PDU, no me deja emitir la póliza sale la siguiente imagen.
+
+
+
+Agradeciendo de antemano su atención y apoyo a la presente.
+
+Atte.
+María del Carmen Ríos Fierro.
+Analista de Operaciones.";D937532B-6762-4521-9F60-254D2D2D8B2E;Incidente;0.5101570078521181;2026-03-19 14:45:36.509492;corregido;True;C87AF0DB-319C-432A-8850-29F46FC36402
+7ec9edb5-2f99-41dc-85d9-e585814e405e;NO PUEDO ENTRAR A MIS CARPETAS DE MIS ARCHIVOS;"De: David Antonio
+Álvarez Benitez <dalvarezb@conauto.mx>
+
+Enviados: miércoles, 18 de marzo de 2026 13:35:31 (UTC-06:00)
+Guadalajara, Mexico City, Monterrey
+
+Para: Mesa de Servicios de TI <Solicitudes@gconsultores.com.mx>
+
+Asunto: NO PUEDO ENTRAR A MIS CARPETAS DE MIS ARCHIVOS
+
+Hola,
+
+ 
+
+No puedo entrar a
+mis archivos de mi computadora, me urge que tengo que mandar una informacion 
+
+ 
+
+
+
+ 
+
+Saludos 
+
+David Antonio  Álvarez Benítez 
+
+Analista de Cuentas por Pagar 
+
+Tel: 5552287000 Ext: 3142";D937532B-6762-4521-9F60-254D2D2D8B2E;Incidente;0.6827483576946093;2026-03-19 14:45:36.480514;confirmado;True;D937532B-6762-4521-9F60-254D2D2D8B2E
+9d829c78-0e73-4baa-bca4-e17407554598;4477 / Compañia Fernandez / No se puede conectar al RDP;"Buen día.
+
+
+
+No me puedo conectar al RDP de Fernandez ya que hay un detalle con ellos para que me ayudes con el acceso hacia su RDP.";D937532B-6762-4521-9F60-254D2D2D8B2E;Incidente;0.6659798059143978;2026-03-19 14:45:36.560183;confirmado;True;D937532B-6762-4521-9F60-254D2D2D8B2E
+46f3186e-2208-4dde-8c12-927fba454019;Error al abrir la aplicación de Boletin y Circular;"Buen día.
+
+Al momento de abrir las aplicaciones de boletin y circular me manda el siguiente error.";C87AF0DB-319C-432A-8850-29F46FC36402;Requerimiento;0.5650159330001132;2026-03-19 15:45:31.428396;confirmado;True;C87AF0DB-319C-432A-8850-29F46FC36402
+c6c19e6d-0487-4e38-95ca-50ac99a2d063;4499 / EETISUR /Gestión Administrativa Infraestructura / Fatima Cante;Se crea Ticket para que el Ing. Fatima Cante, documente todas las actividades relacionadas al proyecto EETISUR ID de Oportunidad 4499 Infraestructura;OTROS;Otros;0.5034516072023991;2026-03-19 16:30:18.028903;confirmado;True;OTROS
+c723224e-0dbc-45cc-a364-07b7a727cf6b;4526 / EETISUR /Gestión Administrativa / SAP / Fatima Cante;Se crea Ticket para que el Ing. Fatima Cante, documente todas las actividades relacionadas al proyecto EETISUR ID de Oportunidad 4526 SAP;OTROS;Otros;0.62990539315983;2026-03-19 16:30:18.031546;confirmado;True;OTROS
+f95937d0-3f98-4f9f-9b18-6ee3e3900cb8;Eliminación de MV (AZURE);"Estimados GConsultores, por este medio les solicitamos el apoyo de eliminar la infraestructura integra de las 2 sig. MV, lo anterior por mitigación de riesgos que identifico el área de Ciberseguridad, así mismo por no ser necesarias para el negocio.
+
+[cid:image001.png@01DCB7C5.E6866540]
+
+Saludos Cordiales.
+[Bepensa]
+Alma Valencia Verduzco
+
+GERENCIA DE ATENCIÓN A NEGOCIO
+
+
+avalencia@bepensa.com<mailto:>
+
+Tel. (33) 3563 8383 Ext. 477
+
+Cel. (33) 1455 0383
+
+Av. Circunvalación No.1471 Pisos 4to. y 6to., Col. Lomas del Country,CP:44610 Guadalajara, Jalisco.
+
+
+[Cintillo para apps.jpg]<https://bit.ly/FinBeABCApps>
+
+
+
+Este mensaje es única y exclusivamente para conocimiento del destinatario. El contenido del presente puede ser legal y confidencial, además de contener datos o información recibidos de terceros, por lo que no somos responsables de que sean correctos o completos. Con base al secreto profesional del involucrado, se le solicita por favor que en el caso de recibir este correo por error, lo elimine de manera inmediata. Queda prohibido usar, revelar, divulgar, imprimir o copiar parcial o totalmente este mensaje si no es usted el destinatario. En virtud de que los mensajes electrónicos son altamente manipulables, ""Financiera Bepensa S.A de C.V SOFOM ER y/o AB&C Leasing de México S.A.P.I. de C.V. y/o filiales y/o subsidiarias y/o contraloras; no se hacen responsables del material involucrado, del contagio de algún virus informático o mensaje anexo malicioso. Lo anterior de conformidad con el Artículos 210, 211 Bis y 211 Bis 1 al 211 Bis 7 del Código Penal Federal.
+
+";C87AF0DB-319C-432A-8850-29F46FC36402;Requerimiento;0.5906522910154719;2026-03-19 17:30:18.435212;confirmado;True;C87AF0DB-319C-432A-8850-29F46FC36402
+f9f5934b-68c0-4c1b-9b69-faff0c76f6f6;Nuevo requerimiento de propuesta técnica 4741 Printel IA CRM:0023087;"Hola Manuel Alcocer ,
+
+Por este medio te solicito de favor me ayudes con la generación de una propuesta técnica para la oportunidad 4741 Printel IA .
+
+La fecha compromiso es 23/03/2026 12:00 a. m. 
+
+Agradeciendo de antemano la atención y apoyo, quedo a tus órdenes.
+
+Atte.
+
+ Roger Guevara Gonzalez 
+";C87AF0DB-319C-432A-8850-29F46FC36402;Requerimiento;0.6241486472002491;2026-03-19 17:30:18.456808;corregido;True;OTROS
+1d803335-0616-4c0e-896e-a746380067dd;Nuevo requerimiento de propuesta técnica 4742 ASC Servicio de Inventario de Hw CRM:0023086;"Hola Manuel Alcocer ,
+
+Por este medio te solicito de favor me ayudes con la generación de una propuesta técnica para la oportunidad 4742 ASC Servicio de Inventario de Hw .
+
+La fecha compromiso es 23/03/2026 12:00 a. m. 
+
+Agradeciendo de antemano la atención y apoyo, quedo a tus órdenes.
+
+Atte.
+
+ Roger Guevara Gonzalez 
+";OTROS;Otros;0.5608288858145487;2026-03-19 17:30:18.455053;confirmado;True;OTROS
+dd616d5f-6a56-456a-9e2e-d1f058756057;QUITAR PRIVILEGIOS;"Buena tarde:
+
+Me pueden ayudar, no puedo ejecutar un aplicativo, me sale el siguiente mensaje.";D937532B-6762-4521-9F60-254D2D2D8B2E;Incidente;0.6163271812980889;2026-03-19 18:30:18.053330;confirmado;True;D937532B-6762-4521-9F60-254D2D2D8B2E
+da1ca916-8603-487a-8b8c-41b26ffecf7f;3435-4 / UNIR / Alta de guella alterna;Debido a que se ha tenido problema para checar huella de reloj se solicitaponer una huella alterna;C87AF0DB-319C-432A-8850-29F46FC36402;Requerimiento;0.6502238057160012;2026-03-20 12:40:57.947532;corregido;True;D937532B-6762-4521-9F60-254D2D2D8B2E
+294fa0c2-0c58-42c0-a575-82569147dabe;GCTI | Desarrollo aplicación apagado\encendido VM de Gconsultores;Desarrollar aplicación web para el apagado y encendido de VM en Azure de Gconsultores;C87AF0DB-319C-432A-8850-29F46FC36402;Requerimiento;0.55818987926635;2026-03-20 12:40:57.973827;confirmado;True;C87AF0DB-319C-432A-8850-29F46FC36402
+3e6180e7-09ca-4da3-b703-e5497c126b55;GCTI / Depuración de recursos Grupo Consultores;"Generar revisión del tenant GCTI para iniciar proceso de validación y
+depuración de los recursos que no estan siendo utilizados";C87AF0DB-319C-432A-8850-29F46FC36402;Requerimiento;0.6996935997565226;2026-03-20 12:40:57.981597;confirmado;True;C87AF0DB-319C-432A-8850-29F46FC36402
+241e809e-54ed-40fa-9d70-51c5132788af;ERROR PORTAL;"De: David Antonio
+Álvarez Benitez <dalvarezb@conauto.mx>
+
+Enviados: viernes, 20 de marzo de 2026 12:00:50 (UTC-06:00) Guadalajara,
+Mexico City, Monterrey
+
+Para: Mesa de Servicios de TI <Solicitudes@gconsultores.com.mx>
+
+Asunto: ERROR PORTAL
+
+Hola me apoyan a desactivar el PAC y cargar los archivos.
+
+PORTAL DE PROVEEDORES PROVICA
+
+EMPRESA CONAUTO
+
+PROVEEDOR BAWARE
+
+ 
+
+Saludos
+
+ 
+
+ 
+
+
+
+ 
+
+David Antonio  Álvarez Benítez 
+
+Analista de Cuentas por Pagar 
+
+Tel: 5552287000 Ext: 3142";C87AF0DB-319C-432A-8850-29F46FC36402;Requerimiento;0.5993462447837284;2026-03-20 12:40:57.978353;corregido;True;D937532B-6762-4521-9F60-254D2D2D8B2E
+e0f128d4-eb45-4dad-b526-7fac50604f21;4239-2 / BEPENSA / Mitigación de Riesgos Críticos/MV (Rol:Dynamics365);"
+Estimado GConsultores, solicitamos por este medio del apoyo con revisar y mitigar las vulnerabilidades que se tienen identificadas en AZURE sobre las 2 MV siguientes:
+[cid:image002.png@01DCB7DD.864AB290]
+
+
+Aclaramos que la ventana autorizada para poder gestionar las actividades de mitigación es de lunes a viernes después de las 19:00 hrs y fines de semana en cualquier horario.
+Quedamos atentos a la atención de este requerimiento, el cual se busca quede atendido dentro del mes de marzo 2026.
+
+Saludos Cordiales.
+[Bepensa]
+Alma Valencia Verduzco
+
+GERENCIA DE ATENCIÓN A NEGOCIO
+
+
+avalencia@bepensa.com<mailto:>
+
+Tel. (33) 3563 8383 Ext. 477
+
+Cel. (33) 1455 0383
+
+Av. Circunvalación No.1471 Pisos 4to. y 6to., Col. Lomas del Country,CP:44610 Guadalajara, Jalisco.
+
+
+[Cintillo para apps.jpg]<https://bit.ly/FinBeABCApps>
+
+
+
+Este mensaje es única y exclusivamente para conocimiento del destinatario. El contenido del presente puede ser legal y confidencial, además de contener datos o información recibidos de terceros, por lo que no somos responsables de que sean correctos o completos. Con base al secreto profesional del involucrado, se le solicita por favor que en el caso de recibir este correo por error, lo elimine de manera inmediata. Queda prohibido usar, revelar, divulgar, imprimir o copiar parcial o totalmente este mensaje si no es usted el destinatario. En virtud de que los mensajes electrónicos son altamente manipulables, ""Financiera Bepensa S.A de C.V SOFOM ER y/o AB&C Leasing de México S.A.P.I. de C.V. y/o filiales y/o subsidiarias y/o contraloras; no se hacen responsables del material involucrado, del contagio de algún virus informático o mensaje anexo malicioso. Lo anterior de conformidad con el Artículos 210, 211 Bis y 211 Bis 1 al 211 Bis 7 del Código Penal Federal.
+
+";C87AF0DB-319C-432A-8850-29F46FC36402;Requerimiento;0.6567010414625023;2026-03-20 12:40:57.992887;confirmado;True;C87AF0DB-319C-432A-8850-29F46FC36402
+f819ee25-b726-4f5a-86bf-239464c26465;4239-2 / BEPENSA / Incidente en editar tarea de encendido de MV;"Estimado GConsultores, su apoyo en identificar y corregir la tarea de encendido de MV, ya que al momento de buscar editar la tarea  y cambiar parámetros, marca el sig error:
+
+[cid:image002.png@01DCB7D9.BA164480]
+
+Saludos Cordiales.
+[Bepensa]
+Alma Valencia Verduzco
+
+GERENCIA DE ATENCIÓN A NEGOCIO
+
+
+avalencia@bepensa.com<mailto:>
+
+Tel. (33) 3563 8383 Ext. 477
+
+Cel. (33) 1455 0383
+
+Av. Circunvalación No.1471 Pisos 4to. y 6to., Col. Lomas del Country,CP:44610 Guadalajara, Jalisco.
+
+
+[Cintillo para apps.jpg]<https://bit.ly/FinBeABCApps>
+
+
+
+Este mensaje es única y exclusivamente para conocimiento del destinatario. El contenido del presente puede ser legal y confidencial, además de contener datos o información recibidos de terceros, por lo que no somos responsables de que sean correctos o completos. Con base al secreto profesional del involucrado, se le solicita por favor que en el caso de recibir este correo por error, lo elimine de manera inmediata. Queda prohibido usar, revelar, divulgar, imprimir o copiar parcial o totalmente este mensaje si no es usted el destinatario. En virtud de que los mensajes electrónicos son altamente manipulables, ""Financiera Bepensa S.A de C.V SOFOM ER y/o AB&C Leasing de México S.A.P.I. de C.V. y/o filiales y/o subsidiarias y/o contraloras; no se hacen responsables del material involucrado, del contagio de algún virus informático o mensaje anexo malicioso. Lo anterior de conformidad con el Artículos 210, 211 Bis y 211 Bis 1 al 211 Bis 7 del Código Penal Federal.
+
+";D937532B-6762-4521-9F60-254D2D2D8B2E;Incidente;0.6331323225848715;2026-03-20 12:40:58.032883;confirmado;True;D937532B-6762-4521-9F60-254D2D2D8B2E
+6fcbf81c-b1a4-4465-86f4-3371f048dacd;Problemas en el RIC de GC de la referencia BA x una cobranza rechazada identificada;"Hola...Se identificaron 2 depositos de la referencia BA que se fueron a cobranza rechazada, estos son del 20924CS (100003215), pero al revisar el RIC
+aparece aun en la Cobranza NO identificada y en el contrato correcto, es decir
+se esta duplicando, me ayudan a corregir el RIC y a darlo de baja del modulo de
+la Cobranza NO identificada xfis...
+
+gracias de antemano...
+
+NOTA: Pasar este ticket a Omar Sosa xfis...
+
+
+
+
+
+
+
+
+
+
+Saludos...
+Anali A.";D937532B-6762-4521-9F60-254D2D2D8B2E;Incidente;0.4776437507026717;2026-03-20 13:20:57.872391;corregido;True;C87AF0DB-319C-432A-8850-29F46FC36402
+e08d4358-d402-4f5a-b427-0773f93a0f10;GCTI / COMPRA T.C. AMEX;"HOLA ME AYUDAN CON UN TIKET, REQUIERO ME AYUDEN CON ESTO QUE COMENTA ROGER PARA BAJAR UN COMPROBANTE POR LA COMPRA DE AZURE QUE SE PAGO CON LA T.C. AMEX
+
+
+Hola Pedro, el comprobante del cobro de Azure me imagino se puede bajar de la consola. Yo no tengo acceso a la consola de Azure, sugiero abras un ticket a la mesa de servicio y solicites dicho comprobante ahí.
+
+
+De: Roger Guevara Gonzalez <rogerg@Gconsultores.com.mx>
+Enviado el: miércoles, 18 de marzo de 2026 10:31 a. m.
+Para: Pedro Montelongo Paredes <pedrom@Gconsultores.com.mx>
+Asunto: Re: COMPRA T.C. AMEX
+
+Hola Pedro, el comprobante del cobro de Azure me imagino se puede bajar de la consola. Yo no tengo acceso a la consola de Azure, sugiero abras un ticket a la mesa de servicio y solicites dicho comprobante ahí.
+
+Respecto a Zoom te adjunto la factura solicitada
+
+Saludos
+
+Roger Guevara González
+Director
+
+[cid:image001.jpg@01D6BBF2.83B7D130]
+Cel.  (999) 955.17.80
+rogerg@gconsultores.com.mx<mailto:rogerg@gconsultores.com.mx>
+www.gconsultores.com.mx<http://www.gconsultores.com.mx>
+
+
+
+De: Pedro Montelongo Paredes <pedrom@Gconsultores.com.mx<mailto:pedrom@Gconsultores.com.mx>>
+Fecha: miércoles, 18 de marzo de 2026, 11:18 a.m.
+Para: Roger Guevara Gonzalez <rogerg@Gconsultores.com.mx<mailto:rogerg@Gconsultores.com.mx>>
+Asunto: COMPRA T.C. AMEX
+BUEN DIA LICENCIADO ME PUEDE AYUDAR CON LOS COMPROBANTES DE ESTAS COMPRAS YA QUE NO LA ENCUENTO EN MI RADAR,  O SI SABE QUIEN LO SOLICITO PARA REVISARLO CON ELLOS, SALUDOS Y QUEDO ATENTO A SUS COMENTARIOS
+
+
+[cid:image001.png@01DCB6C0.8A852570]
+";C87AF0DB-319C-432A-8850-29F46FC36402;Requerimiento;0.6982955556393272;2026-03-20 14:40:23.980020;confirmado;True;C87AF0DB-319C-432A-8850-29F46FC36402
+cafb129b-8a63-43bd-b68d-55a50e234005;Instalación de Actualización de Sistema Progress V12;"Buenas tardes solicito la instalación de actualización del progress V12
+
+Nombre: Martha Patricia Mondragón Soto
+Puesto: Gerente de Autofinanciamiento Changan  Perinorte / Conauto
+Correo: mmondragon@changanperinorte.com.mx
+Tel celular: 5527295644
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Buen día, envio datos solicitados
+
+Usuario: MMS987
+
+BID: 987
+
+Saludos
+
+Martha Patricia
+
+Saludos y quedo a sus ordenes
+Martha Patricia Mondragón
+Este mensaje y los datos adjuntos son para uso exclusivo de la persona o entidad a la que expresamente ha sido enviada y puede contener información PRIVILEGIADA y CONFIDENCIAL. Si ha recibido esta comunicación por error: 1) queda estrictamente prohibido la revelación, retransmisión, difusión o el uso de la información contenida, 2) por favor elimine y destruya todas las copias; y 3) favor de informar al remitente. Su cooperación es agradecida. ""This message and the attached files are intended only for the use of the addressee and may contain information that is PRIVILEGED and CONFIDENTIAL. If you received this communication in error: 1) disclosure, copying, distribution or taking any action in reliance on the contents of this communication is strictly prohibited; 2) please delete and destroy all copies; and 3) kindly notify us .""Your cooperation is greatly appreciated""";C87AF0DB-319C-432A-8850-29F46FC36402;Requerimiento;0.6588186293184389;2026-03-20 14:40:24.036300;confirmado;True;C87AF0DB-319C-432A-8850-29F46FC36402
+5fbaad19-480b-4a9a-b7e3-88f51cd1c5d9;ERROR EN MODULO MODIFICA CORRIDA / MENU GENERAL CONAUTO;"Buenos días. 
+
+Favor de corregir el módulo MODIFICA CORRIDA en menú general conauto, no aplica los cambios ingresados: 
+ruta; menu general conauto< conandmin<operacion< autofinanciamiento< aplica pagos 21/45 mod. corrida< gpo int< modifica corrida.";C87AF0DB-319C-432A-8850-29F46FC36402;Requerimiento;0.5182177391243721;2026-03-20 14:40:24.034044;corregido;True;D937532B-6762-4521-9F60-254D2D2D8B2E
+0e249013-a8cb-4d34-8719-b765f3cd938b;4202-1 / kananfleet / Finvivir;"Buenas tardes equipo, les contacto por un tema de rendimiento en el
+servidor. Nos reportan los usuarios temas de lentitud con los procesos de
+los aplicativos kananfleeet, de su apoyo para validar el rendimiento del
+servidor y de ser necesario incluso reiniciar.
+
+ 
+
+Quedo atento a sus comentarios.
+
+ 
+
+Gracias por el apoyo.
+
+ 
+
+Saludos cordiales. 
+
+ 
+
+Atentamente:
+
+ 
+
+ING. ALEJANDRO SOSA.
+
+SOPORTE KANANFLEET.
+
+CONTACTO: +52 1 999 649 2804
+
+ETECNO.
+
+
+
+ 
+
+";C87AF0DB-319C-432A-8850-29F46FC36402;Requerimiento;0.6616611166993845;2026-03-20 16:00:57.953047;corregido;False;D937532B-6762-4521-9F60-254D2D2D8B2E
+69d01d47-8404-486a-a791-f6616131b118;ERROR, TRUENA INFORMACION DEL ARCHIVO EXISTENTE Y LENTITUD EN EXCEL;"Muy buena tarde
+
+Solicito de su apoyo a fin de validar office (Excel), ya que actualmente al intentar realizar algunos cambios y/o modificaciones en archivos ya existentes, marca error, los genera con mayor capacidad y los truena.
+
+Quedamos en espera de sus indicaciones.
+
+Saludos.
+:)";D937532B-6762-4521-9F60-254D2D2D8B2E;Incidente;0.5805084814100663;2026-03-23 17:32:17.723228;pendiente;False;

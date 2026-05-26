@@ -1,0 +1,554 @@
+{
+  "name": "webhook correct-submit",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "correct-submit",
+        "responseMode": "responseNode",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -416,
+        16
+      ],
+      "id": "aa4a8e77-d363-423d-88d5-4ee5d5b6e5cc",
+      "name": "Webhook",
+      "webhookId": "3db01f70-f892-4bfa-b24e-0e5fadc7353e"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "602aa780-5502-4342-9927-e8211da5976f",
+              "name": "id",
+              "value": "={{ $json.body.id }}",
+              "type": "string"
+            },
+            {
+              "id": "16d9d643-ec13-482b-9468-d8dfd6db3c72",
+              "name": "categoria",
+              "value": "={{$json.body.tipo}}",
+              "type": "string"
+            },
+            {
+              "id": "0ed363af-29b9-4892-bb37-25a1d80093ab",
+              "name": "api",
+              "value": "={{ $env.API }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -240,
+        16
+      ],
+      "id": "518bccc2-a716-4680-8551-39601195dee3",
+      "name": "variables"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "yvyqk3wjvVCeRhLz",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/yvyqk3wjvVCeRhLz",
+          "cachedResultName": "get & verify token"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [
+            "env"
+          ],
+          "schema": [
+            {
+              "id": "env",
+              "displayName": "env",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        640,
+        0
+      ],
+      "id": "60afb37e-e173-436e-a413-4ff0b0699303",
+      "name": "Call 'get & verify token'"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "08e45798-b330-4b68-ae0d-edac216e16cc",
+              "name": "api",
+              "value": "={{ $json.api }}",
+              "type": "string"
+            },
+            {
+              "id": "4ae8ec76-db35-4a6f-8e34-287d9db1705d",
+              "name": "token",
+              "value": "={{ $json.access_token }}",
+              "type": "string"
+            },
+            {
+              "id": "b55bce67-3886-460d-bf07-b85e23e736db",
+              "name": "id",
+              "value": "={{ $('variables').item.json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "8b443a3e-e237-4bda-a45e-a339975ea567",
+              "name": "tipo_predicho",
+              "value": "={{ $('variables').item.json.categoria }}",
+              "type": "string"
+            },
+            {
+              "id": "a2ed6b82-d2dd-4c94-be35-5863a7314b1c",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        848,
+        0
+      ],
+      "id": "d42ea711-f392-4137-8f1b-3bdd567f2b2b",
+      "name": "variables-modif"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "EZKjwWDjZxr59t5N",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/EZKjwWDjZxr59t5N",
+          "cachedResultName": "edit tickets"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "tickets": "={{ $json.tickets }}"
+          },
+          "matchingColumns": [
+            "tickets"
+          ],
+          "schema": [
+            {
+              "id": "tickets",
+              "displayName": "tickets",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "array",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1472,
+        0
+      ],
+      "id": "a3d900d5-c9aa-40d6-b744-30f7e72721b4",
+      "name": "Call 'Edit tickets'",
+      "alwaysOutputData": false,
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e6fef5de-f777-4bc5-89ac-a717d29b65b6",
+              "leftValue": "={{ $json.ml_revision }}",
+              "rightValue": "=corregido",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "f7e56612-edd6-47c1-85b0-6f6f95058d5d",
+              "leftValue": "={{ $json.ml_revision }}",
+              "rightValue": "confirmado",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        176,
+        16
+      ],
+      "id": "6e704677-8fc0-43f6-8e0c-11211d08a50c",
+      "name": "ticket corregido o confirmado?"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.api }}feedback/revision/{{ $json.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -32,
+        16
+      ],
+      "id": "86c497eb-f1a2-4dd7-9d67-b726c5613489",
+      "name": "GET API ML ticket estado",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "xX30aVa7U2enRmNW",
+          "name": "API-User"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$('variables').item.json.api}}feedback/correct",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "id",
+              "value": "={{ $('variables').item.json.id }}"
+            },
+            {
+              "name": "categoria",
+              "value": "={{$('variables').item.json.categoria}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        432,
+        0
+      ],
+      "id": "5a3f67c2-71df-4dd1-ac87-81f88bdc2c97",
+      "name": "POST API ML correct",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "xX30aVa7U2enRmNW",
+          "name": "API-User"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "<h2>Predicción YA corregida</h2>\nEste ticket ya fue corregido anteriormente",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Conten-Type",
+                "value": "tex/html"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        448,
+        -144
+      ],
+      "id": "7da3e95e-1e1f-4a06-9ea3-70e8dde85c93",
+      "name": "Respuesta a ticket ya corregido"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.api }}incidents/{{ $json.id }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "$fields",
+              "value": "Code"
+            },
+            {
+              "name": "$limit",
+              "value": "1"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "authorization",
+              "value": "={{ $json.token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1056,
+        0
+      ],
+      "id": "4b1e85ff-2dea-4333-a93b-e45d1defa202",
+      "name": "GET API PA code"
+    },
+    {
+      "parameters": {
+        "jsCode": "const tickets = items.map(item => {\n  return {\n    code: item.json.Code,\n    categoria: $('variables-modif').first().json.tipo_predicho\n  };\n});\n\nreturn [\n  {\n    json: {\n      tickets\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1264,
+        0
+      ],
+      "id": "cdb13ede-32c2-4557-8096-7b9e1a053cf5",
+      "name": "Code JS para agrupar ticket"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "<h2>Predicción corregida</h2>\nPuedes cerrar esta ventana.",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Conten-Type",
+                "value": "tex/html"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1728,
+        -80
+      ],
+      "id": "a05bf10f-77f1-4d97-8e23-cca2e24e38ad",
+      "name": "Respuesta de éxito"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "<h2>Predicción NO corregida</h2>\nEl servicio se encuentra ocupado por favor intente mas tarde",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Conten-Type",
+                "value": "tex/html"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1728,
+        64
+      ],
+      "id": "add009e1-f6a2-4b2a-9e16-a114897dc70f",
+      "name": "Respuesta de fallo"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "variables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "variables": {
+      "main": [
+        [
+          {
+            "node": "GET API ML ticket estado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'get & verify token'": {
+      "main": [
+        [
+          {
+            "node": "variables-modif",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "variables-modif": {
+      "main": [
+        [
+          {
+            "node": "GET API PA code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Edit tickets'": {
+      "main": [
+        [
+          {
+            "node": "Respuesta de éxito",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respuesta de fallo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ticket corregido o confirmado?": {
+      "main": [
+        [
+          {
+            "node": "Respuesta a ticket ya corregido",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "POST API ML correct",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET API ML ticket estado": {
+      "main": [
+        [
+          {
+            "node": "ticket corregido o confirmado?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST API ML correct": {
+      "main": [
+        [
+          {
+            "node": "Call 'get & verify token'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET API PA code": {
+      "main": [
+        [
+          {
+            "node": "Code JS para agrupar ticket",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code JS para agrupar ticket": {
+      "main": [
+        [
+          {
+            "node": "Call 'Edit tickets'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "ece7fa0b-193a-4bd0-beda-03414c974317",
+  "meta": {
+    "instanceId": "bc94b324c3acfb5b7eaa38f0e475f484755d07659479297b1600adb12dcde280"
+  },
+  "id": "We9NlljJUtK3XYiY",
+  "tags": []
+}

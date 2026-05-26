@@ -1,0 +1,230 @@
+{
+  "name": "get & verify token",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "env"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "be3733fb-6e27-4ff8-abe6-e86abdda5d83",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "jsCode": "const staticData = $getWorkflowStaticData('global');\n\nif (!staticData.access_token) {\n  return [{ json: { needsToken: true } }];\n}\n\n// margen de seguridad de 60 segundos\nif (Date.now() >= (staticData.expires_at - 60000)) {\n  return [{ json: { needsToken: true } }];\n}\n\nreturn [{\n  json: {\n    needsToken: false,\n    access_token: staticData.access_token,\n    api: staticData.api\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "f79a31aa-b352-40de-9687-29662cd624bd",
+      "name": "Check token"
+    },
+    {
+      "parameters": {
+        "jsCode": "const staticData = $getWorkflowStaticData('global');\n\nconst token = $json.Token;\nconst api = $json.api;\n\nif (!token) {\n\tthrow new Error(\"Token no está definido\");\n}\n\n// Decodificar JWT\nconst payload = JSON.parse(\n\tBuffer.from(token.split('.')[1], 'base64').toString()\n);\n\nconst expiresAt = payload.exp * 1000;\n\n// Guardar directo\nstaticData.access_token = token;\nstaticData.api = api;\nstaticData.expires_at = expiresAt;\n\nreturn [\n\t{\n\t\tjson: {\n\t\t\taccess_token: token,\n\t\t\tapi: api,\n\t\t\texpires_at: expiresAt\n\t\t}\n\t}\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        848,
+        -224
+      ],
+      "id": "368972e7-4630-465e-9a86-f1e35dd8228f",
+      "name": "code para guardar token"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "orWnnBjOsHu4ZcpJ",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/orWnnBjOsHu4ZcpJ",
+          "cachedResultName": "Get env"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [
+            "env"
+          ],
+          "schema": [
+            {
+              "id": "env",
+              "displayName": "env",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        656,
+        -224
+      ],
+      "id": "79f7a97f-53d8-4c8b-80d0-3abdaf8fe44e",
+      "name": "Call 'Get token\"1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "58bb5bdc-7df3-42af-bc1a-4d4a926db26e",
+              "name": "access_token",
+              "value": "={{ $json.access_token }}",
+              "type": "string"
+            },
+            {
+              "id": "ce85183a-1cb6-4ad9-971b-e821bd8eee06",
+              "name": "api",
+              "value": "={{ $json.api }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1008,
+        16
+      ],
+      "id": "290748ab-8ae4-41e9-a08c-2b93b62edc78",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "6253e3e2-32cd-44ff-ae31-a4d23f000e78",
+              "leftValue": "={{ $json.needsToken }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        432,
+        0
+      ],
+      "id": "4321c04d-a4d9-4067-99c4-9790bf0c3a00",
+      "name": "necesita token?"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Check token": {
+      "main": [
+        [
+          {
+            "node": "necesita token?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Get token\"1": {
+      "main": [
+        [
+          {
+            "node": "code para guardar token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Check token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "code para guardar token": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "necesita token?": {
+      "main": [
+        [
+          {
+            "node": "Call 'Get token\"1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "f1fa9288-90db-40ae-bee7-eb0776f3b98a",
+  "meta": {
+    "instanceId": "bc94b324c3acfb5b7eaa38f0e475f484755d07659479297b1600adb12dcde280"
+  },
+  "id": "yvyqk3wjvVCeRhLz",
+  "tags": []
+}

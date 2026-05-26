@@ -1,0 +1,655 @@
+{
+  "name": "Retroalim-modelo",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1360,
+        336
+      ],
+      "id": "9194b956-2283-4c17-a50c-92f27dd94198",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "content": "## GET\n\nget a la api para obtener los tickets pendientes de prevision",
+        "height": 320,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -784,
+        160
+      ],
+      "id": "4159230a-4d53-4107-a120-bd5e0e8db39c",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## IF\n\nsi llegan pendientes continua, de lo contrario el flujo se detiene",
+        "height": 320,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -576,
+        128
+      ],
+      "id": "58b21fb8-917a-4424-8828-0b2ec6e971fa",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Dividir\n\ndivide la respuesta en items para su iteracion",
+        "height": 320,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -368,
+        16
+      ],
+      "id": "58cc61e9-4e83-4b8f-bf16-ba22001f21b8",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Variables links\n\nlinks a webhooks con query parameter id para consumo de la api\n",
+        "height": 336,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        80,
+        16
+      ],
+      "id": "9f7b3d79-9705-464f-8079-dec694640c8d",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Enviar Emails\n\nenvias un email por ticket con los links a los webhooks para consumir la api",
+        "height": 352,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        272,
+        0
+      ],
+      "id": "8ae3173b-2666-4dc8-a4fa-bf7cb08da381",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "yvyqk3wjvVCeRhLz",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/yvyqk3wjvVCeRhLz",
+          "cachedResultName": "get & verify token"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [
+            "env"
+          ],
+          "schema": [
+            {
+              "id": "env",
+              "displayName": "env",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        -1152,
+        336
+      ],
+      "id": "fe209711-c5c3-4b98-93c8-2a5089541dce",
+      "name": "Call 'get & verify token'"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7cf03477-4e30-4d09-9942-341630cadb72",
+              "name": "api",
+              "value": "={{ $env.API }}",
+              "type": "string"
+            },
+            {
+              "id": "68542909-9f61-4101-9cbd-a2d0ad8376d1",
+              "name": "webhook",
+              "value": "={{ $env.URL }}",
+              "type": "string"
+            },
+            {
+              "id": "73769e57-b8a0-4b16-889b-3b55c27b4526",
+              "name": "token",
+              "value": "={{ $json.access_token }}",
+              "type": "string"
+            },
+            {
+              "id": "660b952c-7cf0-4bad-aeb8-61dbaa71cf63",
+              "name": "api-PA",
+              "value": "={{ $json.api }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -944,
+        336
+      ],
+      "id": "62caec6e-a74b-4e18-97b0-00b4bad8bf0c",
+      "name": "variables"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6f422d3d-d3aa-41f5-adfb-6b1ecb1d5f8a",
+              "name": "confirm_url",
+              "value": "={{ $('variables').item.json.webhook }}confirm?id={{ $json.Id }}&tipo_predicho={{ $('Dividir para iteracion').item.json.tickets.tipo_predicho }}",
+              "type": "string"
+            },
+            {
+              "id": "0572b1e7-8eb9-462d-8383-7dbb8db40e5e",
+              "name": "correct_url",
+              "value": "={{ $('variables').item.json.webhook }}correct?id={{ $json.Id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        112,
+        208
+      ],
+      "id": "1f2222be-a252-46da-8868-6203034736b5",
+      "name": "Variables Links"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('variables').item.json['api-PA'] }}incidents/{{ $('Dividir para iteracion').item.json.tickets.id }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "$fields",
+              "value": "code"
+            },
+            {
+              "name": "$limit",
+              "value": "1"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "authorization",
+              "value": "=Bearer {{ $('variables').item.json.token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -112,
+        208
+      ],
+      "id": "d882c724-419d-40ef-9157-36396d60c268",
+      "name": "Get code segun Id"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "tickets",
+        "include": "selectedOtherFields",
+        "fieldsToInclude": "id,incidentTitle,description,padTypes_id_predicho,tipo_predicho,confianza,fecha,ml_revision,padTypes_id_corregido",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -336,
+        208
+      ],
+      "id": "b32402fc-b691-42eb-b8bf-326ebb793114",
+      "name": "Dividir para iteracion"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "54b66ae7-8333-46dc-a346-ad7897c644f7",
+              "leftValue": "={{ $json.total }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -544,
+        320
+      ],
+      "id": "ff85b32c-9ecd-4189-9ed3-9380d4a62ea3",
+      "name": "revisiones pendientes?"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.api }}feedback/pending",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -752,
+        336
+      ],
+      "id": "d42af2bc-cb89-4a67-8c1b-19bd1bd48536",
+      "name": "Get tickets pendientes",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "xX30aVa7U2enRmNW",
+          "name": "API-User"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "tickets.id"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        0,
+        464
+      ],
+      "id": "52a479ac-e2c3-4a1b-93e6-1ad6160a5a0c",
+      "name": "Agrupar items",
+      "alwaysOutputData": false,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6cb5a4dc-2ee1-425b-95d2-35f7d7834853",
+              "name": "ids",
+              "value": "={{ $json.id }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        464
+      ],
+      "id": "9c80e5b4-1f0d-4d12-a9ba-808c173885a8",
+      "name": "variable id"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('variables').item.json.api }}feedback/mark-sent-bulk ",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{$json.ids}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        432,
+        464
+      ],
+      "id": "1142c97f-87e4-4945-8f64-86d53d22048a",
+      "name": "POST marcar enviados",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "xX30aVa7U2enRmNW",
+          "name": "API-User"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('variables').item.json.api }}send-mail",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "to",
+              "value": "gaspard@gconsultores.com.mx"
+            },
+            {
+              "name": "subject",
+              "value": "Solicito retroalimentacion de modelo en los siguientes tickets"
+            },
+            {
+              "name": "body",
+              "value": "=<h2>Tickets pendientes de revisión</h2>\n\n<b>Codigo:</b> {{ $('Get code segun Id').item.json.Code }}<br>\n<h2></h2>\n<b>Titulo:</b> {{ $('Dividir para iteracion').item.json.tickets.incident_title }} <br>\n<h2></h2>\n\n<b>Descripcion:</b> {{ $('Dividir para iteracion').item.json.tickets.description }} <br>\n<h2></h2>\n<b>Segun mi base de conocimiento el tipo predicho es:</b> {{ $('Dividir para iteracion').item.json.tickets.tipo_predicho }}<br><br>\n\n<b>Confianza de la predicción:</b> {{ ($('Dividir para iteracion').item.json.tickets.confianza * 100).toFixed(2) + '%' }} <br><br>\n\n<a href=\"{{$json.confirm_url}}\" target=\"_blank\">\n✔ Confirmar predicción\n</a>\n\n<br><br>\n\n<a href=\"{{$json.correct_url}}\" target=\"_blank\">\n✏ Corregir tipo\n</a>\n\n<hr>"
+            },
+            {
+              "name": "name",
+              "value": "Tickets pendientes de revisión"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        304,
+        208
+      ],
+      "id": "47d4d849-1c5c-4b85-9e12-9439eb342a6a",
+      "name": "POST enviar mails",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "xX30aVa7U2enRmNW",
+          "name": "API-User"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## GET API proactiva\n\nobtiene los codes de los tickets por id mediante la api de proactiva\n\n",
+        "height": 336,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        0
+      ],
+      "id": "bc597a96-16f4-43a6-ba9e-286a9905f1bd",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Variables\n\ninicia el valor de las variables de las API y el token\n",
+        "height": 320,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -976,
+        160
+      ],
+      "id": "645962f5-3a91-4e11-b90d-59392229bc76",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Subworkflow\n\nobtiene el link de proactiva y el token\n",
+        "height": 320,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1184,
+        160
+      ],
+      "id": "04a9420a-bfd3-41ba-8a05-2d11206c4883",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n## Agrupar items\n\nagrupa todos los tickets enviados\n",
+        "height": 336,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        432
+      ],
+      "id": "65084dcc-50d6-4fce-80c3-9f6ca935c0ec",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n## variable id \n\nvariable id para poder editar el estado de los tickets en la bd",
+        "height": 336,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        192,
+        432
+      ],
+      "id": "d734ce4e-4c20-48ed-ac48-cd727c8930ee",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n## POST API ml\n\nactualiza el estado de los tickets en la bd a enviados \n",
+        "height": 336,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        400,
+        432
+      ],
+      "id": "10a3af80-1409-4195-9c75-6dfca14c358b",
+      "name": "Sticky Note10"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Call 'get & verify token'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'get & verify token'": {
+      "main": [
+        [
+          {
+            "node": "variables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "variables": {
+      "main": [
+        [
+          {
+            "node": "Get tickets pendientes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Variables Links": {
+      "main": [
+        [
+          {
+            "node": "POST enviar mails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get code segun Id": {
+      "main": [
+        [
+          {
+            "node": "Variables Links",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dividir para iteracion": {
+      "main": [
+        [
+          {
+            "node": "Get code segun Id",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Agrupar items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "revisiones pendientes?": {
+      "main": [
+        [
+          {
+            "node": "Dividir para iteracion",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Get tickets pendientes": {
+      "main": [
+        [
+          {
+            "node": "revisiones pendientes?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agrupar items": {
+      "main": [
+        [
+          {
+            "node": "variable id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "variable id": {
+      "main": [
+        [
+          {
+            "node": "POST marcar enviados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "ef624267-9e31-470c-abc2-7debc28e06a7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "bc94b324c3acfb5b7eaa38f0e475f484755d07659479297b1600adb12dcde280"
+  },
+  "id": "hvnqFffYHkOmrl4M",
+  "tags": []
+}

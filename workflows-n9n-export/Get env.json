@@ -1,0 +1,164 @@
+{
+  "name": "Get env",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.url }}auth/login",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "username",
+              "value": "={{ $json.username }}"
+            },
+            {
+              "name": "password",
+              "value": "={{ $json.password }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        384,
+        0
+      ],
+      "id": "24adc3d8-78e6-4fb1-9e2f-29303ee04f82",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "da60a51e-f1e9-41c2-82da-90e490ce7799",
+              "name": "username",
+              "value": "={{ $env.USERNAME }}",
+              "type": "string"
+            },
+            {
+              "id": "e8e57b9e-155d-41b1-9652-f13c19309b84",
+              "name": "password",
+              "value": "={{ $env.PASSWORD }}",
+              "type": "string"
+            },
+            {
+              "id": "cd56a143-a990-433f-8f74-ea7f8282fba7",
+              "name": "url",
+              "value": "={{ $env.API_GC }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        192,
+        0
+      ],
+      "id": "f1ef083a-d2a3-461c-9699-2bea891ea325",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "78a50be1-6f51-47b8-bd53-436cf1f42256",
+              "name": "Token",
+              "value": "={{ $json.Token }}",
+              "type": "string"
+            },
+            {
+              "id": "9f0ac41d-0f17-485f-a70a-85ce3f54813e",
+              "name": "api",
+              "value": "={{ $('Edit Fields').item.json.url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        592,
+        0
+      ],
+      "id": "efd139aa-f24a-4c22-8bba-927ad3dc708e",
+      "name": "Constant"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "env"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "033a1c4b-0c16-4f9e-8024-0d9ee6cc50e3",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Constant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "40a77d63-febd-4ffd-9303-db0ffc7b6f5c",
+  "meta": {
+    "instanceId": "bc94b324c3acfb5b7eaa38f0e475f484755d07659479297b1600adb12dcde280"
+  },
+  "id": "orWnnBjOsHu4ZcpJ",
+  "tags": []
+}

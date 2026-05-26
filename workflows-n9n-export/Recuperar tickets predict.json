@@ -1,0 +1,759 @@
+{
+  "name": "Recuperar tickets predict",
+  "nodes": [
+    {
+      "parameters": {
+        "fieldToSplitOut": "body",
+        "include": "selectedOtherFields",
+        "fieldsToInclude": "Title, CreationDate, Description, PadTypes_id, id, Code",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        128,
+        432
+      ],
+      "id": "f4a162c7-36c3-4e2d-8f4b-a37932fd7566",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "jsCode": "const staticData = $getWorkflowStaticData('global');\n\nif (!staticData.access_token) {\n  return [{ needsToken: true }];\n}\n\n// margen de seguridad de 60 segundos\nif (Date.now() >= (staticData.expires_at - 60000)) {\n  return [{ needsToken: true }];\n}\n\nreturn [{\n  needsToken: false,\n  access_token: staticData.access_token,\n  api: staticData.api\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -576,
+        416
+      ],
+      "id": "a4e5a6d8-3976-4f1e-a44d-dc9a2da493b1",
+      "name": "Check token"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "6253e3e2-32cd-44ff-ae31-a4d23f000e78",
+              "leftValue": "={{ $json.needsToken }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -368,
+        416
+      ],
+      "id": "4480d8a8-e15f-4f29-aff9-0a529a8d7af1",
+      "name": "If needs token"
+    },
+    {
+      "parameters": {
+        "jsCode": "const staticData = $getWorkflowStaticData('global');\n\nconst token = $json.Token;\nconst api = $json.api;\n\nif (!token) {\n  throw new Error(\"Tokken no está definido en este nodo\");\n}\n\n// Decodificar JWT\nconst payload = JSON.parse(\n  Buffer.from(token.split('.')[1], 'base64').toString()\n);\n\nconst expiresAt = payload.exp * 1000;\n\nstaticData.access_token = token;\nstaticData.api = api;\nstaticData.expires_at = expiresAt;\n\nreturn [{\n  access_token: token,\n  api: api\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        48,
+        192
+      ],
+      "id": "641fc24d-30a4-4d4a-806b-5dce95cbf485",
+      "name": "code para guardar token"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 20
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -976,
+        416
+      ],
+      "id": "bab0bdda-a6cb-4f68-a941-b306a46368e4",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n## GET Tickets\n\nconsulta para obtener tickets de la api grupo consultores",
+        "height": 304,
+        "width": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        416
+      ],
+      "id": "13e84a82-643e-4eef-9980-14c931f4e963",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n## Dividir \n\nse divide la consulta en items para su iteracion",
+        "height": 304,
+        "width": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        80,
+        416
+      ],
+      "id": "2429af5f-20f4-49b3-9d0b-cd952d84e996",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n## GET predict \n\nconsulta al modelo por medio de la api para prediccion\n",
+        "height": 304,
+        "width": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        336,
+        416
+      ],
+      "id": "51fee7a6-dc91-4736-80a3-0718f459fb56",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n## Filtro de ejemplo\n\nFiltro para usar solo tickets asignados\n\n\n",
+        "height": 304,
+        "width": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        208,
+        848
+      ],
+      "id": "673407dd-f3cb-4d99-b49c-c22daa3aaf40",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Subproceso Token\n\nSubproceso para obtener un token de la api grupo Consultores",
+        "height": 336,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        -16
+      ],
+      "id": "223004bc-8709-4fb0-a9d5-d506d2235553",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Code\n\ncode para guardar el token en variables globales del proceso",
+        "height": 320,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        16,
+        0
+      ],
+      "id": "9d178a7b-20a8-48fc-bddc-20e8bfc456e5",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Revisar token\n\ncode para revisar si el token existe, es valido o esta por expirar",
+        "height": 320,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        224
+      ],
+      "id": "44fdba72-3bd1-4689-89bc-3042ec845316",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## Revisar token\n\ncode para revisar si el token existe, es valido o esta por expirar",
+        "height": 320,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        224
+      ],
+      "id": "2d066b9a-0c0d-43b4-8a9d-0e3747ccd0f4",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "code"
+            },
+            {
+              "fieldToAggregate": "categoria"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        896,
+        432
+      ],
+      "id": "b48d58ae-ae9f-492d-9f05-684221a2c7d9",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = items[0].json;\n\nconst tickets = data.code.map((code, index) => {\n    return {\n        code: code,\n        categoria: data.categoria[index]\n    };\n});\n\nreturn [\n    {\n        json: {\n            tickets\n        }\n    }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1152,
+        432
+      ],
+      "id": "cd220b21-d028-4611-8b91-1c4477ccb91f",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n## Lista\n\nagrupa los tickets en un elemento de lista para el endpoint",
+        "height": 304,
+        "width": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        416
+      ],
+      "id": "ef0edde9-e20d-4a69-8748-7268fe35bfa9",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n## Group\n\nagrupar los campos necesarios",
+        "height": 304,
+        "width": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        848,
+        416
+      ],
+      "id": "82d703bf-71c4-4147-878b-427cf2889ca6",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "orWnnBjOsHu4ZcpJ",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/orWnnBjOsHu4ZcpJ",
+          "cachedResultName": "Get env"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [
+            "env"
+          ],
+          "schema": [
+            {
+              "id": "env",
+              "displayName": "env",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        -144,
+        192
+      ],
+      "id": "39928ed8-2d0b-48d3-9e7d-91e3a8ca3b3f",
+      "name": "Call 'Get token\"1"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "EZKjwWDjZxr59t5N",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/EZKjwWDjZxr59t5N",
+          "cachedResultName": "edit tickets"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "tickets": "={{ $json.tickets }}"
+          },
+          "matchingColumns": [
+            "tickets"
+          ],
+          "schema": [
+            {
+              "id": "tickets",
+              "displayName": "tickets",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "array"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1408,
+        432
+      ],
+      "id": "3fad7e97-445b-4f9a-b878-0af176f8ad73",
+      "name": "Call 'Edit tickets\"",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "da8b5312-8cda-429c-a1cc-31a25c296b18",
+              "leftValue": "={{ $json.confianza }}",
+              "rightValue": 0.75,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        656,
+        432
+      ],
+      "id": "5e51318d-0def-4af2-b912-51bf7d8c3ffd",
+      "name": "Confianza 75%"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('variable API ml').item.json['api-ml'] }}predict",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "id",
+              "value": "={{ $json.body.Id }}"
+            },
+            {
+              "name": "titulo",
+              "value": "={{ $json.body.Title }}"
+            },
+            {
+              "name": "descripcion",
+              "value": "={{ $json.body.Description }}"
+            },
+            {
+              "name": "code",
+              "value": "={{ $json.body.Code }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        384,
+        432
+      ],
+      "id": "22c3f2b5-4f1c-456f-9d00-289193410e3d",
+      "name": "API Predict",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "xX30aVa7U2enRmNW",
+          "name": "API-User"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.api }}incidents",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "$limit",
+              "value": "150"
+            },
+            {
+              "name": "$sort",
+              "value": "-CreationDate"
+            },
+            {
+              "name": "$fields",
+              "value": "Code,Status,Title,Description,CreationDate,PadTypes_id,Id,PanUsers_idSource,PawSvcAuthUsers_idCreator"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "authorization",
+              "value": "=Bearer {{ $json.access_token }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -128,
+        432
+      ],
+      "id": "0f80d1a3-2d66-4a38-a2ac-59babb6f2007",
+      "name": "API Request incidents",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "a0e5269e-5503-4d3c-b3c1-bf3aeff91b43",
+              "leftValue": "={{ $json.body.PawSvcAuthUsers_idCreator }}",
+              "rightValue": "b95d5c71-25a7-418a-a3fe-23a69b7876c0",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "5b941b68-5db9-474d-8299-d8aa42912cf1",
+              "leftValue": "={{ $json.body.PadTypes_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        256,
+        864
+      ],
+      "id": "bf22b341-e6f6-4b30-bc1e-7a76e44c6c5b",
+      "name": "Filtro solo asignados"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n## Filtro\n\nfiltro para unicamente editar los de mayo confianza",
+        "height": 304,
+        "width": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        592,
+        416
+      ],
+      "id": "cf659730-6dc6-4a83-8cba-5bb6bb54c211",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n## Subworkflow\n\nEdita los tickets segun la lista proporcionada",
+        "height": 304,
+        "width": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        416
+      ],
+      "id": "26302ba6-a44f-422a-b665-60b25a7e919d",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e619d8db-0859-47dd-9641-607e58e9db68",
+              "name": "api-ml",
+              "value": "={{ $env.API }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -800,
+        416
+      ],
+      "id": "4d0f8360-c79e-4f54-99df-c830cd1681d0",
+      "name": "variable API ml"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Filtro solo asignados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check token": {
+      "main": [
+        [
+          {
+            "node": "If needs token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If needs token": {
+      "main": [
+        [
+          {
+            "node": "Call 'Get token\"1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "API Request incidents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "code para guardar token": {
+      "main": [
+        [
+          {
+            "node": "API Request incidents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "variable API ml",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Call 'Edit tickets\"",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Get token\"1": {
+      "main": [
+        [
+          {
+            "node": "code para guardar token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Confianza 75%": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "API Predict": {
+      "main": [
+        [
+          {
+            "node": "Confianza 75%",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "API Request incidents": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtro solo asignados": {
+      "main": [
+        [
+          {
+            "node": "API Predict",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "variable API ml": {
+      "main": [
+        [
+          {
+            "node": "Check token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "ad24b7eb-c1b2-4d8c-99fe-25daf2b18302",
+  "meta": {
+    "instanceId": "bc94b324c3acfb5b7eaa38f0e475f484755d07659479297b1600adb12dcde280"
+  },
+  "id": "6rOhl6QAFpGI6ohp",
+  "tags": []
+}

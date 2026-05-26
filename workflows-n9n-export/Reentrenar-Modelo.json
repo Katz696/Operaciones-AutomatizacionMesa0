@@ -1,0 +1,343 @@
+{
+  "name": "Reentrenar-Modelo",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -656,
+        272
+      ],
+      "id": "3ffcb57c-7487-4455-9034-2b38b422172b",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "502c14be-b837-4d33-9e8a-52f3449075c1",
+              "name": "api",
+              "value": "={{ $env.API }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -496,
+        272
+      ],
+      "id": "1ece9a62-84b9-4f27-b0f5-11028ad99d1e",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.api }}build-dataset",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -336,
+        272
+      ],
+      "id": "9bba831f-9fdf-494a-a6e1-0068bdca2dc8",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "xX30aVa7U2enRmNW",
+          "name": "API-User"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "51bbdab5-b4c1-4a03-8711-16ddcd5df510",
+              "leftValue": "={{ $json.dataset_built }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -176,
+        272
+      ],
+      "id": "6987eb5c-9158-488f-afe4-7652f3020dab",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Edit Fields').item.json.api }}train",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        32,
+        176
+      ],
+      "id": "61398668-fbf9-42ee-b04a-eadcb7b579f8",
+      "name": "HTTP Request1",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "xX30aVa7U2enRmNW",
+          "name": "API-User"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Edit Fields').item.json.api }}evaluate",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        192,
+        176
+      ],
+      "id": "81ee094a-5d22-458c-8103-83b893c2d1ab",
+      "name": "HTTP Request2",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "xX30aVa7U2enRmNW",
+          "name": "API-User"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Edit Fields').item.json.api }}reload-model",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        352,
+        176
+      ],
+      "id": "13e5d5dc-8352-4b32-835b-67554149f419",
+      "name": "HTTP Request3",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "xX30aVa7U2enRmNW",
+          "name": "API-User"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## variable api\n\ninicia la variable api\n",
+        "height": 320,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -528,
+        112
+      ],
+      "id": "852f6cc1-2d47-45c0-ba61-bcb03ea0c0ca",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## POST\n\nendpoint para creacion de dataset de entrenamiento\n\n",
+        "height": 320,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -368,
+        96
+      ],
+      "id": "15cc24aa-10e4-42d9-a6aa-2d9ebdba0426",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Si se realizo\n\nif para continuar si el dataset de entrenamiento se creo",
+        "height": 320,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        80
+      ],
+      "id": "7f01efe5-660b-4294-81b8-58de1c94d60e",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## POST\n\nrealizar el entrenamiento del modelo con el nuevo dataset",
+        "height": 320,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "9affcf4e-b65b-45cf-916a-2ba069d51d3d",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## POST\n\nrealizar evaluacion y comparación de los modelos\n",
+        "height": 320,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        160,
+        0
+      ],
+      "id": "806c8ab2-0d08-49c4-aae4-59954ea5d65b",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## POST\n\nrecargar modelo",
+        "height": 320,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        320,
+        0
+      ],
+      "id": "c8d23d14-aa42-4422-967a-385cbe4b61eb",
+      "name": "Sticky Note5"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "f9f3f5f0-b0b4-423c-8014-7676d3223eb2",
+  "meta": {
+    "instanceId": "bc94b324c3acfb5b7eaa38f0e475f484755d07659479297b1600adb12dcde280"
+  },
+  "id": "CCRmDZOtxBCpBpXY",
+  "tags": []
+}

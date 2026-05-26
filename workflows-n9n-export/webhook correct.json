@@ -1,0 +1,105 @@
+{
+  "name": "webhook correct",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "correct",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e4c03434-1447-4a21-9454-f6f7683f1c71",
+      "name": "Webhook",
+      "webhookId": "f795910a-b3b1-4b82-952e-e45425285a00"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3bff2ccc-a7fc-4dce-a3a0-e36999708b18",
+              "name": "webhook",
+              "value": "={{ $env.URL }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        0
+      ],
+      "id": "6dfb5491-ece2-437c-ab32-945b8028cc0f",
+      "name": "URL webhook"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=<h2>Corregir tipo de ticket</h2>\n\n<br>\nPor favor seleccione el tipo correcto según su criterio y presione enviar corrección\n<br>\n\n<form \n  action=\"{{$json.webhook}}correct-submit\" \n  method=\"POST\"\n  onsubmit=\"document.getElementById('btnEnviar').disabled = true;\"\n>\n\n  <input \n    type=\"hidden\" \n    name=\"id\" \n    value=\"{{ $('Webhook').item.json.query.id }}\"\n  >\n\n  <select name=\"tipo\">\n    <option value=\"Requerimiento\">Requerimiento</option>\n    <option value=\"Incidente\">Incidente</option>\n    <option value=\"Otros\">Otros</option>\n  </select>\n\n  <br><br>\n\n  <button type=\"submit\" id=\"btnEnviar\">\n    Enviar corrección\n  </button>\n\n</form>",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        448,
+        0
+      ],
+      "id": "aecec254-2197-4189-9895-33611955c3c1",
+      "name": "Respuesta vista para corregir"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "URL webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "URL webhook": {
+      "main": [
+        [
+          {
+            "node": "Respuesta vista para corregir",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "0b64ab96-f303-4545-b4fe-11e1e976e3da",
+  "meta": {
+    "instanceId": "bc94b324c3acfb5b7eaa38f0e475f484755d07659479297b1600adb12dcde280"
+  },
+  "id": "ooZ4TebZ0Pa5YMSL",
+  "tags": []
+}

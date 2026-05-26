@@ -1,0 +1,307 @@
+{
+  "name": "Generar tickets",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "b15ca323-6bd5-415e-ac1d-6cfa1bf1b5e4",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "yvyqk3wjvVCeRhLz",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/yvyqk3wjvVCeRhLz",
+          "cachedResultName": "get & verify token"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [
+            "env"
+          ],
+          "schema": [
+            {
+              "id": "env",
+              "displayName": "env",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "98056477-b122-4b71-9c50-4ca066340c07",
+      "name": "Call 'get & verify token'"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "tickets",
+        "include": "selectedOtherFields",
+        "fieldsToInclude": "Title, Description, FederatedCode, CreationDate, PanUsers_idSource, PanLocations_id, PawSvcAuthUsers_idCreator, PadSources_id, PadStatus_id, PadTypes_id, PadPortfolio_id, PadCategories_id, PadPriorities_id, PadUrgencies_id, PadImpacts_id, SendUserNotification",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        800,
+        0
+      ],
+      "id": "4f7dc128-866b-466b-8bad-4669ee5b6803",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b8f7d0e3-c135-4e6d-a6c1-02e35610a5e0",
+              "name": "api",
+              "value": "={{ $env.API_PROACTIVANET }}",
+              "type": "string"
+            },
+            {
+              "id": "f9933b8f-41ec-4e47-bea9-b167ee6058f3",
+              "name": "api_PA",
+              "value": "={{ $json.api }}",
+              "type": "string"
+            },
+            {
+              "id": "f7199a4e-0a73-4ad2-88e7-7d965e0ca9b2",
+              "name": "access_token",
+              "value": "={{ $json.access_token }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        400,
+        0
+      ],
+      "id": "84025c28-9a53-4e87-b604-4898d118f1ea",
+      "name": "vaiables"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.api }}api/v1/tickets/generate",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "count",
+              "value": "2"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        592,
+        0
+      ],
+      "id": "f575cb53-d133-4d76-ac43-a06e9ed63e5c",
+      "name": "GET API PARPA",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "xX30aVa7U2enRmNW",
+          "name": "API-User"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('vaiables').item.json.api_PA }}incidents",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "authorization",
+              "value": "={{ $('vaiables').item.json.access_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "Title",
+              "value": "={{ $json.tickets.Title }}"
+            },
+            {
+              "name": "Description",
+              "value": "={{ $json.tickets.Description }}"
+            },
+            {
+              "name": "FederatedCode",
+              "value": "={{ $json.tickets.FederatedCode }}"
+            },
+            {
+              "name": "CreationDate",
+              "value": "={{ $json.tickets.CreationDate }}"
+            },
+            {
+              "name": "PanUsers_idSource",
+              "value": "={{ $json.tickets.PanUsers_idSource }}"
+            },
+            {
+              "name": "PanLocations_id",
+              "value": "={{ $json.tickets.PanLocations_id }}"
+            },
+            {
+              "name": "PawSvcAuthUsers_idCreator",
+              "value": "={{ $json.tickets.PawSvcAuthUsers_idCreator }}"
+            },
+            {
+              "name": "PadSources_id",
+              "value": "={{ $json.tickets.PadSources_id }}"
+            },
+            {
+              "name": "PadStatus_id",
+              "value": "={{ $json.tickets.PadStatus_id }}"
+            },
+            {
+              "name": "PadTypes_id",
+              "value": "={{ $json.tickets.PadTypes_id }}"
+            },
+            {
+              "name": "PadPortfolio_id",
+              "value": "={{ $json.tickets.PadPortfolio_id }}"
+            },
+            {
+              "name": "PadCategories_id",
+              "value": "={{ $json.tickets.PadCategories_id }}"
+            },
+            {
+              "name": "PadPriorities_id",
+              "value": "={{ $json.tickets.PadPriorities_id }}"
+            },
+            {
+              "name": "PadUrgencies_id",
+              "value": "={{ $json.tickets.PadUrgencies_id }}"
+            },
+            {
+              "name": "PadImpacts_id",
+              "value": "={{ $json.tickets.PadImpacts_id }}"
+            },
+            {
+              "name": "SendUserNotification",
+              "value": "={{ $json.tickets.SendUserNotification }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1008,
+        0
+      ],
+      "id": "5b732d3c-3e43-48c4-bedc-2556879f868a",
+      "name": "POST API Proactiva"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Call 'get & verify token'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'get & verify token'": {
+      "main": [
+        [
+          {
+            "node": "vaiables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "POST API Proactiva",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "vaiables": {
+      "main": [
+        [
+          {
+            "node": "GET API PARPA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET API PARPA": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST API Proactiva": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "767afa62-9476-4726-aa00-2273fd203e90",
+  "meta": {
+    "instanceId": "bc94b324c3acfb5b7eaa38f0e475f484755d07659479297b1600adb12dcde280"
+  },
+  "id": "nQAecNG9vBQLIvji",
+  "tags": []
+}

@@ -1,0 +1,123 @@
+{
+  "name": "edit tickets",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "tickets",
+              "type": "array"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        16,
+        0
+      ],
+      "id": "8deed77b-50a0-4136-bbca-ffd7bce8c138",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f2a30d77-d2ca-4059-8bfb-4ddc7a6b1a0f",
+              "name": "api-modif",
+              "value": "={{ $env.API_PROACTIVANET }}",
+              "type": "string"
+            },
+            {
+              "id": "0b0d61e7-5c97-4209-bcc8-552e1e914ca6",
+              "name": "tickets",
+              "value": "={{ $json.tickets }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "b7262537-f610-4e3d-8c58-1e51c94229b3",
+      "name": "variables"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json['api-modif'] }}api/v1/tickets/batch",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "tickets",
+              "value": "={{ $json.tickets }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        400,
+        0
+      ],
+      "id": "f7ee76a7-ed5b-4887-ba98-00553eb51337",
+      "name": "HTTP Request1",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "xX30aVa7U2enRmNW",
+          "name": "API-User"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "variables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "variables": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "d380f6c0-8343-4745-8ca9-02c861e86c72",
+  "meta": {
+    "instanceId": "bc94b324c3acfb5b7eaa38f0e475f484755d07659479297b1600adb12dcde280"
+  },
+  "id": "EZKjwWDjZxr59t5N",
+  "tags": []
+}

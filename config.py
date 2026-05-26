@@ -1,0 +1,10 @@
+clases_validas = {
+"C87AF0DB-319C-432A-8850-29F46FC36402": "Requerimiento",
+"D937532B-6762-4521-9F60-254D2D2D8B2E": "Incidente"
+}
+
+mapa_ids = {
+"Requerimiento": "C87AF0DB-319C-432A-8850-29F46FC36402",
+"Incidente": "D937532B-6762-4521-9F60-254D2D2D8B2E",
+"Otros": "OTROS"
+}
