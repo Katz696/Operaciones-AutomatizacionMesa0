@@ -1,0 +1,1340 @@
+{
+  "por_cliente_y_padre": {
+    "('Ayuntamiento de Mérida', 'PUNTOS04. Cotizacion')": [
+      "PUNTOS4.1 Cotizacion"
+    ],
+    "('Ayuntamiento de Mérida', 'PUNTOS11. Servicio IIS')": [
+      "PUNTOS11.2 Generar Certificados"
+    ],
+    "('Ayuntamiento de Mérida', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.1 Instalación o modificación de infraestructura.",
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('BPSoft', 'BPsoft 01. Administración de infraestructura azure.')": [
+      "1.3. Atención a fallos",
+      "1.4. Aplicación de cambios"
+    ],
+    "('Bazar del Dulcero', 'MST Especializada.- SAP')": [
+      "Falla de aplicación SAP",
+      "Requerimientos o cambios a SAP"
+    ],
+    "('Be Grand', 'Begrand 02. Administración de infraestructura Azure')": [
+      "2.1 Aplicación de cambios menores en infraestructura - 32hrs",
+      "2.3 Consultoría técnica",
+      "2.5 Solicitud de información"
+    ],
+    "('Be Grand', 'ENKONTROL 01.  Administración de infraestructura azure')": [
+      "ENKONTROL 1.2 Atención a fallos",
+      "ENKONTROL 1.3 Aplicación de cambios"
+    ],
+    "('Bepensa', 'GCTI 22. Ventas')": [
+      "22.2 Preventa"
+    ],
+    "('Bepensa', 'PUNTOS11. Servicio IIS')": [
+      "PUNTOS11.2 Generar Certificados"
+    ],
+    "('Bepensa', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.1 Instalación o modificación de infraestructura.",
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('Bepensa', 'PUNTOS24. Soporte SQL')": [
+      "PUNTOS24.1 Fallas SQL Server"
+    ],
+    "('Bepensa Motriz', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.1 Instalación o modificación de infraestructura."
+    ],
+    "('Bepensa Motriz', 'PUNTOS31. Windows server')": [
+      "PUNTOS31.1 Fallas de Windows Server"
+    ],
+    "('Bodegón', 'PUNTOS23. Soporte SAP')": [
+      "PUNTOS23.2 Fallas de Aplicación SAP"
+    ],
+    "('CACERES BORREGUIN', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('Compañia Fernandez', 'FERNANDEZ 01. SAP')": [
+      "1.1 Aplicaciones",
+      "1.2 Infraestructura",
+      "1.3 Usuario"
+    ],
+    "('Compañia Fernandez', 'GCTI 22. Ventas')": [
+      "22.2 Preventa"
+    ],
+    "('Compañia Fernandez', 'MST Especializada.- SAP')": [
+      "Requerimientos o cambios a SAP"
+    ],
+    "('Compañia Fernandez', 'PUNTOS11. Servicio IIS')": [
+      "PUNTOS11.2 Generar Certificados"
+    ],
+    "('Compañia Fernandez', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS 12.5 Plan de trabajo",
+      "PUNTOS12.1 Instalación o modificación de infraestructura.",
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('Compañia Fernandez', 'PUNTOS23. Soporte SAP')": [
+      "PUNTOS23.2 Fallas de Aplicación SAP",
+      "PUNTOS23.3 Actualizacion SAP"
+    ],
+    "('Compañia Fernandez', 'PUNTOS31. Windows server')": [
+      "PUNTOS31.1 Fallas de Windows Server"
+    ],
+    "('Conauto', 'CONAUTO - CAMBIOS')": [
+      "INF-CONA-01 Servidores"
+    ],
+    "('Conauto', 'CONAUTO 01. Equipo de computo')": [
+      "1.1 Compra de recursos tecnológicos - 104 Hrs",
+      "1.10 Mantenimiento correctivo - 39 Hrs",
+      "1.2 Reubicación de equipo de cómputo - 8 Hrs",
+      "1.3 Instalación de software autorizado - 3 Hrs",
+      "1.4 Actualización de Software - 8 Hrs",
+      "1.5 Mantenimiento preventivo - 39 Hrs",
+      "1.6 Préstamos de equipos de cómputo y accesorios -  39 Hrs",
+      "1.7 Falla de Software - 5 Hrs",
+      "1.8 Falla de Hardware - 39 Hrs",
+      "1.9 Falla de No break - 39 Hrs"
+    ],
+    "('Conauto', 'CONAUTO 02. Correo electronico')": [
+      "2.1 Configuración de buzón de correo - 2 Hrs",
+      "2.2 Configuración Lista de Distribución - 4 Hrs",
+      "2.3 Configuración y modificación de firma de correo - 4 Hrs",
+      "2.4 Reseteo de contraseña de Correo electrónico - 1 Hrs",
+      "2.5 Respaldo de PST - 26 Hrs",
+      "2.6 Fallo de envío  y recepción de correos - 8 Hrs",
+      "2.7 Correo sospechoso - 8 Hrs"
+    ],
+    "('Conauto', 'CONAUTO 03. Servicio de telefonía')": [
+      "3.1 Alta de Extensión - 6 Hrs",
+      "3.10 Gestión de condiciones de tiempo (IVR) - 30 Hrs",
+      "3.2 Cancelación Accesos a Softphone Webex - 6 Hrs",
+      "3.3 Instalación o Reubicación extensión telefónica  - 6 Hrs",
+      "3.4 Solicitud de diadema - 39 Hrs",
+      "3.5 Reactivar contraseña Nimbus o Webex - 2 Hrs",
+      "3.6 Falla de equipo telefónico - 13 Hrs",
+      "3.7 Falla de líneas telefónicas. ( C3ntro) - 26 Hrs",
+      "3.8 Falla en diadema - 39 Hrs"
+    ],
+    "('Conauto', 'CONAUTO 04. Servicios de RED')": [
+      "4.1. Conexión a red inalambrica - 2-Hrs",
+      "4.2 Configuración de puertos (firewall local) de Red - 8 Hrs",
+      "4.3 Acceso a páginas de internet - 8 Hrs",
+      "4.4 Falla en servicio de Internet - 24 Hrs",
+      "4.5 Fallo de acceso a escritorio remoto - 2 Hrs",
+      "4.6 Gestión de acceso a escritorio remoto - 8 Hrs",
+      "4.7 Fallo de cuenta VPN - 4 Hrs",
+      "4.8 Gestión de cuenta VPN - 4 Hrs",
+      "4.9 Configuración de red - 8 Hrs"
+    ],
+    "('Conauto', 'CONAUTO 05. Servicios de Impresora')": [
+      "5.1 Cambio de tóner - 39 Hrs",
+      "5.2 Solicitud de permisos para imprimir a color - 2 Hrs",
+      "5.3 Configuración de impresora - 2 Hrs",
+      "5.4 Solicitud de impresión - 2 Hrs",
+      "5.6 Fallas de impresora - 39 Hrs",
+      "5.7 Fallas de impresión - 39 Hrs"
+    ],
+    "('Conauto', 'CONAUTO 06. Sistema progress')": [
+      "6.1 Instalación de aplicación - 4 Hrs",
+      "6.10 Aplicación de Notas de Crédito - 8 Hrs",
+      "6.11 Recalcular Estado de cuenta (Conauto) - 8 Hrs",
+      "6.12 Corregir Estados de cuenta - 8 Hrs",
+      "6.13 Modificación de Contrato - 8 Hrs",
+      "6.14 Cambios de Capital-Interés-Capital - 8 Hrs",
+      "6.17 Habilitar usuarios de pruebas QADesa y Capacitación - 2 Hrs",
+      "6.18 Complemento de carga de carteras - 8 Hrs",
+      "6.19 Solicitud de información - 24 Hrs",
+      "6.2 Configuración de aplicación - 12 Hrs",
+      "6.20 Error al visualizar imágenes digitalizadas  - 8 Hrs",
+      "6.22 Aplicación abono en rojo - 8 Hrs",
+      "6.23 Aplicación de prorroga - 8 Hrs",
+      "6.24 Falla de Aplicaciones Administrativas - 8 Hrs",
+      "6.25 Error en emisión de póliza - 2 Hrs",
+      "6.29 Error Servicio Progress 4 Hrs",
+      "6.3 Modificación o Actualización de datos - 8 Hrs",
+      "6.30 Falla en Progress Financiera - 6 Hrs",
+      "6.31 Falla en Progress Conauto - 6 Hrs",
+      "6.32 Carpeta digital",
+      "6.4 Generar o Eliminar cargo de seguro automotriz o de vida - 4 Hrs",
+      "6.5 Agregar o Eliminar etiquetas FINANCIERA - 6 Hrs",
+      "6.6 Agregar o Eliminar etiquetas CONAUTO - 6 Hrs",
+      "6.7 Publicación de # Boletín o Circular - 12 Hrs - 1 Hr Usuario",
+      "6.8 Reseteo de contraseña de aplicativo - 2 Hrs",
+      "6.9 Cambio de Distribuidora BID - 2 Hrs"
+    ],
+    "('Conauto', 'CONAUTO 07. Soporte a CONTPAQ')": [
+      "7.1 Alta de usuario CONTPAQ - 16 Hrs",
+      "7.2 Instalación o Configuración de aplicación   CONTPAQ - 26 Hrs",
+      "7.3 Respaldo de información  CONTPAQ - 26 Hrs",
+      "7.4 Falla en aplicación CONTPAQ - 14 Hrs",
+      "7.5 Falla en timbrado de factura - 16 Hrs"
+    ],
+    "('Conauto', 'CONAUTO 08. Soporte a Base de Datos')": [
+      "8.1 Planchado de base de datos - 8 Hrs",
+      "8.10 Falla en el acceso a Base de Datos - 4 Hrs",
+      "8.4 Creación de ambiente de Desarrollo - 26 Hrs",
+      "8.5 Respaldo de base de datos - 26 Hrs",
+      "8.6 Actualización de carpetas productivas - 2 Hrs"
+    ],
+    "('Conauto', 'CONAUTO 09. Soporte a SIPRODI')": [
+      "9.2 Sustitución de archivos (REP, Factura) - 8 Hrs",
+      "9.3 Cambio de estatus e importe - 8Hrs",
+      "9.4 No se pueden cargar archivos (REP, Factura) - 8 Hrs"
+    ],
+    "('Conauto', 'CONAUTO 10. Soporte a Seguros AON')": [
+      "10.1 Errores pólizas de Seguro Automotriz - 16 Hrs"
+    ],
+    "('Conauto', 'CONAUTO 11. Soporte a Soporte a PLD - Anfexi')": [
+      "11.1 Verificación de Datos - 12 Hrs"
+    ],
+    "('Conauto', 'CONAUTO 12. Gestión de usuarios')": [
+      "12.1 Alta de Usuario CONAUTO - 30 Hrs",
+      "12.2 Baja de Usuario CONAUTO - 3 Hrs",
+      "12.3 Desbloqueo de usuario de BD - 2 Hrs",
+      "12.4 Desbloqueo de Usuario Windows - 2 Hrs",
+      "12.5 Modificación - cambio en perfil de usuario - 8 Hrs",
+      "12.6 Alta en Proactiva"
+    ],
+    "('Conauto', 'CONAUTO 13. Carpetas Compartidas')": [
+      "13. 1 Acceso a carpetas compartidas  - 10 Hrs",
+      "13.2 Administración de carpetas Compartidas - 13 Hrs",
+      "13.3 Fallo de acceso a carpeta compartida - 39 Hrs"
+    ],
+    "('Conauto', 'CONAUTO 14. Soporte a SAPS ')": [
+      "14.1 Alta de Usuario y asociación de perfil - 4 Hrs",
+      "14.11 Error al ejecutar el sistema - 4 Hrs",
+      "14.2 Reactivación o Desbloqueo de usuario - 4 Hrs",
+      "14.3 Error al generar cotización de Seguro Automotriz - 8 Hrs",
+      "14.4 Error en emisión de Seguro Automotriz  - 8 Hrs",
+      "14.5 Error certificado de Vida - 8 Hrs",
+      "14.8 Error al generar Recibos de vida - 8 Hrs"
+    ],
+    "('Conauto', 'CONAUTO 15. Herramientas de colaboración (O365)')": [
+      "15.1 Fallo de aplicación - 8 Hrs",
+      "15.2 Asesoría de uso - 0.30 Hrs"
+    ],
+    "('Conauto', 'CONAUTO 17. Gestor Documental')": [
+      "17.1 Alta de Usuario y asociación de perfil - 6 Hrs",
+      "17.2 Reactivación o Desbloqueo de usuario - 4 Hrs",
+      "17.4 Falla en aplicativo - 4 Hrs"
+    ],
+    "('Conauto', 'CONAUTO 19. Soporte a NetSuite')": [
+      "19.1 Cambios a NetSuite",
+      "19.2 Fallas en NetSuite",
+      "19.3 Reestructura Netsuite",
+      "19.4 Restructura RIC",
+      "19.5 Crear Contraseña"
+    ],
+    "('Conauto', 'CONAUTO 20. Soporte CDFI')": [
+      "20.1 Cambios CFDI"
+    ],
+    "('Conauto', 'CONAUTO 21. Soporte a FINANCIERA')": [
+      "21.1 Cambios FINANCIERA"
+    ],
+    "('Conauto', 'CONAUTO 22. SUBASTAS')": [
+      "22.1 Cambios SUBASTAS"
+    ],
+    "('Conauto', 'CONAUTO 23  Apoyo administrativo')": [
+      "23.1 Revisión y diagnóstico de infraestructura"
+    ],
+    "('Conauto', 'CONAUTO 24. Estado de cuenta WEB')": [
+      "24.1 Alta de usuario -4Hrs",
+      "24.2 Modificación de contraseña -4Hrs"
+    ],
+    "('Conauto', 'CONAUTO 26. Web SIR')": [
+      "CONAUTO 26.3 Actualización de Datos"
+    ],
+    "('Conauto', 'Proyectos')": [
+      "CONAUTO: Estabilización Netsuite",
+      "CONAUTO: Estabilización de Operaciones Progress_GC Conautopción",
+      "CONAUTO: Implementación de la Plataforma para PLD",
+      "CONAUTO: Mejoras Netsuite",
+      "CONAUTO: Onboarding Digital",
+      "CONAUTO: Plan de Documentación Interfases y Desarrollo",
+      "CONAUTO: Portal ECM",
+      "CONAUTO: Transición a SOFOM"
+    ],
+    "('Coopera', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.1 Instalación o modificación de infraestructura.",
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('DESUR', 'PUNTOS04. Cotizacion')": [
+      "PUNTOS4.1 Cotizacion"
+    ],
+    "('DESUR', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS 12.5 Plan de trabajo",
+      "PUNTOS12.1 Instalación o modificación de infraestructura.",
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('Dekafarma', 'MST Especializada.- SAP')": [
+      "Falla de aplicación SAP",
+      "Requerimientos o cambios a SAP"
+    ],
+    "('Dolphin Discovery', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('EETISUR', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.1 Instalación o modificación de infraestructura.",
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('EXIMAGEN', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.1 Instalación o modificación de infraestructura."
+    ],
+    "('Enkontrol', 'ENKONTROL 01.  Administración de infraestructura azure')": [
+      "1.2 Alta cliente prueba - NO USAR",
+      "ENKONTROL 1.1  Alta de cliente",
+      "ENKONTROL 1.2 Atención a fallos",
+      "ENKONTROL 1.3 Aplicación de cambios",
+      "ENKONTROL 1.4 Consultoría para cliente final",
+      "ENKONTROL 1.5 Agregar o eliminar en cuentas de empresa ya creadas",
+      "ENKONTROL 1.7 Monitoreo y reportes"
+    ],
+    "('Expertti', 'MST Especializada.- SAP')": [
+      "Falla de aplicación SAP"
+    ],
+    "('Expertti', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS 12.5 Plan de trabajo"
+    ],
+    "('Expertti', 'PUNTOS23. Soporte SAP')": [
+      "PUNTOS23.2 Fallas de Aplicación SAP"
+    ],
+    "('Expertti', 'UNIR01. Soporte a Equipo de Cómputo Personal')": [
+      "UNIR1.6 Mantenimiento correctivo de SW"
+    ],
+    "('Expertti', 'UNIR02. Administración de Office 365')": [
+      "UNIR2.2 Administración de Buzón de Office 365"
+    ],
+    "('Expertti', 'UNIR03. Servicio de Infraestructura (Primer Nivel)')": [
+      "UNIR3.1 Servicio de Internet"
+    ],
+    "('Expertti', 'UNIR12 Servicio de Respaldo de Información')": [
+      "UNIR 12.3 Backup Datos FileServer"
+    ],
+    "('FERRETERA MANDIOLA', 'GCTI 22. Ventas')": [
+      "22.2 Preventa"
+    ],
+    "('FERRETERA MANDIOLA', 'MST Especializada.- SAP')": [
+      "Falla de aplicación SAP",
+      "Requerimientos o cambios a SAP"
+    ],
+    "('FERRETERA MANDIOLA', 'PUNTOS04. Cotizacion')": [
+      "PUNTOS4.1 Cotizacion"
+    ],
+    "('FERRETERA MANDIOLA', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS 12.5 Plan de trabajo",
+      "PUNTOS12.1 Instalación o modificación de infraestructura.",
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('FERRETERA MANDIOLA', 'PUNTOS23. Soporte SAP')": [
+      "PUNTOS23.2 Fallas de Aplicación SAP",
+      "PUNTOS23.3 Actualizacion SAP"
+    ],
+    "('FERRETERA MANDIOLA', 'PUNTOS31. Windows server')": [
+      "PUNTOS31.1 Fallas de Windows Server"
+    ],
+    "('FINBE', 'FINBE01. Servicios de digitalizacion.')": [
+      "FINBE1.1. Depuración de Mes"
+    ],
+    "('Ford Peninsula', 'GCTI 22. Ventas')": [
+      "22.2 Preventa"
+    ],
+    "('Ford Peninsula', 'PUNTOS04. Cotizacion')": [
+      "PUNTOS4.1 Cotizacion"
+    ],
+    "('Ford Peninsula', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.1 Instalación o modificación de infraestructura.",
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('Ford Peninsula', 'PUNTOS16. Soporte citrix MDM')": [
+      "PUNTOS16.1 Fallo de aplicaciones en dispositivo"
+    ],
+    "('Gconsultores', 'FINBE01. Servicios de digitalizacion.')": [
+      "FINBE1.1. Depuración de Mes"
+    ],
+    "('Gconsultores', 'GCTI 01. Apoyo administrativo')": [
+      "1.1 Generación de encuestas de calidad",
+      "1.10 OT",
+      "1.2  Generación de reportes de puntos",
+      "1.4  Instalación o modificación de infraestructura",
+      "1.5  Revisión y diagnóstico de infraestructura",
+      "1.8  Solicitud de información",
+      "1.9 Generación de reportes"
+    ],
+    "('Gconsultores', 'GCTI 02. Windows Server')": [
+      "2.3 Instalación de Windows Server"
+    ],
+    "('Gconsultores', 'GCTI 03. Correo Electrónico')": [
+      "3.1 Creación de buzón",
+      "3.10 Falla en envio de reportes",
+      "3.11 Configuracion de reportes",
+      "3.3 Falla de correo outlook",
+      "3.4 Forwarding",
+      "3.6 Respaldos de cuentas",
+      "3.9 Alta de cuentas"
+    ],
+    "('Gconsultores', 'GCTI 04. Escritorios virtuales')": [
+      "4.1 Administración de escritorios Virtuales",
+      "4.3 Falla de EV",
+      "4.7 sin acceso a fileserver"
+    ],
+    "('Gconsultores', 'GCTI 07. Monitoreo')": [
+      "7.1 Monitoreo de alertas"
+    ],
+    "('Gconsultores', 'GCTI 08. Nomipaq')": [
+      "8.1 Falla de Nomipaq"
+    ],
+    "('Gconsultores', 'GCTI 11. Soporte a SAP')": [
+      "11.1 Falla de SAP",
+      "11.4 Permisos en SAP",
+      "11.5 Administración de cuentas",
+      "11.6 Modificación de SAP",
+      "11.8 Falla en desarrollo de SAP",
+      "11.9 Modificación de desarrollo SAP"
+    ],
+    "('Gconsultores', 'GCTI 12. Servicio de Impresión')": [
+      "12.1 Configurar una impresora",
+      "12.2 Fallas de impresión"
+    ],
+    "('Gconsultores', 'GCTI 15. Sharefile')": [
+      "15.2 Sin servicio de fileserver",
+      "15.6 Configuración fileserver"
+    ],
+    "('Gconsultores', 'GCTI 16. Sharepoint')": [
+      "16.1 Falla de un portal",
+      "16.3 Administración de acceso a Sharepo"
+    ],
+    "('Gconsultores', 'GCTI 17. Soporte a equipo de cómputo personal')": [
+      "17.1 Activación de office",
+      "17.2 Instalación de software básico",
+      "17.3 Soporte a falla de equipo de cómputo",
+      "17.4 Asesoría en el uso de aplicaciones de escritorio",
+      "17.7 Asignacion de equipo de computo",
+      "17.8 Falla de aplicaciones office"
+    ],
+    "('Gconsultores', 'GCTI 22. Ventas')": [
+      "22.2 Preventa"
+    ],
+    "('Gconsultores', 'GCTI 24. Proyectos')": [
+      "24.1 Implementación de proyectos de TI"
+    ],
+    "('Gconsultores', 'GCTI. CC-Base de Datos')": [
+      "Mantenimiento Preventivo",
+      "Tareas de Respaldo de BD"
+    ],
+    "('Gconsultores', 'GCTI. CC-Correo Electronico')": [
+      "Administración de Correo Office 365",
+      "Gestión de Usuarios",
+      "Reglas de Correo (Entrada y Salida) en servidor Exchange"
+    ],
+    "('Gconsultores', 'GCTI. CC-Servidores')": [
+      "Administración de Recursos",
+      "Configuración de Servidor",
+      "Mantenimiento Preventivo"
+    ],
+    "('Gconsultores', 'GCTI. CC-Telefonía')": [
+      "Gestión de Usuarios",
+      "Mantenimiento Preventivo"
+    ],
+    "('Gconsultores', 'GESTI 01.Herramienta de Tickets ITSM')": [
+      "1.1 Creación de usuario",
+      "1.2 Falla de acceso a la herramienta",
+      "1.4 Configuraciones de la herramienta",
+      "1.7 Carga de elementos de conocimientos",
+      "1.8 Falla en cronometro "
+    ],
+    "('Gconsultores', 'GESTI 02. Compras')": [
+      "Adquisicion de equipo de computo",
+      "Compra de accesorios de equipo de computo",
+      "Compra de certificados",
+      "Compra de licencias",
+      "Renovacion de certificados y dominios"
+    ],
+    "('Gconsultores', 'PUNTOS04. Cotizacion')": [
+      "PUNTOS4.1 Cotizacion"
+    ],
+    "('Gconsultores', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.1 Instalación o modificación de infraestructura.",
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('Gconsultores', 'PUNTOS23. Soporte SAP')": [
+      "PUNTOS23.1 Falla de Facturación Electrónica SAP",
+      "PUNTOS23.2 Fallas de Aplicación SAP"
+    ],
+    "('Gconsultores', 'Proyectos')": [
+      "GESTI: Telered (Consultoria 1)"
+    ],
+    "('Gobierno del estado de Yucatán', 'GCTI 22. Ventas')": [
+      "22.2 Preventa"
+    ],
+    "('Gobierno del estado de Yucatán', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS 12.5 Plan de trabajo",
+      "PUNTOS12.1 Instalación o modificación de infraestructura.",
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('Gobierno del estado de Yucatán', 'Proyectos')": [
+      "INFRAESTRUCTURA: GEY"
+    ],
+    "('Grupo Lodemo', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('Grupo Ordoñez', 'GCTI 22. Ventas')": [
+      "22.2 Preventa"
+    ],
+    "('Grupo Ordoñez', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS 12.5 Plan de trabajo",
+      "PUNTOS12.1 Instalación o modificación de infraestructura.",
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('Grupo Ordoñez', 'PUNTOS23. Soporte SAP')": [
+      "PUNTOS23.1 Falla de Facturación Electrónica SAP",
+      "PUNTOS23.2 Fallas de Aplicación SAP",
+      "PUNTOS23.3 Actualizacion SAP",
+      "PUNTOS23.6 Modificacion de reportes"
+    ],
+    "('Grupo Ordoñez', 'PUNTOS24. Soporte SQL')": [
+      "PUNTOS24.1 Fallas SQL Server"
+    ],
+    "('Heuristic', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.1 Instalación o modificación de infraestructura.",
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('Hogares Promociones', 'PUNTOS11. Servicio IIS')": [
+      "PUNTOS11.2 Generar Certificados"
+    ],
+    "('Hogares Promociones', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.1 Instalación o modificación de infraestructura.",
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('IFREM', 'PUNTOS06. Exchange')": [
+      "PUNTOS6.1 Fallas de Exchange"
+    ],
+    "('INTERALUM', 'FERNANDEZ 01. SAP')": [
+      "1.1 Aplicaciones"
+    ],
+    "('INTERALUM', 'MST Especializada.- SAP')": [
+      "Falla de aplicación SAP",
+      "Requerimientos o cambios a SAP"
+    ],
+    "('INTERALUM', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.1 Instalación o modificación de infraestructura.",
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('INTERALUM', 'PUNTOS23. Soporte SAP')": [
+      "PUNTOS23.1 Falla de Facturación Electrónica SAP",
+      "PUNTOS23.2 Fallas de Aplicación SAP",
+      "PUNTOS23.3 Actualizacion SAP",
+      "PUNTOS23.6 Modificacion de reportes"
+    ],
+    "('ISCAM', 'PUNTOS06. Exchange')": [
+      "PUNTOS6.1 Fallas de Exchange"
+    ],
+    "('ITC México', 'MST Especializada.- SAP')": [
+      "Falla de aplicación SAP",
+      "Requerimientos o cambios a SAP"
+    ],
+    "('Integra', 'FERNANDEZ 01. SAP')": [
+      "1.1 Aplicaciones"
+    ],
+    "('Integra', 'GCTI 01. Apoyo administrativo')": [
+      "1.4  Instalación o modificación de infraestructura",
+      "1.8  Solicitud de información"
+    ],
+    "('Integra', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.1 Instalación o modificación de infraestructura.",
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('Integra', 'PUNTOS23. Soporte SAP')": [
+      "PUNTOS23.1 Falla de Facturación Electrónica SAP",
+      "PUNTOS23.2 Fallas de Aplicación SAP"
+    ],
+    "('Integra', 'UNIR02. Administración de Office 365')": [
+      "UNIR2.11 Asesoría en el uso de Cliente de correo electrónico Outlook",
+      "UNIR2.2 Administración de Buzón de Office 365"
+    ],
+    "('Integra', 'UNIR14. Servicio de gestion de proyectos')": [
+      "UNIR14.2 Administración de Proyectos"
+    ],
+    "('Kananfleet', 'KANANFLEET 01. Administración de infraestructura azure ')": [
+      "KANANFLEET 1.1 Alta de cliente"
+    ],
+    "('Kananfleet', 'PUNTOS11. Servicio IIS')": [
+      "PUNTOS11.2 Generar Certificados"
+    ],
+    "('Kananfleet', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.1 Instalación o modificación de infraestructura.",
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('La Lupita', 'MST Especializada.- SAP')": [
+      "Falla de aplicación SAP",
+      "Requerimientos o cambios a SAP"
+    ],
+    "('La Lupita', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('La Lupita', 'PUNTOS23. Soporte SAP')": [
+      "PUNTOS23.1 Falla de Facturación Electrónica SAP",
+      "PUNTOS23.2 Fallas de Aplicación SAP"
+    ],
+    "('Lightstyle', 'MST Especializada.- SAP')": [
+      "Falla de aplicación SAP",
+      "Requerimientos o cambios a SAP"
+    ],
+    "('Lightstyle', 'PUNTOS23. Soporte SAP')": [
+      "PUNTOS23.2 Fallas de Aplicación SAP",
+      "PUNTOS23.6 Modificacion de reportes"
+    ],
+    "('LualTech', 'Autorización Facturación')": [
+      "Facturación Proyecto AFORE XXI BANORTE"
+    ],
+    "('MEGAMEDIA (IC)', 'GCTI 11. Soporte a SAP')": [
+      "11.1 Falla de SAP",
+      "11.5 Administración de cuentas",
+      "11.6 Modificación de SAP",
+      "11.8 Falla en desarrollo de SAP",
+      "11.9 Modificación de desarrollo SAP"
+    ],
+    "('Mac Store', 'PUNTOS04. Cotizacion')": [
+      "PUNTOS4.1 Cotizacion"
+    ],
+    "('Mayan Heritage', 'PUNTOS23. Soporte SAP')": [
+      "PUNTOS23.1 Falla de Facturación Electrónica SAP",
+      "PUNTOS23.2 Fallas de Aplicación SAP"
+    ],
+    "('Mera Corporation', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('Mera Corporation', 'PUNTOS16. Soporte citrix MDM')": [
+      "PUNTOS16.1 Fallo de aplicaciones en dispositivo"
+    ],
+    "('Monarch', 'GCTI 22. Ventas')": [
+      "22.2 Preventa"
+    ],
+    "('Monarch', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.1 Instalación o modificación de infraestructura.",
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('NouvaTek', 'MST Especializada.- SAP')": [
+      "Requerimientos o cambios a SAP"
+    ],
+    "('OMEGA', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('Petromayab', 'GCTI 22. Ventas')": [
+      "22.2 Preventa"
+    ],
+    "('Petromayab', 'PUNTOS04. Cotizacion')": [
+      "PUNTOS4.1 Cotizacion"
+    ],
+    "('Petromayab', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS 12.5 Plan de trabajo",
+      "PUNTOS12.1 Instalación o modificación de infraestructura.",
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('Petromayab', 'PUNTOS23. Soporte SAP')": [
+      "PUNTOS23.1 Falla de Facturación Electrónica SAP",
+      "PUNTOS23.2 Fallas de Aplicación SAP",
+      "PUNTOS23.3 Actualizacion SAP",
+      "PUNTOS23.5 Creacion de consulta"
+    ],
+    "('Petromayab', 'PUNTOS24. Soporte SQL')": [
+      "PUNTOS24.1 Fallas SQL Server"
+    ],
+    "('Polpusa', 'MST Especializada.- SAP')": [
+      "Falla de aplicación SAP",
+      "Requerimientos o cambios a SAP"
+    ],
+    "('Proalmex', 'GCTI 22. Ventas')": [
+      "22.2 Preventa"
+    ],
+    "('Proalmex', 'MST Especializada.- SAP')": [
+      "Falla de aplicación SAP",
+      "Requerimientos o cambios a SAP"
+    ],
+    "('Proalmex', 'PUNTOS16. Soporte citrix MDM')": [
+      "PUNTOS16.1 Fallo de aplicaciones en dispositivo"
+    ],
+    "('Proalmex', 'PUNTOS23. Soporte SAP')": [
+      "PUNTOS23.2 Fallas de Aplicación SAP"
+    ],
+    "('Proalmex', 'Proyectos')": [
+      "PROALMEX: MIDDLEWARE"
+    ],
+    "('Pronat', 'MST Especializada.- SAP')": [
+      "Falla de aplicación SAP",
+      "Requerimientos o cambios a SAP"
+    ],
+    "('Puntos', 'ENKONTROL 01.  Administración de infraestructura azure')": [
+      "ENKONTROL 1.5 Agregar o eliminar en cuentas de empresa ya creadas"
+    ],
+    "('Puntos', 'PUNTOS04. Cotizacion')": [
+      "PUNTOS4.1 Cotizacion"
+    ],
+    "('Puntos', 'PUNTOS05. Directorio activo')": [
+      "PUNTOS5.1 Falla de Directorio Activo"
+    ],
+    "('Puntos', 'PUNTOS06. Exchange')": [
+      "PUNTOS6.1 Fallas de Exchange"
+    ],
+    "('Puntos', 'PUNTOS11. Servicio IIS')": [
+      "PUNTOS11.2 Generar Certificados"
+    ],
+    "('Puntos', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS 12.5 Plan de trabajo",
+      "PUNTOS12.1 Instalación o modificación de infraestructura.",
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('Puntos', 'PUNTOS16. Soporte citrix MDM')": [
+      "PUNTOS16.1 Fallo de aplicaciones en dispositivo"
+    ],
+    "('Puntos', 'PUNTOS23. Soporte SAP')": [
+      "PUNTOS23.1 Falla de Facturación Electrónica SAP",
+      "PUNTOS23.2 Fallas de Aplicación SAP",
+      "PUNTOS23.3 Actualizacion SAP",
+      "PUNTOS23.5 Creacion de consulta",
+      "PUNTOS23.6 Modificacion de reportes"
+    ],
+    "('Puntos', 'PUNTOS24. Soporte SQL')": [
+      "PUNTOS24.1 Fallas SQL Server"
+    ],
+    "('Puntos', 'PUNTOS31. Windows server')": [
+      "PUNTOS31.1 Fallas de Windows Server"
+    ],
+    "('SAAM Remolques', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('SADASI', 'ENKONTROL 01.  Administración de infraestructura azure')": [
+      "ENKONTROL 1.2 Atención a fallos",
+      "ENKONTROL 1.3 Aplicación de cambios",
+      "ENKONTROL 1.5 Agregar o eliminar en cuentas de empresa ya creadas"
+    ],
+    "('TAACSA', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('TAACSA', 'PUNTOS16. Soporte citrix MDM')": [
+      "PUNTOS16.1 Fallo de aplicaciones en dispositivo"
+    ],
+    "('TERE CAZOLA', 'GCTI 22. Ventas')": [
+      "22.2 Preventa"
+    ],
+    "('TERE CAZOLA', 'PUNTOS04. Cotizacion')": [
+      "PUNTOS4.1 Cotizacion"
+    ],
+    "('TERE CAZOLA', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.1 Instalación o modificación de infraestructura."
+    ],
+    "('TERE CAZOLA', 'PUNTOS23. Soporte SAP')": [
+      "PUNTOS23.2 Fallas de Aplicación SAP",
+      "PUNTOS23.3 Actualizacion SAP"
+    ],
+    "('TERE CAZOLA', 'UNIR02. Administración de Office 365')": [
+      "UNIR2.10 Fallas de Outlook"
+    ],
+    "('TERE CAZOLA', 'UNIR12 Servicio de Respaldo de Información')": [
+      "UNIR 12.3 Backup Datos FileServer"
+    ],
+    "('Telered', 'TELERED 01. Proactivanet')": [
+      "TELERED 1.7 Configuraciones Generales"
+    ],
+    "('Tersys Group', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.1 Instalación o modificación de infraestructura."
+    ],
+    "('Tersys Group', 'PUNTOS23. Soporte SAP')": [
+      "PUNTOS23.1 Falla de Facturación Electrónica SAP",
+      "PUNTOS23.2 Fallas de Aplicación SAP"
+    ],
+    "('UADY', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "('UNIR', 'PUNTOS23. Soporte SAP')": [
+      "PUNTOS23.2 Fallas de Aplicación SAP"
+    ],
+    "('UNIR', 'UNIR01. Soporte a Equipo de Cómputo Personal')": [
+      "UNIR1.1 Asesoría para el uso de aplicaciones de escritorio",
+      "UNIR1.10 Respaldo o Recuperación de Datos",
+      "UNIR1.11 Cambio de Toner",
+      "UNIR1.12 Falla de hardware de impresora",
+      "UNIR1.13 Cotización y Compra de Equipo Tecnológico",
+      "UNIR1.14 Solución a fallas del equipo.",
+      "UNIR1.15 Reubicación de equipos.",
+      "UNIR1.16 Configuración de impresoras",
+      "UNIR1.17 Instalación y actualización de SW",
+      "UNIR1.2 Administración de Garantía de HW",
+      "UNIR1.3 Eliminación de virus",
+      "UNIR1.4 Incidentes de Impresión",
+      "UNIR1.5 Servicios de Escaneo",
+      "UNIR1.6 Mantenimiento correctivo de SW",
+      "UNIR1.7 Mantenimiento correctivo de HW",
+      "UNIR1.8 Mantenimiento preventivo de HW",
+      "UNIR1.9 Configuración de Cuentas"
+    ],
+    "('UNIR', 'UNIR02. Administración de Office 365')": [
+      "UNIR2.1 Administración de Cuentas del directorio Activo",
+      "UNIR2.10 Fallas de Outlook",
+      "UNIR2.11 Asesoría en el uso de Cliente de correo electrónico Outlook",
+      "UNIR2.13 Fallo de envio de correo",
+      "UNIR2.2 Administración de Buzón de Office 365",
+      "UNIR2.3 Compartir Recursos",
+      "UNIR2.4 Configuración de Perfil",
+      "UNIR2.6 Respaldo o Recuperación de Datos",
+      "UNIR2.9 SharePoint"
+    ],
+    "('UNIR', 'UNIR03. Servicio de Infraestructura (Primer Nivel)')": [
+      "UNIR3.1 Servicio de Internet",
+      "UNIR3.2 Soporte de Telefonia",
+      "UNIR3.3 Fallas de Red Local"
+    ],
+    "('UNIR', 'UNIR04. Administración de Servidores (Primer Nivel)')": [
+      "UNIR4.6 Modificaciones a SAP",
+      "UNIR4.8 Fallas de SAP",
+      "UNIR4.9 administración de cuentas de ShareFile"
+    ],
+    "('UNIR', 'UNIR05. Servicio de Atención al Centro de Cómputo')": [
+      "UNIR5.1. Mantenimiento correctivo de HW de Centro de Cómputo",
+      "UNIR5.2. Formateo de Equipo de Centro de Cómputo",
+      "UNIR5.3. Mantenimiento Preventivo de HW de Centro de Cómputo",
+      "UNIR5.4. Instalación de Software de Centro de Cómputo",
+      "UNIR5.5. Mantenimiento Correctivo de SW de Centro de Cómputo"
+    ],
+    "('UNIR', 'UNIR06. Servicio de Asesoría a Alumnos y Maestros')": [
+      "UNIR6.3. Instalación de Equipos Periféricos en Salones UNIR"
+    ],
+    "('UNIR', 'UNIR07. Administración de Servicios de video vigilacia')": [
+      "UNIR7.1. Configuración de Cámaras de Vigilancia",
+      "UNIR7.2. Corrección de Fallas de Configuración de equipos de Vigilancia",
+      "UNIR7.3. Gestión de Garantías con el Proveedor"
+    ],
+    "('UNIR', 'UNIR08. Soporte de Reloj checador')": [
+      "UNIR 8.2 Asesoría en el Software OTM",
+      "UNIR 8.5 Alta de huellas"
+    ],
+    "('UNIR', 'UNIR09. Administración del Punto de Venta')": [
+      "UNIR 9.3 Fallas en Retail One"
+    ],
+    "('UNIR', 'UNIR10. Administración del File Server')": [
+      "UNIR 10.1 Administración de accesos del Fileserver",
+      "UNIR 10.2 Creación de Carpetas en el FileServer"
+    ],
+    "('UNIR', 'UNIR11. Servicio de Escritorios Virtuales')": [
+      "UNIR 11.2 Soporte a Conexión de Escritorio Virtual"
+    ],
+    "('UNIR', 'UNIR12 Servicio de Respaldo de Información')": [
+      "UNIR 12.3 Backup Datos FileServer",
+      "UNIR 12.4 Backup Directorio Activo"
+    ],
+    "('UNIR', 'UNIR13. Administración de Dominios')": [
+      "UNIR13.1 Pago de Dominios"
+    ],
+    "('UNIR', 'UNIR14. Servicio de gestion de proyectos')": [
+      "UNIR14.2 Administración de Proyectos"
+    ],
+    "('UNIR', 'UNIR15 Servicio de apoyo actividades administrativas')": [
+      "UNIR15.1 Credencialización",
+      "UNIR15.2 reposición de credencial",
+      "UNIR15.3 Envío de fotografías",
+      "UNIR15.4 Captura de fotografías."
+    ],
+    "('UNIR', 'UNIR16. Servicio de Internet')": [
+      "UNIR16.1 Fallo de conexión a internet",
+      "UNIR16.2 Problemas de logeo a internet",
+      "UNIR16.3 No se despliega pagina de acceso a internet",
+      "UNIR16.4 Lentitud en  servicio de internet",
+      "UNIR16.5 Desconexión al servicio de internet",
+      "UNIR16.6 Fallo por bloqueo a pagina web",
+      "UNIR16.7 Monitoreo de trafico de red",
+      "UNIR16.8 Configuración de filtrado de contenido web",
+      "UNIR16.9 Administración de ancho de banda."
+    ],
+    "('UNIR2', 'UNIR01. Soporte a Equipo de Cómputo Personal')": [
+      "UNIR1.1 Asesoría para el uso de aplicaciones de escritorio",
+      "UNIR1.10 Respaldo o Recuperación de Datos",
+      "UNIR1.15 Reubicación de equipos.",
+      "UNIR1.16 Configuración de impresoras",
+      "UNIR1.9 Configuración de Cuentas"
+    ],
+    "('UNIR2', 'UNIR02. Administración de Office 365')": [
+      "UNIR2.1 Administración de Cuentas del directorio Activo",
+      "UNIR2.10 Fallas de Outlook",
+      "UNIR2.11 Asesoría en el uso de Cliente de correo electrónico Outlook",
+      "UNIR2.2 Administración de Buzón de Office 365",
+      "UNIR2.4 Configuración de Perfil"
+    ],
+    "('UNIR2', 'UNIR03. Servicio de Infraestructura (Primer Nivel)')": [
+      "UNIR3.1 Servicio de Internet",
+      "UNIR3.2 Soporte de Telefonia"
+    ],
+    "('UNIR2', 'UNIR08. Soporte de Reloj checador')": [
+      "UNIR 8.5 Alta de huellas"
+    ],
+    "('UNIR2', 'UNIR11. Servicio de Escritorios Virtuales')": [
+      "UNIR 11.2 Soporte a Conexión de Escritorio Virtual"
+    ],
+    "('UNIR2', 'UNIR15 Servicio de apoyo actividades administrativas')": [
+      "UNIR15.4 Captura de fotografías."
+    ],
+    "('VIVE', 'PUNTOS04. Cotizacion')": [
+      "PUNTOS4.1 Cotizacion"
+    ],
+    "('VIVE', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS12.1 Instalación o modificación de infraestructura."
+    ],
+    "('Vertical Knits', 'PUNTOS04. Cotizacion')": [
+      "PUNTOS4.1 Cotizacion"
+    ],
+    "('Vertical Knits', 'PUNTOS12. Servicios de infraestructura')": [
+      "PUNTOS 12.5 Plan de trabajo",
+      "PUNTOS12.1 Instalación o modificación de infraestructura."
+    ],
+    "('Vertical Knits', 'PUNTOS23. Soporte SAP')": [
+      "PUNTOS23.1 Falla de Facturación Electrónica SAP",
+      "PUNTOS23.2 Fallas de Aplicación SAP",
+      "PUNTOS23.3 Actualizacion SAP"
+    ],
+    "('WOLF', 'UNIR01. Soporte a Equipo de Cómputo Personal')": [
+      "UNIR1.11 Cambio de Toner",
+      "UNIR1.9 Configuración de Cuentas"
+    ]
+  },
+  "por_padre": {
+    "Autorización Facturación": [
+      "Facturación Proyecto AFORE XXI BANORTE"
+    ],
+    "BPsoft 01. Administración de infraestructura azure.": [
+      "1.3. Atención a fallos",
+      "1.4. Aplicación de cambios"
+    ],
+    "Begrand 02. Administración de infraestructura Azure": [
+      "2.1 Aplicación de cambios menores en infraestructura - 32hrs",
+      "2.3 Consultoría técnica",
+      "2.5 Solicitud de información"
+    ],
+    "CONAUTO - CAMBIOS": [
+      "INF-CONA-01 Servidores"
+    ],
+    "CONAUTO 01. Equipo de computo": [
+      "1.1 Compra de recursos tecnológicos - 104 Hrs",
+      "1.10 Mantenimiento correctivo - 39 Hrs",
+      "1.2 Reubicación de equipo de cómputo - 8 Hrs",
+      "1.3 Instalación de software autorizado - 3 Hrs",
+      "1.4 Actualización de Software - 8 Hrs",
+      "1.5 Mantenimiento preventivo - 39 Hrs",
+      "1.6 Préstamos de equipos de cómputo y accesorios -  39 Hrs",
+      "1.7 Falla de Software - 5 Hrs",
+      "1.8 Falla de Hardware - 39 Hrs",
+      "1.9 Falla de No break - 39 Hrs"
+    ],
+    "CONAUTO 02. Correo electronico": [
+      "2.1 Configuración de buzón de correo - 2 Hrs",
+      "2.2 Configuración Lista de Distribución - 4 Hrs",
+      "2.3 Configuración y modificación de firma de correo - 4 Hrs",
+      "2.4 Reseteo de contraseña de Correo electrónico - 1 Hrs",
+      "2.5 Respaldo de PST - 26 Hrs",
+      "2.6 Fallo de envío  y recepción de correos - 8 Hrs",
+      "2.7 Correo sospechoso - 8 Hrs"
+    ],
+    "CONAUTO 03. Servicio de telefonía": [
+      "3.1 Alta de Extensión - 6 Hrs",
+      "3.10 Gestión de condiciones de tiempo (IVR) - 30 Hrs",
+      "3.2 Cancelación Accesos a Softphone Webex - 6 Hrs",
+      "3.3 Instalación o Reubicación extensión telefónica  - 6 Hrs",
+      "3.4 Solicitud de diadema - 39 Hrs",
+      "3.5 Reactivar contraseña Nimbus o Webex - 2 Hrs",
+      "3.6 Falla de equipo telefónico - 13 Hrs",
+      "3.7 Falla de líneas telefónicas. ( C3ntro) - 26 Hrs",
+      "3.8 Falla en diadema - 39 Hrs"
+    ],
+    "CONAUTO 04. Servicios de RED": [
+      "4.1. Conexión a red inalambrica - 2-Hrs",
+      "4.2 Configuración de puertos (firewall local) de Red - 8 Hrs",
+      "4.3 Acceso a páginas de internet - 8 Hrs",
+      "4.4 Falla en servicio de Internet - 24 Hrs",
+      "4.5 Fallo de acceso a escritorio remoto - 2 Hrs",
+      "4.6 Gestión de acceso a escritorio remoto - 8 Hrs",
+      "4.7 Fallo de cuenta VPN - 4 Hrs",
+      "4.8 Gestión de cuenta VPN - 4 Hrs",
+      "4.9 Configuración de red - 8 Hrs"
+    ],
+    "CONAUTO 05. Servicios de Impresora": [
+      "5.1 Cambio de tóner - 39 Hrs",
+      "5.2 Solicitud de permisos para imprimir a color - 2 Hrs",
+      "5.3 Configuración de impresora - 2 Hrs",
+      "5.4 Solicitud de impresión - 2 Hrs",
+      "5.6 Fallas de impresora - 39 Hrs",
+      "5.7 Fallas de impresión - 39 Hrs"
+    ],
+    "CONAUTO 06. Sistema progress": [
+      "6.1 Instalación de aplicación - 4 Hrs",
+      "6.10 Aplicación de Notas de Crédito - 8 Hrs",
+      "6.11 Recalcular Estado de cuenta (Conauto) - 8 Hrs",
+      "6.12 Corregir Estados de cuenta - 8 Hrs",
+      "6.13 Modificación de Contrato - 8 Hrs",
+      "6.14 Cambios de Capital-Interés-Capital - 8 Hrs",
+      "6.17 Habilitar usuarios de pruebas QADesa y Capacitación - 2 Hrs",
+      "6.18 Complemento de carga de carteras - 8 Hrs",
+      "6.19 Solicitud de información - 24 Hrs",
+      "6.2 Configuración de aplicación - 12 Hrs",
+      "6.20 Error al visualizar imágenes digitalizadas  - 8 Hrs",
+      "6.22 Aplicación abono en rojo - 8 Hrs",
+      "6.23 Aplicación de prorroga - 8 Hrs",
+      "6.24 Falla de Aplicaciones Administrativas - 8 Hrs",
+      "6.25 Error en emisión de póliza - 2 Hrs",
+      "6.29 Error Servicio Progress 4 Hrs",
+      "6.3 Modificación o Actualización de datos - 8 Hrs",
+      "6.30 Falla en Progress Financiera - 6 Hrs",
+      "6.31 Falla en Progress Conauto - 6 Hrs",
+      "6.32 Carpeta digital",
+      "6.4 Generar o Eliminar cargo de seguro automotriz o de vida - 4 Hrs",
+      "6.5 Agregar o Eliminar etiquetas FINANCIERA - 6 Hrs",
+      "6.6 Agregar o Eliminar etiquetas CONAUTO - 6 Hrs",
+      "6.7 Publicación de # Boletín o Circular - 12 Hrs - 1 Hr Usuario",
+      "6.8 Reseteo de contraseña de aplicativo - 2 Hrs",
+      "6.9 Cambio de Distribuidora BID - 2 Hrs"
+    ],
+    "CONAUTO 07. Soporte a CONTPAQ": [
+      "7.1 Alta de usuario CONTPAQ - 16 Hrs",
+      "7.2 Instalación o Configuración de aplicación   CONTPAQ - 26 Hrs",
+      "7.3 Respaldo de información  CONTPAQ - 26 Hrs",
+      "7.4 Falla en aplicación CONTPAQ - 14 Hrs",
+      "7.5 Falla en timbrado de factura - 16 Hrs"
+    ],
+    "CONAUTO 08. Soporte a Base de Datos": [
+      "8.1 Planchado de base de datos - 8 Hrs",
+      "8.10 Falla en el acceso a Base de Datos - 4 Hrs",
+      "8.4 Creación de ambiente de Desarrollo - 26 Hrs",
+      "8.5 Respaldo de base de datos - 26 Hrs",
+      "8.6 Actualización de carpetas productivas - 2 Hrs"
+    ],
+    "CONAUTO 09. Soporte a SIPRODI": [
+      "9.2 Sustitución de archivos (REP, Factura) - 8 Hrs",
+      "9.3 Cambio de estatus e importe - 8Hrs",
+      "9.4 No se pueden cargar archivos (REP, Factura) - 8 Hrs"
+    ],
+    "CONAUTO 10. Soporte a Seguros AON": [
+      "10.1 Errores pólizas de Seguro Automotriz - 16 Hrs"
+    ],
+    "CONAUTO 11. Soporte a Soporte a PLD - Anfexi": [
+      "11.1 Verificación de Datos - 12 Hrs"
+    ],
+    "CONAUTO 12. Gestión de usuarios": [
+      "12.1 Alta de Usuario CONAUTO - 30 Hrs",
+      "12.2 Baja de Usuario CONAUTO - 3 Hrs",
+      "12.3 Desbloqueo de usuario de BD - 2 Hrs",
+      "12.4 Desbloqueo de Usuario Windows - 2 Hrs",
+      "12.5 Modificación - cambio en perfil de usuario - 8 Hrs",
+      "12.6 Alta en Proactiva"
+    ],
+    "CONAUTO 13. Carpetas Compartidas": [
+      "13. 1 Acceso a carpetas compartidas  - 10 Hrs",
+      "13.2 Administración de carpetas Compartidas - 13 Hrs",
+      "13.3 Fallo de acceso a carpeta compartida - 39 Hrs"
+    ],
+    "CONAUTO 14. Soporte a SAPS ": [
+      "14.1 Alta de Usuario y asociación de perfil - 4 Hrs",
+      "14.11 Error al ejecutar el sistema - 4 Hrs",
+      "14.2 Reactivación o Desbloqueo de usuario - 4 Hrs",
+      "14.3 Error al generar cotización de Seguro Automotriz - 8 Hrs",
+      "14.4 Error en emisión de Seguro Automotriz  - 8 Hrs",
+      "14.5 Error certificado de Vida - 8 Hrs",
+      "14.8 Error al generar Recibos de vida - 8 Hrs"
+    ],
+    "CONAUTO 15. Herramientas de colaboración (O365)": [
+      "15.1 Fallo de aplicación - 8 Hrs",
+      "15.2 Asesoría de uso - 0.30 Hrs"
+    ],
+    "CONAUTO 17. Gestor Documental": [
+      "17.1 Alta de Usuario y asociación de perfil - 6 Hrs",
+      "17.2 Reactivación o Desbloqueo de usuario - 4 Hrs",
+      "17.4 Falla en aplicativo - 4 Hrs"
+    ],
+    "CONAUTO 19. Soporte a NetSuite": [
+      "19.1 Cambios a NetSuite",
+      "19.2 Fallas en NetSuite",
+      "19.3 Reestructura Netsuite",
+      "19.4 Restructura RIC",
+      "19.5 Crear Contraseña"
+    ],
+    "CONAUTO 20. Soporte CDFI": [
+      "20.1 Cambios CFDI"
+    ],
+    "CONAUTO 21. Soporte a FINANCIERA": [
+      "21.1 Cambios FINANCIERA"
+    ],
+    "CONAUTO 22. SUBASTAS": [
+      "22.1 Cambios SUBASTAS"
+    ],
+    "CONAUTO 23  Apoyo administrativo": [
+      "23.1 Revisión y diagnóstico de infraestructura"
+    ],
+    "CONAUTO 24. Estado de cuenta WEB": [
+      "24.1 Alta de usuario -4Hrs",
+      "24.2 Modificación de contraseña -4Hrs"
+    ],
+    "CONAUTO 26. Web SIR": [
+      "CONAUTO 26.3 Actualización de Datos"
+    ],
+    "ENKONTROL 01.  Administración de infraestructura azure": [
+      "1.2 Alta cliente prueba - NO USAR",
+      "ENKONTROL 1.1  Alta de cliente",
+      "ENKONTROL 1.2 Atención a fallos",
+      "ENKONTROL 1.3 Aplicación de cambios",
+      "ENKONTROL 1.4 Consultoría para cliente final",
+      "ENKONTROL 1.5 Agregar o eliminar en cuentas de empresa ya creadas",
+      "ENKONTROL 1.7 Monitoreo y reportes"
+    ],
+    "FERNANDEZ 01. SAP": [
+      "1.1 Aplicaciones",
+      "1.2 Infraestructura",
+      "1.3 Usuario"
+    ],
+    "FINBE01. Servicios de digitalizacion.": [
+      "FINBE1.1. Depuración de Mes"
+    ],
+    "GCTI 01. Apoyo administrativo": [
+      "1.1 Generación de encuestas de calidad",
+      "1.10 OT",
+      "1.2  Generación de reportes de puntos",
+      "1.4  Instalación o modificación de infraestructura",
+      "1.5  Revisión y diagnóstico de infraestructura",
+      "1.8  Solicitud de información",
+      "1.9 Generación de reportes"
+    ],
+    "GCTI 02. Windows Server": [
+      "2.3 Instalación de Windows Server"
+    ],
+    "GCTI 03. Correo Electrónico": [
+      "3.1 Creación de buzón",
+      "3.10 Falla en envio de reportes",
+      "3.11 Configuracion de reportes",
+      "3.3 Falla de correo outlook",
+      "3.4 Forwarding",
+      "3.6 Respaldos de cuentas",
+      "3.9 Alta de cuentas"
+    ],
+    "GCTI 04. Escritorios virtuales": [
+      "4.1 Administración de escritorios Virtuales",
+      "4.3 Falla de EV",
+      "4.7 sin acceso a fileserver"
+    ],
+    "GCTI 07. Monitoreo": [
+      "7.1 Monitoreo de alertas"
+    ],
+    "GCTI 08. Nomipaq": [
+      "8.1 Falla de Nomipaq"
+    ],
+    "GCTI 11. Soporte a SAP": [
+      "11.1 Falla de SAP",
+      "11.4 Permisos en SAP",
+      "11.5 Administración de cuentas",
+      "11.6 Modificación de SAP",
+      "11.8 Falla en desarrollo de SAP",
+      "11.9 Modificación de desarrollo SAP"
+    ],
+    "GCTI 12. Servicio de Impresión": [
+      "12.1 Configurar una impresora",
+      "12.2 Fallas de impresión"
+    ],
+    "GCTI 15. Sharefile": [
+      "15.2 Sin servicio de fileserver",
+      "15.6 Configuración fileserver"
+    ],
+    "GCTI 16. Sharepoint": [
+      "16.1 Falla de un portal",
+      "16.3 Administración de acceso a Sharepo"
+    ],
+    "GCTI 17. Soporte a equipo de cómputo personal": [
+      "17.1 Activación de office",
+      "17.2 Instalación de software básico",
+      "17.3 Soporte a falla de equipo de cómputo",
+      "17.4 Asesoría en el uso de aplicaciones de escritorio",
+      "17.7 Asignacion de equipo de computo",
+      "17.8 Falla de aplicaciones office"
+    ],
+    "GCTI 22. Ventas": [
+      "22.2 Preventa"
+    ],
+    "GCTI 24. Proyectos": [
+      "24.1 Implementación de proyectos de TI"
+    ],
+    "GCTI. CC-Base de Datos": [
+      "Mantenimiento Preventivo",
+      "Tareas de Respaldo de BD"
+    ],
+    "GCTI. CC-Correo Electronico": [
+      "Administración de Correo Office 365",
+      "Gestión de Usuarios",
+      "Reglas de Correo (Entrada y Salida) en servidor Exchange"
+    ],
+    "GCTI. CC-Servidores": [
+      "Administración de Recursos",
+      "Configuración de Servidor",
+      "Mantenimiento Preventivo"
+    ],
+    "GCTI. CC-Telefonía": [
+      "Gestión de Usuarios",
+      "Mantenimiento Preventivo"
+    ],
+    "GESTI 01.Herramienta de Tickets ITSM": [
+      "1.1 Creación de usuario",
+      "1.2 Falla de acceso a la herramienta",
+      "1.4 Configuraciones de la herramienta",
+      "1.7 Carga de elementos de conocimientos",
+      "1.8 Falla en cronometro "
+    ],
+    "GESTI 02. Compras": [
+      "Adquisicion de equipo de computo",
+      "Compra de accesorios de equipo de computo",
+      "Compra de certificados",
+      "Compra de licencias",
+      "Renovacion de certificados y dominios"
+    ],
+    "KANANFLEET 01. Administración de infraestructura azure ": [
+      "KANANFLEET 1.1 Alta de cliente"
+    ],
+    "MST Especializada.- SAP": [
+      "Falla de aplicación SAP",
+      "Requerimientos o cambios a SAP"
+    ],
+    "PUNTOS04. Cotizacion": [
+      "PUNTOS4.1 Cotizacion"
+    ],
+    "PUNTOS05. Directorio activo": [
+      "PUNTOS5.1 Falla de Directorio Activo"
+    ],
+    "PUNTOS06. Exchange": [
+      "PUNTOS6.1 Fallas de Exchange"
+    ],
+    "PUNTOS11. Servicio IIS": [
+      "PUNTOS11.2 Generar Certificados"
+    ],
+    "PUNTOS12. Servicios de infraestructura": [
+      "PUNTOS 12.5 Plan de trabajo",
+      "PUNTOS12.1 Instalación o modificación de infraestructura.",
+      "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
+    ],
+    "PUNTOS16. Soporte citrix MDM": [
+      "PUNTOS16.1 Fallo de aplicaciones en dispositivo"
+    ],
+    "PUNTOS23. Soporte SAP": [
+      "PUNTOS23.1 Falla de Facturación Electrónica SAP",
+      "PUNTOS23.2 Fallas de Aplicación SAP",
+      "PUNTOS23.3 Actualizacion SAP",
+      "PUNTOS23.5 Creacion de consulta",
+      "PUNTOS23.6 Modificacion de reportes"
+    ],
+    "PUNTOS24. Soporte SQL": [
+      "PUNTOS24.1 Fallas SQL Server"
+    ],
+    "PUNTOS31. Windows server": [
+      "PUNTOS31.1 Fallas de Windows Server"
+    ],
+    "Proyectos": [
+      "CONAUTO: Estabilización Netsuite",
+      "CONAUTO: Estabilización de Operaciones Progress_GC Conautopción",
+      "CONAUTO: Implementación de la Plataforma para PLD",
+      "CONAUTO: Mejoras Netsuite",
+      "CONAUTO: Onboarding Digital",
+      "CONAUTO: Plan de Documentación Interfases y Desarrollo",
+      "CONAUTO: Portal ECM",
+      "CONAUTO: Transición a SOFOM",
+      "GESTI: Telered (Consultoria 1)",
+      "INFRAESTRUCTURA: GEY",
+      "PROALMEX: MIDDLEWARE"
+    ],
+    "TELERED 01. Proactivanet": [
+      "TELERED 1.7 Configuraciones Generales"
+    ],
+    "UNIR01. Soporte a Equipo de Cómputo Personal": [
+      "UNIR1.1 Asesoría para el uso de aplicaciones de escritorio",
+      "UNIR1.10 Respaldo o Recuperación de Datos",
+      "UNIR1.11 Cambio de Toner",
+      "UNIR1.12 Falla de hardware de impresora",
+      "UNIR1.13 Cotización y Compra de Equipo Tecnológico",
+      "UNIR1.14 Solución a fallas del equipo.",
+      "UNIR1.15 Reubicación de equipos.",
+      "UNIR1.16 Configuración de impresoras",
+      "UNIR1.17 Instalación y actualización de SW",
+      "UNIR1.2 Administración de Garantía de HW",
+      "UNIR1.3 Eliminación de virus",
+      "UNIR1.4 Incidentes de Impresión",
+      "UNIR1.5 Servicios de Escaneo",
+      "UNIR1.6 Mantenimiento correctivo de SW",
+      "UNIR1.7 Mantenimiento correctivo de HW",
+      "UNIR1.8 Mantenimiento preventivo de HW",
+      "UNIR1.9 Configuración de Cuentas"
+    ],
+    "UNIR02. Administración de Office 365": [
+      "UNIR2.1 Administración de Cuentas del directorio Activo",
+      "UNIR2.10 Fallas de Outlook",
+      "UNIR2.11 Asesoría en el uso de Cliente de correo electrónico Outlook",
+      "UNIR2.13 Fallo de envio de correo",
+      "UNIR2.2 Administración de Buzón de Office 365",
+      "UNIR2.3 Compartir Recursos",
+      "UNIR2.4 Configuración de Perfil",
+      "UNIR2.6 Respaldo o Recuperación de Datos",
+      "UNIR2.9 SharePoint"
+    ],
+    "UNIR03. Servicio de Infraestructura (Primer Nivel)": [
+      "UNIR3.1 Servicio de Internet",
+      "UNIR3.2 Soporte de Telefonia",
+      "UNIR3.3 Fallas de Red Local"
+    ],
+    "UNIR04. Administración de Servidores (Primer Nivel)": [
+      "UNIR4.6 Modificaciones a SAP",
+      "UNIR4.8 Fallas de SAP",
+      "UNIR4.9 administración de cuentas de ShareFile"
+    ],
+    "UNIR05. Servicio de Atención al Centro de Cómputo": [
+      "UNIR5.1. Mantenimiento correctivo de HW de Centro de Cómputo",
+      "UNIR5.2. Formateo de Equipo de Centro de Cómputo",
+      "UNIR5.3. Mantenimiento Preventivo de HW de Centro de Cómputo",
+      "UNIR5.4. Instalación de Software de Centro de Cómputo",
+      "UNIR5.5. Mantenimiento Correctivo de SW de Centro de Cómputo"
+    ],
+    "UNIR06. Servicio de Asesoría a Alumnos y Maestros": [
+      "UNIR6.3. Instalación de Equipos Periféricos en Salones UNIR"
+    ],
+    "UNIR07. Administración de Servicios de video vigilacia": [
+      "UNIR7.1. Configuración de Cámaras de Vigilancia",
+      "UNIR7.2. Corrección de Fallas de Configuración de equipos de Vigilancia",
+      "UNIR7.3. Gestión de Garantías con el Proveedor"
+    ],
+    "UNIR08. Soporte de Reloj checador": [
+      "UNIR 8.2 Asesoría en el Software OTM",
+      "UNIR 8.5 Alta de huellas"
+    ],
+    "UNIR09. Administración del Punto de Venta": [
+      "UNIR 9.3 Fallas en Retail One"
+    ],
+    "UNIR10. Administración del File Server": [
+      "UNIR 10.1 Administración de accesos del Fileserver",
+      "UNIR 10.2 Creación de Carpetas en el FileServer"
+    ],
+    "UNIR11. Servicio de Escritorios Virtuales": [
+      "UNIR 11.2 Soporte a Conexión de Escritorio Virtual"
+    ],
+    "UNIR12 Servicio de Respaldo de Información": [
+      "UNIR 12.3 Backup Datos FileServer",
+      "UNIR 12.4 Backup Directorio Activo"
+    ],
+    "UNIR13. Administración de Dominios": [
+      "UNIR13.1 Pago de Dominios"
+    ],
+    "UNIR14. Servicio de gestion de proyectos": [
+      "UNIR14.2 Administración de Proyectos"
+    ],
+    "UNIR15 Servicio de apoyo actividades administrativas": [
+      "UNIR15.1 Credencialización",
+      "UNIR15.2 reposición de credencial",
+      "UNIR15.3 Envío de fotografías",
+      "UNIR15.4 Captura de fotografías."
+    ],
+    "UNIR16. Servicio de Internet": [
+      "UNIR16.1 Fallo de conexión a internet",
+      "UNIR16.2 Problemas de logeo a internet",
+      "UNIR16.3 No se despliega pagina de acceso a internet",
+      "UNIR16.4 Lentitud en  servicio de internet",
+      "UNIR16.5 Desconexión al servicio de internet",
+      "UNIR16.6 Fallo por bloqueo a pagina web",
+      "UNIR16.7 Monitoreo de trafico de red",
+      "UNIR16.8 Configuración de filtrado de contenido web",
+      "UNIR16.9 Administración de ancho de banda."
+    ]
+  }
+}
