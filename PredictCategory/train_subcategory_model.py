@@ -9,6 +9,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import accuracy_score, f1_score, classification_report
+from sklearn.svm import LinearSVC
+from sklearn.calibration import CalibratedClassifierCV
 
 from text_preprocessing import limpiar_texto
 
@@ -27,7 +29,7 @@ EMBEDDING_MODEL = "paraphrase-multilingual-MiniLM-L12-v2"
 BATCH_SIZE   = 64
 TEST_SIZE    = 0.2
 RANDOM_STATE = 42
-MIN_TICKETS  = 5     # Mínimo de tickets por subcategoría
+MIN_TICKETS  = 30     # Mínimo de tickets por subcategoría
 
 
 # =============================================================================
@@ -232,15 +234,15 @@ X_test_emb = embedder.encode(
 print(f"    Shape embeddings: {X_train_emb.shape}")
 print("    Entrenando clasificador...")
 
-clf = LogisticRegression(
-    max_iter=1000,
-    C=4.0,
-    solver="lbfgs",
+svc = LinearSVC(
+    C=0.5,
+    max_iter=2000,
     class_weight="balanced",
-    n_jobs=-1,
-    random_state=RANDOM_STATE,
-    verbose=1
+    random_state=RANDOM_STATE
 )
+
+# CalibratedClassifierCV para obtener probabilidades (necesarias en inferencia)
+clf = CalibratedClassifierCV(svc, cv=3)
 
 clf.fit(X_train_emb, y_train)
 
