@@ -16,6 +16,9 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import ssl
+from sentence_transformers import SentenceTransformer
+import torch
+import numpy as np
 
 MAIL_HOST     = os.getenv("MAIL_HOST")
 MAIL_PORT     = int(os.getenv("MAIL_PORT", 587))
@@ -72,6 +75,15 @@ modelo = None
 mapa_ids = None
 version_modelo = None
 
+modelo_categoria    = None
+version_categoria   = None
+embedder_categoria  = None
+ 
+modelo_subcategoria   = None
+version_subcategoria  = None
+embedder_subcategoria = None
+ 
+
 # funcion para autentificar usuario
 
 def autenticar_usuario(credentials: HTTPBasicCredentials = Depends(security)):
@@ -117,7 +129,7 @@ def cargar_modelo_actual():
     query = text("""
         SELECT archivo
         FROM models
-        WHERE activo = true
+        WHERE activo = true AND tipo = 'padtypes'
         ORDER BY fecha_entrenamiento DESC
         LIMIT 1
     """)
@@ -146,16 +158,113 @@ def cargar_modelo_actual():
 
     logger.info(f"Modelo cargado: {ruta_modelo}")
 
+def cargar_modelo_categoria():
 
+    global modelo_categoria, version_categoria, embedder_categoria
+
+    query = text("""
+        SELECT archivo FROM models
+        WHERE activo = true AND tipo = 'categoria'
+        ORDER BY fecha_entrenamiento DESC
+        LIMIT 1
+    """)
+
+    try:
+        with engine.connect() as conn:
+            activo = conn.execute(query).mappings().first()
+    except Exception as e:
+        logger.error(f"Error consultando modelo categoría: {e}")
+        raise Exception("Error al cargar modelo de categoría")
+
+    if not activo:
+        raise Exception("No hay modelo de categoría activo en la base de datos")
+
+    ruta = os.path.join(MODELS_DIR, activo["archivo"])
+
+    if not os.path.exists(ruta):
+        raise Exception(f"Modelo de categoría no encontrado: {ruta}")
+
+    datos                = joblib.load(ruta)
+    device               = "cuda" if torch.cuda.is_available() else "cpu"
+    embedder_categoria   = SentenceTransformer(datos["embedding_model_name"]).to(device)
+    datos["_device"]     = device
+    modelo_categoria     = datos
+    version_categoria    = datos["version"]
+
+    logger.info(f"Modelo categoría cargado: {ruta} — v{version_categoria}")
+ 
+def cargar_modelo_subcategoria():
+
+    global modelo_subcategoria, version_subcategoria, embedder_subcategoria
+
+    query = text("""
+        SELECT archivo FROM models
+        WHERE activo = true AND tipo = 'subcategoria'
+        ORDER BY fecha_entrenamiento DESC
+        LIMIT 1
+    """)
+
+    try:
+        with engine.connect() as conn:
+            activo = conn.execute(query).mappings().first()
+    except Exception as e:
+        logger.error(f"Error consultando modelo subcategoría: {e}")
+        raise Exception("Error al cargar modelo de subcategoría")
+
+    if not activo:
+        raise Exception("No hay modelo de subcategoría activo en la base de datos")
+
+    ruta = os.path.join(MODELS_DIR, activo["archivo"])
+
+    if not os.path.exists(ruta):
+        raise Exception(f"Modelo de subcategoría no encontrado: {ruta}")
+
+    datos                  = joblib.load(ruta)
+    device                 = "cuda" if torch.cuda.is_available() else "cpu"
+    embedder_subcategoria  = SentenceTransformer(datos["embedding_model_name"]).to(device)
+    datos["_device"]       = device
+    modelo_subcategoria    = datos
+    version_subcategoria   = datos["version"]
+
+    logger.info(f"Modelo subcategoría cargado: {ruta} — v{version_subcategoria}")
+
+ 
+# Cargar al arranque
+cargar_modelo_categoria()
+cargar_modelo_subcategoria()
 cargar_modelo_actual()
 
-# esquma de entrada
+# mapa de categorias
+_cats_df = pd.read_csv("data/categorias-activas.csv", sep=";")
+MAPA_NOMBRE_A_ID = dict(zip(_cats_df["name"], _cats_df["id"]))
 
+# esquma de entrada
 class Ticket(BaseModel):
     code: str
     id: str
     titulo: str | None = ""
     descripcion: str | None = ""
+
+class TicketCategoria(BaseModel):
+    code:        str
+    id:          str
+    titulo:      str | None = ""
+    descripcion: str | None = ""
+    client_id:   str
+
+class TicketSubcategoria(BaseModel):
+    code:            str
+    id:              str
+    titulo:          str | None = ""
+    descripcion:     str | None = ""
+    client_id:       str
+    categoria_padre: str          # nombre devuelto por /categoria/predict
+
+class FeedbackCorreccionCategoria(BaseModel):
+    id:                  str
+    categoria_corregida: str      # nombre de la categoría correcta
+    categoria_id:        str      # UUID de la categoría correcta
+
 
 # limpiar texto
 
@@ -224,25 +333,107 @@ def registrar_baja_confianza(ticket_id, titulo, descripcion, padtypes_predicho, 
     except Exception as e:
         logger.error(f"Error insertando en DB: {e}")
 
+def _predecir_con_filtro(
+    embedder,
+    datos_modelo: dict,
+    texto: str,
+    indices_validos: list
+) -> list:
+    """
+    Genera embedding, filtra probabilidades por índices válidos,
+    renormaliza y devuelve top 3.
+    """
+    device        = datos_modelo["_device"]
+    clf           = datos_modelo["classifier"]
+    le            = datos_modelo["label_encoder"]
+
+    embedding     = embedder.encode([texto], device=device, convert_to_numpy=True)
+    proba_global  = clf.predict_proba(embedding)[0]
+
+    proba_filtrada = np.zeros(len(proba_global))
+    proba_filtrada[indices_validos] = proba_global[indices_validos]
+
+    if proba_filtrada.sum() > 0:
+        proba_filtrada /= proba_filtrada.sum()
+    else:
+        proba_filtrada = proba_global   # fallback sin filtro
+
+    top_indices = proba_filtrada.argsort()[::-1][:3]
+    categorias  = le.inverse_transform(top_indices)
+
+    return [
+        {"nombre": cat, "probabilidad": round(float(proba_filtrada[i]), 4)}
+        for cat, i in zip(categorias, top_indices)
+    ]
+
+
+def registrar_baja_confianza_categoria(
+    ticket_id, titulo, descripcion,
+    client_id, cliente_nombre,
+    categoria_predicha, categoria_id,
+    confianza, tipo_modelo
+):
+    query = text("""
+        INSERT INTO categoria_feedback (
+            id, incident_title, description,
+            client_id, cliente_nombre,
+            categoria_predicha, categoria_id_predicha,
+            confianza, tipo_modelo, fecha,
+            ml_revision, used_for_training, categoria_id_corregida
+        )
+        VALUES (
+            :id, :titulo, :descripcion,
+            :client_id, :cliente_nombre,
+            :categoria_predicha, :categoria_id,
+            :confianza, :tipo_modelo, :fecha,
+            'pendiente', false, NULL
+        )
+        ON CONFLICT (id, tipo_modelo) DO NOTHING
+    """)
+
+    try:
+        with engine.connect() as conn:
+            conn.execute(query, {
+                "id":                 ticket_id,
+                "titulo":             titulo,
+                "descripcion":        descripcion,
+                "client_id":          client_id,
+                "cliente_nombre":     cliente_nombre,
+                "categoria_predicha": categoria_predicha,
+                "categoria_id":       categoria_id,
+                "confianza":          confianza,
+                "tipo_modelo":        tipo_modelo,
+                "fecha":              datetime.now()
+            })
+            conn.commit()
+            logger.info(f"[{tipo_modelo}] Baja confianza: {ticket_id} → {categoria_predicha} ({confianza:.2f})")
+    except Exception as e:
+        logger.error(f"Error insertando categoria_feedback: {e}")
+
+
 # endpoint probar salud del sistema
 
 @app.get("/health")
 def health_check():
 
-    status = {
-        "api": "ok",
-        "model_loaded": modelo is not None,
-        "version": version_modelo
+    resultado = {
+        "api":                  "ok",
+        "model_padtypes":       modelo is not None,
+        "model_categoria":      modelo_categoria is not None,
+        "model_subcategoria":   modelo_subcategoria is not None,
+        "version_padtypes":     version_modelo,
+        "version_categoria":    version_categoria,
+        "version_subcategoria": version_subcategoria
     }
 
     try:
         with engine.connect() as conn:
             conn.execute(text("SELECT 1"))
-        status["database"] = "ok"
+        resultado["database"] = "ok"
     except:
-        status["database"] = "error"
+        resultado["database"] = "error"
 
-    return status
+    return resultado
 
 @app.post("/predict")
 
@@ -332,7 +523,7 @@ def evaluate_model(username: str = Depends(autenticar_usuario)):
     query = text("""
         SELECT accuracy, f1_score
         FROM models
-        WHERE activo = true
+        WHERE activo = true AND tipo = 'padtypes'
         ORDER BY fecha_entrenamiento DESC
         LIMIT 1
     """)
@@ -373,26 +564,28 @@ def evaluate_model(username: str = Depends(autenticar_usuario)):
 
     # guardar en DB
     query = text("""
-        INSERT INTO models (
-            nombre,
-            version,
-            archivo,
-            accuracy,
-            f1_score,
-            fecha_entrenamiento,
-            activo
-        )
-        VALUES (
-            :nombre,
-            :version,
-            :archivo,
-            :accuracy,
-            :f1,
-            :fecha,
-            :activo
-        )
-        ON CONFLICT (archivo)
-        DO UPDATE SET
+    INSERT INTO models (
+        nombre,
+        version,
+        archivo,
+        accuracy,
+        f1_score,
+        fecha_entrenamiento,
+        activo,
+        tipo   
+    )
+    VALUES (
+        :nombre,
+        :version,
+        :archivo,
+        :accuracy,
+        :f1,
+        :fecha,
+        :activo,
+        :tipo
+    )
+    ON CONFLICT (archivo)
+    DO UPDATE SET
         accuracy = EXCLUDED.accuracy,
         f1_score = EXCLUDED.f1_score,
         fecha_entrenamiento = EXCLUDED.fecha_entrenamiento,
@@ -407,7 +600,8 @@ def evaluate_model(username: str = Depends(autenticar_usuario)):
             "accuracy": data["accuracy_new"],
             "f1": data["f1_new"],
             "fecha": datetime.now(),
-            "activo": data["promovido"]
+            "activo": data["promovido"],
+            "tipo": "padtypes"
         })
         conn.commit()
 
@@ -451,7 +645,7 @@ def set_model(nombre_modelo: str, username: str = Depends(autenticar_usuario)):
     query_reset = text("""
         UPDATE models
         SET activo = false
-        WHERE activo = true
+        WHERE activo = true AND tipo = 'padtypes'
     """)
 
     query_activate = text("""
@@ -767,3 +961,330 @@ def accuray(username: str = Depends(autenticar_usuario)):
         result = "exactitud de prediccion segun los datos de retroalimentacion: " + str(conn.execute(query).scalar())
 
     return result
+
+# ####################################################
+# -------------Prediccion de Categoria---------------
+# ####################################################
+
+@app.post("/categoria/predict")
+def predecir_categoria(ticket: TicketCategoria, username: str = Depends(autenticar_usuario)):
+
+    if modelo_categoria is None:
+        return {
+            "code": ticket.code, "id": ticket.id,
+            "cliente": "/", "categoria": "/",
+            "confianza": 0.0, "top": [],
+            "modelo_version": version_categoria
+        }
+
+    cliente_nombre = modelo_categoria["mapa_clientes"].get(ticket.client_id.upper(), "/")
+
+    if cliente_nombre == "/":
+        logger.warning(f"client_id no reconocido: {ticket.client_id}")
+        return {
+            "code": ticket.code, "id": ticket.id,
+            "cliente": "/", "categoria": "/",
+            "confianza": 0.0, "top": [],
+            "modelo_version": version_categoria
+        }
+
+    cats_cliente = modelo_categoria["mapa_cliente_categorias"].get(cliente_nombre, [])
+
+    if not cats_cliente:
+        logger.warning(f"Sin categorías para cliente: {cliente_nombre}")
+        return {
+            "code": ticket.code, "id": ticket.id,
+            "cliente": cliente_nombre, "categoria": "/",
+            "confianza": 0.0, "top": [],
+            "modelo_version": version_categoria
+        }
+
+    le              = modelo_categoria["label_encoder"]
+    indices_validos = [i for i, cls in enumerate(le.classes_) if cls in cats_cliente]
+
+    titulo_limpio = limpiar_texto(ticket.titulo or "")
+    desc_limpia   = limpiar_texto(ticket.descripcion or "")
+    texto = f"[{cliente_nombre}] {titulo_limpio} {titulo_limpio} {titulo_limpio} {desc_limpia}".strip()[:1200]
+
+    if not texto.strip():
+        return {
+            "code": ticket.code, "id": ticket.id,
+            "cliente": cliente_nombre, "categoria": "/",
+            "confianza": 0.0, "top": [],
+            "modelo_version": version_categoria
+        }
+
+    top              = _predecir_con_filtro(embedder_categoria, modelo_categoria, texto, indices_validos)
+    categoria_nombre = top[0]["nombre"]
+    confianza        = top[0]["probabilidad"]
+
+    if confianza < THRESHOLD:
+        registrar_baja_confianza_categoria(
+            ticket.id, ticket.titulo, ticket.descripcion,
+            ticket.client_id, cliente_nombre,
+            categoria_nombre, None, confianza, "categoria"
+        )
+
+    categoria_id = MAPA_NOMBRE_A_ID.get(categoria_nombre, "/")
+
+    return {
+        "code":           ticket.code,
+        "id":             ticket.id,
+        "cliente":        cliente_nombre,
+        "categoria":      categoria_nombre,
+        "categoria_id":   categoria_id, 
+        "confianza":      confianza,
+        "top":            top,
+        "modelo_version": version_categoria
+    }
+
+@app.post("/categoria/reload")
+def reload_categoria(username: str = Depends(autenticar_usuario)):
+    cargar_modelo_categoria()
+    return {"status": "modelo de categoría recargado", "version": version_categoria}
+
+
+@app.get("/categoria/model-info")
+def categoria_model_info():
+    if modelo_categoria is None:
+        raise HTTPException(status_code=503, detail="Modelo de categoría no cargado")
+    return {
+        "version":  version_categoria,
+        "clases":   list(modelo_categoria["label_encoder"].classes_),
+        "metricas": modelo_categoria.get("metricas", {})
+    }
+
+
+@app.get("/categoria/feedback/pending")
+def feedback_categoria_pendientes(
+    limit: int = 10,
+    tipo:  str  = "categoria",
+    username: str = Depends(autenticar_usuario)
+):
+    query = text("""
+        SELECT id, incident_title, description, client_id, cliente_nombre,
+               categoria_predicha, categoria_id_predicha, confianza,
+               tipo_modelo, fecha, ml_revision, categoria_id_corregida
+        FROM categoria_feedback
+        WHERE ml_revision = 'pendiente' AND tipo_modelo = :tipo
+        ORDER BY fecha DESC LIMIT :limit
+    """)
+    try:
+        with engine.connect() as conn:
+            rows = conn.execute(query, {"limit": limit, "tipo": tipo}).mappings().all()
+        return {"total": len(rows), "tickets": rows}
+    except Exception as e:
+        return {"error": "fallo en consulta", "detalle": str(e)}
+
+
+@app.post("/categoria/feedback/confirm")
+def confirmar_categoria(
+    confirmacion: FeedbackConfirmacion,
+    tipo: str = "categoria",
+    username: str = Depends(autenticar_usuario)
+):
+    query = text("""
+        UPDATE categoria_feedback
+        SET categoria_id_corregida = categoria_id_predicha,
+            ml_revision = 'confirmado'
+        WHERE id = :id AND tipo_modelo = :tipo
+        RETURNING id
+    """)
+    try:
+        with engine.connect() as conn:
+            updated = conn.execute(query, {"id": confirmacion.id, "tipo": tipo}).fetchone()
+            conn.commit()
+        if not updated:
+            return {"error": "ticket no encontrado"}
+        return {"status": "predicción confirmada", "ticket_id": confirmacion.id}
+    except Exception as e:
+        return {"error": "fallo interno", "detalle": str(e)}
+
+
+@app.post("/categoria/feedback/correct")
+def corregir_categoria(
+    feedback: FeedbackCorreccionCategoria,
+    tipo: str = "categoria",
+    username: str = Depends(autenticar_usuario)
+):
+    query = text("""
+        UPDATE categoria_feedback
+        SET categoria_predicha     = :cat_corregida,
+            categoria_id_corregida = :cat_id,
+            ml_revision            = 'corregido'
+        WHERE id = :id AND tipo_modelo = :tipo
+        RETURNING id
+    """)
+    try:
+        with engine.connect() as conn:
+            updated = conn.execute(query, {
+                "id": feedback.id, "cat_corregida": feedback.categoria_corregida,
+                "cat_id": feedback.categoria_id, "tipo": tipo
+            }).fetchone()
+            conn.commit()
+        if not updated:
+            return {"error": "ticket no encontrado"}
+        return {
+            "status":              "ticket corregido",
+            "ticket_id":           feedback.id,
+            "categoria_corregida": feedback.categoria_corregida
+        }
+    except Exception as e:
+        return {"error": "fallo interno", "detalle": str(e)}
+
+# ##########################################################
+# -----------------Predict Subcategoria---------------------
+# ##########################################################
+
+@app.post("/subcategoria/predict")
+def predecir_subcategoria(ticket: TicketSubcategoria, username: str = Depends(autenticar_usuario)):
+
+    if modelo_subcategoria is None:
+        raise HTTPException(status_code=503, detail="Modelo de subcategoría no cargado")
+
+    mapa_clientes  = modelo_subcategoria["mapa_clientes"]
+    cliente_nombre = mapa_clientes.get(ticket.client_id)
+
+    if not cliente_nombre:
+        raise HTTPException(status_code=400, detail=f"client_id no reconocido: {ticket.client_id}")
+
+    # Buscar subcategorías por clave compuesta (cliente, padre)
+    clave   = (cliente_nombre, ticket.categoria_padre)
+    subcats = modelo_subcategoria["mapa_padre_subcategorias"].get(clave, [])
+
+    # Fallback: buscar solo por padre si no hay match con cliente
+    if not subcats:
+        subcats = modelo_subcategoria["mapa_solo_padre_subcats"].get(ticket.categoria_padre, [])
+        logger.warning(f"Fallback a mapa_solo_padre: cliente={cliente_nombre}, padre={ticket.categoria_padre}")
+
+    if not subcats:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Sin subcategorías para cliente={cliente_nombre}, padre={ticket.categoria_padre}"
+        )
+
+    le              = modelo_subcategoria["label_encoder"]
+    indices_validos = [i for i, cls in enumerate(le.classes_) if cls in subcats]
+
+    titulo_limpio = limpiar_texto(ticket.titulo or "")
+    desc_limpia   = limpiar_texto(ticket.descripcion or "")
+    texto = (
+        f"[{cliente_nombre}][{ticket.categoria_padre}] "
+        f"{titulo_limpio} {titulo_limpio} {titulo_limpio} {desc_limpia}"
+    ).strip()[:1200]
+
+    if not texto.strip():
+        raise HTTPException(status_code=400, detail="Título y descripción vacíos")
+
+    top           = _predecir_con_filtro(embedder_subcategoria, modelo_subcategoria, texto, indices_validos)
+    subcat_nombre = top[0]["nombre"]
+    confianza     = top[0]["probabilidad"]
+
+    if confianza < THRESHOLD:
+        registrar_baja_confianza_categoria(
+            ticket.id, ticket.titulo, ticket.descripcion,
+            ticket.client_id, cliente_nombre,
+            subcat_nombre, None, confianza, "subcategoria"
+        )
+
+    return {
+        "code":            ticket.code,
+        "id":              ticket.id,
+        "cliente":         cliente_nombre,
+        "categoria_padre": ticket.categoria_padre,
+        "subcategoria":    subcat_nombre,
+        "confianza":       confianza,
+        "top":             top,
+        "modelo_version":  version_subcategoria
+    }
+
+
+@app.post("/subcategoria/reload")
+def reload_subcategoria(username: str = Depends(autenticar_usuario)):
+    cargar_modelo_subcategoria()
+    return {"status": "modelo de subcategoría recargado", "version": version_subcategoria}
+
+
+@app.get("/subcategoria/model-info")
+def subcategoria_model_info():
+    if modelo_subcategoria is None:
+        raise HTTPException(status_code=503, detail="Modelo de subcategoría no cargado")
+    return {
+        "version":  version_subcategoria,
+        "clases":   list(modelo_subcategoria["label_encoder"].classes_),
+        "metricas": modelo_subcategoria.get("metricas", {})
+    }
+
+
+@app.get("/subcategoria/feedback/pending")
+def feedback_subcategoria_pendientes(
+    limit: int = 10,
+    username: str = Depends(autenticar_usuario)
+):
+    query = text("""
+        SELECT id, incident_title, description, client_id, cliente_nombre,
+               categoria_predicha, confianza, fecha, ml_revision
+        FROM categoria_feedback
+        WHERE ml_revision = 'pendiente' AND tipo_modelo = 'subcategoria'
+        ORDER BY fecha DESC LIMIT :limit
+    """)
+    try:
+        with engine.connect() as conn:
+            rows = conn.execute(query, {"limit": limit}).mappings().all()
+        return {"total": len(rows), "tickets": rows}
+    except Exception as e:
+        return {"error": "fallo en consulta", "detalle": str(e)}
+
+
+@app.post("/subcategoria/feedback/confirm")
+def confirmar_subcategoria(
+    confirmacion: FeedbackConfirmacion,
+    username: str = Depends(autenticar_usuario)
+):
+    query = text("""
+        UPDATE categoria_feedback
+        SET categoria_id_corregida = categoria_id_predicha,
+            ml_revision = 'confirmado'
+        WHERE id = :id AND tipo_modelo = 'subcategoria'
+        RETURNING id
+    """)
+    try:
+        with engine.connect() as conn:
+            updated = conn.execute(query, {"id": confirmacion.id}).fetchone()
+            conn.commit()
+        if not updated:
+            return {"error": "ticket no encontrado"}
+        return {"status": "predicción confirmada", "ticket_id": confirmacion.id}
+    except Exception as e:
+        return {"error": "fallo interno", "detalle": str(e)}
+
+
+@app.post("/subcategoria/feedback/correct")
+def corregir_subcategoria(
+    feedback: FeedbackCorreccionCategoria,
+    username: str = Depends(autenticar_usuario)
+):
+    query = text("""
+        UPDATE categoria_feedback
+        SET categoria_predicha     = :cat_corregida,
+            categoria_id_corregida = :cat_id,
+            ml_revision            = 'corregido'
+        WHERE id = :id AND tipo_modelo = 'subcategoria'
+        RETURNING id
+    """)
+    try:
+        with engine.connect() as conn:
+            updated = conn.execute(query, {
+                "id": feedback.id, "cat_corregida": feedback.categoria_corregida,
+                "cat_id": feedback.categoria_id
+            }).fetchone()
+            conn.commit()
+        if not updated:
+            return {"error": "ticket no encontrado"}
+        return {
+            "status":              "subcategoría corregida",
+            "ticket_id":           feedback.id,
+            "categoria_corregida": feedback.categoria_corregida
+        }
+    except Exception as e:
+        return {"error": "fallo interno", "detalle": str(e)}
