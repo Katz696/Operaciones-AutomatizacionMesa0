@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime, timedelta
-from app.api.routes.tickets import autenticar_usuario   # reutiliza tu auth existente
+from app.api.routes.tickets import autenticar_usuario
 from app.services.generate_service import build_tickets
 import logging
 

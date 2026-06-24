@@ -281,6 +281,55 @@ def limpiar_texto(texto):
 
     return texto.strip()
 
+# funcion upsert para tabla de resumen
+def upsert_resumen_feedback(
+    ticket_id, titulo, descripcion,
+    dimension,        # "tipo, categoria o subcategoria"
+    valor, valor_id, confianza
+):
+    columnas = {
+        "tipo":         ("tipo_valor",         "tipo_id",         "tipo_confianza",         "tipo_revision"),
+        "categoria":    ("categoria_valor",     "categoria_id",    "categoria_confianza",    "categoria_revision"),
+        "subcategoria": ("subcategoria_valor",  "subcategoria_id", "subcategoria_confianza", "subcategoria_revision"),
+    }
+    col_valor, col_id, col_conf, col_rev = columnas[dimension]
+
+    query = text(f"""
+        INSERT INTO ticket_feedback_resumen (
+            id, incident_title, description,
+            {col_valor}, {col_id}, {col_conf}, {col_rev},
+            fecha_actualizacion
+        )
+        VALUES (
+            :id, :titulo, :descripcion,
+            :valor, :valor_id, :confianza, 'pendiente',
+            NOW()
+        )
+        ON CONFLICT (id) DO UPDATE SET
+            {col_valor} = EXCLUDED.{col_valor},
+            {col_id}    = EXCLUDED.{col_id},
+            {col_conf}  = EXCLUDED.{col_conf},
+            {col_rev}   = 'pendiente',
+            incident_title      = EXCLUDED.incident_title,
+            description         = EXCLUDED.description,
+            fecha_actualizacion = NOW()
+    """)
+
+    try:
+        with engine.connect() as conn:
+            conn.execute(query, {
+                "id":        ticket_id,
+                "titulo":    titulo,
+                "descripcion": descripcion,
+                "valor":     valor,
+                "valor_id":  valor_id,
+                "confianza": confianza
+            })
+            conn.commit()
+        logger.info(f"[resumen] upsert {dimension}: {ticket_id}")
+    except Exception as e:
+        logger.error(f"Error en upsert_resumen_feedback ({dimension}): {e}")
+
 # registrar baja confianza
 
 def registrar_baja_confianza(ticket_id, titulo, descripcion, padtypes_predicho, confianza):
@@ -329,6 +378,7 @@ def registrar_baja_confianza(ticket_id, titulo, descripcion, padtypes_predicho, 
             })
             conn.commit()
             logger.info(f"Ticket registrado por baja confianza: {ticket_id} - {tipo_predicho} ({confianza:.2f})")
+            upsert_resumen_feedback(ticket_id, titulo, descripcion, "tipo", tipo_predicho, padtypes_predicho, confianza)
 
     except Exception as e:
         logger.error(f"Error insertando en DB: {e}")
@@ -409,7 +459,7 @@ def registrar_baja_confianza_categoria(
             logger.info(f"[{tipo_modelo}] Baja confianza: {ticket_id} → {categoria_predicha} ({confianza:.2f})")
     except Exception as e:
         logger.error(f"Error insertando categoria_feedback: {e}")
-
+        upsert_resumen_feedback(ticket_id, titulo, descripcion, tipo_modelo, categoria_predicha, categoria_id, confianza)
 
 # endpoint probar salud del sistema
 
@@ -1034,7 +1084,6 @@ def predecir_categoria(ticket: TicketCategoria, username: str = Depends(autentic
         "categoria":      categoria_nombre,
         "categoria_id":   categoria_id, 
         "confianza":      confianza,
-        "top":            top,
         "modelo_version": version_categoria
     }
 
@@ -1140,28 +1189,42 @@ def corregir_categoria(
 def predecir_subcategoria(ticket: TicketSubcategoria, username: str = Depends(autenticar_usuario)):
 
     if modelo_subcategoria is None:
-        raise HTTPException(status_code=503, detail="Modelo de subcategoría no cargado")
+        return {
+            "code": ticket.code, "id": ticket.id,
+            "cliente": "/", "categoria_padre": ticket.categoria_padre,
+            "subcategoria": "/", "confianza": 0.0, "top": [],
+            "modelo_version": version_subcategoria
+        }
 
+    # Resolver cliente
     mapa_clientes  = modelo_subcategoria["mapa_clientes"]
-    cliente_nombre = mapa_clientes.get(ticket.client_id)
+    cliente_nombre = modelo_subcategoria["mapa_clientes"].get(ticket.client_id.upper(), "/")
 
-    if not cliente_nombre:
-        raise HTTPException(status_code=400, detail=f"client_id no reconocido: {ticket.client_id}")
+    if cliente_nombre == "/":
+        logger.warning(f"client_id no reconocido: {ticket.client_id}")
+        return {
+            "code": ticket.code, "id": ticket.id,
+            "cliente": "/", "categoria_padre": ticket.categoria_padre,
+            "subcategoria": "/", "confianza": 0.0, "top": [],
+            "modelo_version": version_subcategoria
+        }
 
-    # Buscar subcategorías por clave compuesta (cliente, padre)
+    # Subcategorías válidas para (cliente, padre)
     clave   = (cliente_nombre, ticket.categoria_padre)
     subcats = modelo_subcategoria["mapa_padre_subcategorias"].get(clave, [])
 
-    # Fallback: buscar solo por padre si no hay match con cliente
     if not subcats:
         subcats = modelo_subcategoria["mapa_solo_padre_subcats"].get(ticket.categoria_padre, [])
         logger.warning(f"Fallback a mapa_solo_padre: cliente={cliente_nombre}, padre={ticket.categoria_padre}")
 
     if not subcats:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Sin subcategorías para cliente={cliente_nombre}, padre={ticket.categoria_padre}"
-        )
+        logger.warning(f"Sin subcategorías para cliente={cliente_nombre}, padre={ticket.categoria_padre}")
+        return {
+            "code": ticket.code, "id": ticket.id,
+            "cliente": cliente_nombre, "categoria_padre": ticket.categoria_padre,
+            "subcategoria": "/", "confianza": 0.0, "top": [],
+            "modelo_version": version_subcategoria
+        }
 
     le              = modelo_subcategoria["label_encoder"]
     indices_validos = [i for i, cls in enumerate(le.classes_) if cls in subcats]
@@ -1174,30 +1237,36 @@ def predecir_subcategoria(ticket: TicketSubcategoria, username: str = Depends(au
     ).strip()[:1200]
 
     if not texto.strip():
-        raise HTTPException(status_code=400, detail="Título y descripción vacíos")
+        return {
+            "code": ticket.code, "id": ticket.id,
+            "cliente": cliente_nombre, "categoria_padre": ticket.categoria_padre,
+            "subcategoria": "/", "confianza": 0.0, "top": [],
+            "modelo_version": version_subcategoria
+        }
 
     top           = _predecir_con_filtro(embedder_subcategoria, modelo_subcategoria, texto, indices_validos)
     subcat_nombre = top[0]["nombre"]
     confianza     = top[0]["probabilidad"]
+    subcategoria_id = MAPA_NOMBRE_A_ID.get(subcat_nombre, "/")
 
     if confianza < THRESHOLD:
         registrar_baja_confianza_categoria(
             ticket.id, ticket.titulo, ticket.descripcion,
             ticket.client_id, cliente_nombre,
-            subcat_nombre, None, confianza, "subcategoria"
+            subcat_nombre, subcategoria_id, confianza, "subcategoria"
         )
 
     return {
-        "code":            ticket.code,
-        "id":              ticket.id,
-        "cliente":         cliente_nombre,
-        "categoria_padre": ticket.categoria_padre,
-        "subcategoria":    subcat_nombre,
-        "confianza":       confianza,
-        "top":             top,
-        "modelo_version":  version_subcategoria
+        "code":             ticket.code,
+        "id":               ticket.id,
+        "cliente":          cliente_nombre,
+        "categoria_padre":  ticket.categoria_padre,
+        "subcategoria":     subcat_nombre,
+        "subcategoria_id":  subcategoria_id,
+        "confianza":        confianza,
+        "modelo_version":   version_subcategoria,
+        "top": top
     }
-
 
 @app.post("/subcategoria/reload")
 def reload_subcategoria(username: str = Depends(autenticar_usuario)):
