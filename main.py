@@ -19,6 +19,7 @@ import ssl
 from sentence_transformers import SentenceTransformer
 import torch
 import numpy as np
+import ssl
 
 MAIL_HOST     = os.getenv("MAIL_HOST")
 MAIL_PORT     = int(os.getenv("MAIL_PORT", 587))
@@ -457,9 +458,9 @@ def registrar_baja_confianza_categoria(
             })
             conn.commit()
             logger.info(f"[{tipo_modelo}] Baja confianza: {ticket_id} → {categoria_predicha} ({confianza:.2f})")
+            upsert_resumen_feedback(ticket_id, titulo, descripcion, tipo_modelo, categoria_predicha, categoria_id, confianza)
     except Exception as e:
         logger.error(f"Error insertando categoria_feedback: {e}")
-        upsert_resumen_feedback(ticket_id, titulo, descripcion, tipo_modelo, categoria_predicha, categoria_id, confianza)
 
 # endpoint probar salud del sistema
 
@@ -737,47 +738,35 @@ def set_model(nombre_modelo: str, username: str = Depends(autenticar_usuario)):
             "detalle": str(e)
         }
 
-# endpoint para tickets pendientes de revisión
+# endpoint para tickets pendientes de revisión en la tabla maestra
 
 @app.get("/feedback/pending")
-def obtener_tickets_pendientes(limit: int = 10, username: str = Depends(autenticar_usuario)):
-
+def obtener_tickets_pendientes_resumen(limit: int = 10, username: str = Depends(autenticar_usuario)):
     query = text("""
-        SELECT 
-            id,
-            incident_title,
-            description,
-            padtypes_id_predicho,
-            tipo_predicho,
-            confianza,
-            fecha,
-            ml_revision,
-            used_for_training,
-            padtypes_id_corregido
-        FROM tickets_feedback
-        WHERE ml_revision = 'pendiente'
-        ORDER BY fecha DESC
+        SELECT
+            id, incident_title, description,
+            tipo_valor, tipo_id, tipo_confianza, tipo_revision,
+            categoria_valor, categoria_id, categoria_confianza, categoria_revision,
+            subcategoria_valor, subcategoria_id, subcategoria_confianza, subcategoria_revision,
+            fecha_creacion
+        FROM ticket_feedback_resumen
+        WHERE correo_enviado = FALSE
+          AND (
+              tipo_revision        = 'pendiente' OR
+              categoria_revision   = 'pendiente' OR
+              subcategoria_revision = 'pendiente'
+          )
+        ORDER BY fecha_creacion ASC
         LIMIT :limit
     """)
-
     try:
         with engine.connect() as conn:
-            result = conn.execute(query, {"limit": limit})
-            rows = result.mappings().all()  # devuelve dicts
-
-        return {
-            "total": len(rows),
-            "tickets": rows
-        }
-
+            rows = conn.execute(query, {"limit": limit}).mappings().all()
+        return {"total": len(rows), "tickets": [dict(r) for r in rows]}
     except Exception as e:
-        return {
-            "error": "fallo en consulta",
-            "detalle": str(e)
-        }
-    
+        return {"error": "fallo en consulta", "detalle": str(e)}
+
 # endpoint para enviar correos
-import ssl
 
 @app.post("/send-mail")
 def send_mail(email: EmailRequest, username: str = Depends(autenticar_usuario)):
@@ -818,6 +807,30 @@ def send_mail(email: EmailRequest, username: str = Depends(autenticar_usuario)):
     except Exception as e:
         logger.error(f"Error inesperado: {type(e).__name__} - {e}")
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+
+# endpoint para marcar correos enviados en la tabla maestra
+
+@app.post("/feedback/correo-enviado")
+def marcar_correo_enviado(ids: List[str] = Body(...), username: str = Depends(autenticar_usuario)):
+    query = text("""
+        UPDATE ticket_feedback_resumen
+        SET correo_enviado = TRUE, fecha_actualizacion = NOW()
+        WHERE id = ANY(:ids)
+        AND correo_enviado = FALSE
+        RETURNING id
+    """)
+    try:
+        with engine.connect() as conn:
+            result = conn.execute(query, {"ids": ids})
+            updated_ids = [row[0] for row in result]
+            conn.commit()
+        return {
+            "ids_recibidos": len(ids),
+            "actualizados":  len(updated_ids),
+            "status": "ok"
+        }
+    except Exception as e:
+        return {"error": "fallo interno", "detalle": str(e)}
 
 # endpoint para marcar tickets como enviados a revision de ML
 @app.post("/feedback/mark-sent-bulk")
@@ -1067,22 +1080,21 @@ def predecir_categoria(ticket: TicketCategoria, username: str = Depends(autentic
     top              = _predecir_con_filtro(embedder_categoria, modelo_categoria, texto, indices_validos)
     categoria_nombre = top[0]["nombre"]
     confianza        = top[0]["probabilidad"]
+    categoria_id     = MAPA_NOMBRE_A_ID.get(categoria_nombre, "/")
 
     if confianza < THRESHOLD:
         registrar_baja_confianza_categoria(
             ticket.id, ticket.titulo, ticket.descripcion,
             ticket.client_id, cliente_nombre,
-            categoria_nombre, None, confianza, "categoria"
+            categoria_nombre, categoria_id, confianza, "categoria"
         )
-
-    categoria_id = MAPA_NOMBRE_A_ID.get(categoria_nombre, "/")
 
     return {
         "code":           ticket.code,
         "id":             ticket.id,
         "cliente":        cliente_nombre,
         "categoria":      categoria_nombre,
-        "categoria_id":   categoria_id, 
+        "categoria_id":   categoria_id,
         "confianza":      confianza,
         "modelo_version": version_categoria
     }
@@ -1244,16 +1256,26 @@ def predecir_subcategoria(ticket: TicketSubcategoria, username: str = Depends(au
             "modelo_version": version_subcategoria
         }
 
-    top           = _predecir_con_filtro(embedder_subcategoria, modelo_subcategoria, texto, indices_validos)
-    subcat_nombre = top[0]["nombre"]
-    confianza     = top[0]["probabilidad"]
+    top             = _predecir_con_filtro(embedder_subcategoria, modelo_subcategoria, texto, indices_validos)
+    subcat_nombre   = top[0]["nombre"]
+    confianza       = top[0]["probabilidad"]
     subcategoria_id = MAPA_NOMBRE_A_ID.get(subcat_nombre, "/")
 
+    # si duda en subcategoría, registrar también la categoría padre
+    categoria_padre_id = MAPA_NOMBRE_A_ID.get(ticket.categoria_padre, "/")
+
     if confianza < THRESHOLD:
+        # registrar subcategoría
         registrar_baja_confianza_categoria(
             ticket.id, ticket.titulo, ticket.descripcion,
             ticket.client_id, cliente_nombre,
             subcat_nombre, subcategoria_id, confianza, "subcategoria"
+        )
+        # registrar categoría padre también
+        registrar_baja_confianza_categoria(
+            ticket.id, ticket.titulo, ticket.descripcion,
+            ticket.client_id, cliente_nombre,
+            ticket.categoria_padre, categoria_padre_id, confianza, "categoria"
         )
 
     return {
