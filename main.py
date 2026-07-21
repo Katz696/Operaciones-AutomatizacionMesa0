@@ -11,7 +11,7 @@ from datetime import datetime
 from unidecode import unidecode
 from fastapi import Body, FastAPI,Depends, HTTPException, status
 from pydantic import BaseModel
-from typing import List, Union
+from typing import List, Union, Literal
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -59,13 +59,9 @@ class TicketCompleto(BaseModel):
     descripcion: str | None = ""
     client_id:   str  
 class ConfirmacionTicketCompleto(BaseModel):
-    id:                  str
-    titulo:              Optional[str] = None
-    descripcion:         Optional[str] = None
+    id: str
 class CorreccionTicketCompleto(BaseModel):
     id:                  str
-    titulo:              Optional[str] = None
-    descripcion:         Optional[str] = None
     tipo_nombre:         Optional[str] = None
     categoria_nombre:    str
     categoria_id:        str
@@ -121,7 +117,6 @@ embedder_categoria  = None
 modelo_subcategoria   = None
 version_subcategoria  = None
 embedder_subcategoria = None
- 
 
 # funcion para autentificar usuario
 
@@ -157,11 +152,10 @@ def autenticar_usuario(credentials: HTTPBasicCredentials = Depends(security)):
 
     return user["username"]
     
-    
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def cargar_modelo_actual():
+def cargar_modelo_tipo():
 
     global modelo, mapa_ids, version_modelo
 
@@ -270,7 +264,7 @@ def cargar_modelo_subcategoria():
 # Cargar al arranque
 cargar_modelo_categoria()
 cargar_modelo_subcategoria()
-cargar_modelo_actual()
+cargar_modelo_tipo()
 
 # mapa de categorias
 _cats_df = pd.read_csv("data/categorias-activas.csv", sep=";")
@@ -341,7 +335,9 @@ def upsert_resumen_feedback(
         logger.error(f"Error en upsert_resumen_feedback ({dimension}): {e}")
 
 # funcion upsert para registrar tipo cuando se corrija todo el ticket
-def _upsert_correccion_tipo_feedback(ticket_id, titulo, descripcion, tipo_id_corregido, resumen_row):
+def _upsert_correccion_tipo_feedback(conn, ticket_id, tipo_id_corregido, resumen_row, ml_revision):
+    titulo         = resumen_row["incident_title"]
+    descripcion    = resumen_row["description"]
     valor_original = resumen_row["tipo_valor"]
     id_original    = resumen_row["tipo_id"]
     conf_original  = resumen_row["tipo_confianza"]
@@ -357,29 +353,27 @@ def _upsert_correccion_tipo_feedback(ticket_id, titulo, descripcion, tipo_id_cor
             :id, :titulo, :descripcion,
             :id_original, :valor_original,
             :conf_original, NOW(),
-            'corregido', false, :tipo_id_corregido
+            :ml_revision, false, :tipo_id_corregido
         )
         ON CONFLICT (id) DO UPDATE SET
             padtypes_id_corregido = EXCLUDED.padtypes_id_corregido,
-            ml_revision            = 'corregido'
+            ml_revision            = :ml_revision
     """)
-    try:
-        with engine.connect() as conn:
-            conn.execute(query, {
-                "id": ticket_id, "titulo": titulo, "descripcion": descripcion,
-                "id_original": id_original, "valor_original": valor_original,
-                "conf_original": conf_original, "tipo_id_corregido": tipo_id_corregido
-            })
-            conn.commit()
-        logger.info(f"[resumen] upsert {valor_original}: {ticket_id}")
-    except Exception as e:
-        logger.error(f"Error en upsert_tipo_tickets_feedback")
+    conn.execute(query, {
+        "id": ticket_id, "titulo": titulo, "descripcion": descripcion,
+        "id_original": id_original, "valor_original": valor_original,
+        "conf_original": conf_original, "tipo_id_corregido": tipo_id_corregido,
+        "ml_revision": ml_revision
+    })
 
 # funcion upsert para registrar categoria cuando se corrija todo el ticket
 def _upsert_correccion_categoria_feedback(
-    conn, ticket_id, titulo, descripcion, client_id, cliente_nombre,
-    tipo_modelo, id_corregido, resumen_row
+    conn, ticket_id, client_id, cliente_nombre,
+    tipo_modelo, id_corregido, resumen_row, ml_revision
 ):
+    titulo = resumen_row["incident_title"]
+    descripcion = resumen_row["description"]
+
     if tipo_modelo == "categoria":
         valor_original = resumen_row["categoria_valor"]
         id_original    = resumen_row["categoria_id"]
@@ -402,20 +396,18 @@ def _upsert_correccion_categoria_feedback(
             :client_id, :cliente_nombre,
             :valor_original, :id_original,
             :conf_original, :tipo_modelo, NOW(),
-            'corregido', false, :id_corregido
+            :ml_revision, false, :id_corregido
         )
         ON CONFLICT (id, tipo_modelo) DO UPDATE SET
             categoria_id_corregida = EXCLUDED.categoria_id_corregida,
-            ml_revision            = 'corregido'
+            ml_revision            = :ml_revision
     """)
-
-    # AÑADIR TRY CATCH CON LOGGER
     conn.execute(query, {
         "id": ticket_id, "titulo": titulo, "descripcion": descripcion,
         "client_id": client_id, "cliente_nombre": cliente_nombre,
         "valor_original": valor_original, "id_original": id_original,
         "conf_original": conf_original, "tipo_modelo": tipo_modelo,
-        "id_corregido": id_corregido
+        "id_corregido": id_corregido, "ml_revision": ml_revision
     })
 
 # registrar baja confianza
@@ -729,7 +721,31 @@ def build_dataset(username: str = Depends(autenticar_usuario)):
         "stderr": proceso.stderr
     }
 
-# endpoint para ejecutar entrenamiento
+# endpoint para crear dataset para categoria y subcategoria
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+CATEGORY_SCRIPTS_DIR = os.path.join(BASE_DIR, "PredictCategory")
+
+@app.post("/build-dataset-category")
+def build_dataset_category(username: str = Depends(autenticar_usuario)):
+ 
+    proceso = subprocess.run(
+        ["python", "build_training_dataset_category.py"],
+        cwd=CATEGORY_SCRIPTS_DIR,
+        capture_output=True,
+        text=True
+    )
+ 
+    dataset_built = "DATASET_BUILT=true" in proceso.stdout
+ 
+    return {
+        "status": "dataset processed",
+        "dataset_built": dataset_built,
+        "stdout": proceso.stdout,
+        "stderr": proceso.stderr
+    }
+
+# endpoint para ejecutar entrenamiento del modelo tipo
 
 @app.post("/train")
 
@@ -745,11 +761,66 @@ def train_model(username: str = Depends(autenticar_usuario)):
         "output": proceso.stdout
     }
 
-# endpoint para ejecutar evaluación
+# endpoint para ejecutar entrenamiento del modelo categoria
+ 
+@app.post("/train-category")
+def train_category_model(username: str = Depends(autenticar_usuario)):
+ 
+    proceso = subprocess.run(
+        ["python", "train_categorymodel.py"],
+        cwd=CATEGORY_SCRIPTS_DIR,
+        capture_output=True,
+        text=True
+    )
+ 
+    if proceso.returncode != 0:
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "status": "training failed",
+                "stdout": proceso.stdout,
+                "stderr": proceso.stderr
+            }
+        )
+ 
+    return {
+        "status": "training executed",
+        "output": proceso.stdout
+    }
+ 
+ 
+# endpoint para ejecutar entrenamiento del modelo subcategoria
+ 
+@app.post("/train-subcategory")
+def train_subcategory_model(username: str = Depends(autenticar_usuario)):
+ 
+    proceso = subprocess.run(
+        ["python", "train_subcategory_model.py"],
+        cwd=CATEGORY_SCRIPTS_DIR,
+        capture_output=True,
+        text=True
+    )
+ 
+    if proceso.returncode != 0:
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "status": "training failed",
+                "stdout": proceso.stdout,
+                "stderr": proceso.stderr
+            }
+        )
+ 
+    return {
+        "status": "training executed",
+        "output": proceso.stdout
+    }
 
+# endpoint para ejecutar evaluación del modelo tipo
+ 
 @app.post("/evaluate")
 def evaluate_model(username: str = Depends(autenticar_usuario)):
-
+ 
     query = text("""
         SELECT accuracy, f1_score
         FROM models
@@ -757,33 +828,33 @@ def evaluate_model(username: str = Depends(autenticar_usuario)):
         ORDER BY fecha_entrenamiento DESC
         LIMIT 1
     """)
-    
-    try :
+ 
+    modelo_activo = None
+ 
+    try:
         with engine.connect() as conn:
             result = conn.execute(query)
             modelo_activo = result.mappings().first()
     except Exception as e:
         logger.error(f"Error consultando el modelo activo: {e}")
-
+ 
     accuracy_actual = modelo_activo["accuracy"] if modelo_activo else None
     f1_actual = modelo_activo["f1_score"] if modelo_activo else None
-
+ 
     proceso = subprocess.run(
-    [
-        "python",
-        "evaluate_model.py",
-        str(accuracy_actual),
-        str(f1_actual)
-    ],
-    capture_output=True,
-    text=True
+        [
+            "python",
+            "evaluate_model.py",
+            str(accuracy_actual),
+            str(f1_actual)
+        ],
+        capture_output=True,
+        text=True
     )
-
+ 
     try:
         output_lines = proceso.stdout.strip().split("\n")
-
         json_line = output_lines[-1]
-
         data = json.loads(json_line)
     except Exception as e:
         return {
@@ -791,7 +862,7 @@ def evaluate_model(username: str = Depends(autenticar_usuario)):
             "stdout": proceso.stdout,
             "stderr": proceso.stderr
         }
-
+ 
     # guardar en DB
     query = text("""
     INSERT INTO models (
@@ -821,8 +892,20 @@ def evaluate_model(username: str = Depends(autenticar_usuario)):
         fecha_entrenamiento = EXCLUDED.fecha_entrenamiento,
         activo = EXCLUDED.activo
     """)
-
+ 
     with engine.connect() as conn:
+        if data["promovido"]:
+            # Libera el slot de "activo" para este tipo antes de insertar, o el INSERT de abajo viola unico_modelo_activo_por_tipo si ya habia otro modelo de tipo activo.
+            deactivate_query = text("""
+                UPDATE models
+                SET activo = false
+                WHERE tipo = :tipo AND activo = true AND archivo != :archivo
+            """)
+            conn.execute(deactivate_query, {
+                "tipo": "padtypes",
+                "archivo": data["modelo_nuevo"]
+            })
+ 
         conn.execute(query, {
             "nombre": "clasificador_tickets",
             "version": data["version_nuevo"],
@@ -834,84 +917,339 @@ def evaluate_model(username: str = Depends(autenticar_usuario)):
             "tipo": "padtypes"
         })
         conn.commit()
-
+ 
     return {
         "status": "evaluation executed",
         "metrics": data
     }
 
-# endpoint para recargar modelo
+# endpoint para ejecutar evaluación del modelo de categoria
+ 
+@app.post("/evaluate-category")
+def evaluate_category_model(username: str = Depends(autenticar_usuario)):
+ 
+    query = text("""
+        SELECT accuracy, f1_score
+        FROM models
+        WHERE activo = true AND tipo = 'categoria'
+        ORDER BY fecha_entrenamiento DESC
+        LIMIT 1
+    """)
+ 
+    modelo_activo = None
+ 
+    try:
+        with engine.connect() as conn:
+            result = conn.execute(query)
+            modelo_activo = result.mappings().first()
+    except Exception as e:
+        logger.error(f"Error consultando el modelo activo (categoria): {e}")
+ 
+    accuracy_actual = modelo_activo["accuracy"] if modelo_activo else None
+    f1_actual = modelo_activo["f1_score"] if modelo_activo else None
+ 
+    proceso = subprocess.run(
+        [
+            "python",
+            "evaluate_model_categoria.py",
+            str(accuracy_actual),
+            str(f1_actual)
+        ],
+        cwd=CATEGORY_SCRIPTS_DIR,
+        capture_output=True,
+        text=True
+    )
+ 
+    try:
+        output_lines = proceso.stdout.strip().split("\n")
+        json_line = output_lines[-1]
+        data = json.loads(json_line)
+    except Exception as e:
+        return {
+            "error": "no se pudo parsear salida",
+            "stdout": proceso.stdout,
+            "stderr": proceso.stderr
+        }
+ 
+    # guardar en DB
+    query = text("""
+    INSERT INTO models (
+        nombre,
+        version,
+        archivo,
+        accuracy,
+        f1_score,
+        fecha_entrenamiento,
+        activo,
+        tipo
+    )
+    VALUES (
+        :nombre,
+        :version,
+        :archivo,
+        :accuracy,
+        :f1,
+        :fecha,
+        :activo,
+        :tipo
+    )
+    ON CONFLICT (archivo)
+    DO UPDATE SET
+        accuracy = EXCLUDED.accuracy,
+        f1_score = EXCLUDED.f1_score,
+        fecha_entrenamiento = EXCLUDED.fecha_entrenamiento,
+        activo = EXCLUDED.activo
+    """)
+ 
+    with engine.connect() as conn:
+        if data["promovido"]:
+            deactivate_query = text("""
+                UPDATE models
+                SET activo = false
+                WHERE tipo = :tipo AND activo = true AND archivo != :archivo
+            """)
+            conn.execute(deactivate_query, {
+                "tipo": "categoria",
+                "archivo": data["modelo_nuevo"]
+            })
+ 
+        conn.execute(query, {
+            "nombre": "clasificador_categoria",
+            "version": data["version_nuevo"],
+            "archivo": data["modelo_nuevo"],
+            "accuracy": data["accuracy_new"],
+            "f1": data["f1_new"],
+            "fecha": datetime.now(),
+            "activo": data["promovido"],
+            "tipo": "categoria"
+        })
+        conn.commit()
+ 
+    return {
+        "status": "evaluation executed",
+        "metrics": data
+    }
+ 
+# endpoint para ejecutar evaluación del modelo de subcategoria
+ 
+@app.post("/evaluate-subcategory")
+def evaluate_subcategory_model(username: str = Depends(autenticar_usuario)):
+ 
+    query = text("""
+        SELECT accuracy, f1_score
+        FROM models
+        WHERE activo = true AND tipo = 'subcategoria'
+        ORDER BY fecha_entrenamiento DESC
+        LIMIT 1
+    """)
+ 
+    modelo_activo = None
+ 
+    try:
+        with engine.connect() as conn:
+            result = conn.execute(query)
+            modelo_activo = result.mappings().first()
+    except Exception as e:
+        logger.error(f"Error consultando el modelo activo (subcategoria): {e}")
+ 
+    accuracy_actual = modelo_activo["accuracy"] if modelo_activo else None
+    f1_actual = modelo_activo["f1_score"] if modelo_activo else None
+ 
+    proceso = subprocess.run(
+        [
+            "python",
+            "evaluate_model_subcategoria.py",
+            str(accuracy_actual),
+            str(f1_actual)
+        ],
+        cwd=CATEGORY_SCRIPTS_DIR,
+        capture_output=True,
+        text=True
+    )
+ 
+    try:
+        output_lines = proceso.stdout.strip().split("\n")
+        json_line = output_lines[-1]
+        data = json.loads(json_line)
+    except Exception as e:
+        return {
+            "error": "no se pudo parsear salida",
+            "stdout": proceso.stdout,
+            "stderr": proceso.stderr
+        }
+ 
+    # guardar en DB
+    query = text("""
+    INSERT INTO models (
+        nombre,
+        version,
+        archivo,
+        accuracy,
+        f1_score,
+        fecha_entrenamiento,
+        activo,
+        tipo
+    )
+    VALUES (
+        :nombre,
+        :version,
+        :archivo,
+        :accuracy,
+        :f1,
+        :fecha,
+        :activo,
+        :tipo
+    )
+    ON CONFLICT (archivo)
+    DO UPDATE SET
+        accuracy = EXCLUDED.accuracy,
+        f1_score = EXCLUDED.f1_score,
+        fecha_entrenamiento = EXCLUDED.fecha_entrenamiento,
+        activo = EXCLUDED.activo
+    """)
+ 
+    with engine.connect() as conn:
+        if data["promovido"]:
+            deactivate_query = text("""
+                UPDATE models
+                SET activo = false
+                WHERE tipo = :tipo AND activo = true AND archivo != :archivo
+            """)
+            conn.execute(deactivate_query, {
+                "tipo": "subcategoria",
+                "archivo": data["modelo_nuevo"]
+            })
+ 
+        conn.execute(query, {
+            "nombre": "clasificador_subcategoria",
+            "version": data["version_nuevo"],
+            "archivo": data["modelo_nuevo"],
+            "accuracy": data["accuracy_new"],
+            "f1": data["f1_new"],
+            "fecha": datetime.now(),
+            "activo": data["promovido"],
+            "tipo": "subcategoria"
+        })
+        conn.commit()
+ 
+    return {
+        "status": "evaluation executed",
+        "metrics": data
+    }
 
+TipoModelo = Literal["padtypes", "categoria", "subcategoria"]
+ 
+ 
+def _cargar_modelo_por_tipo(tipo: TipoModelo):
+    if tipo == "padtypes":
+        cargar_modelo_tipo()
+    elif tipo == "categoria":
+        cargar_modelo_categoria()
+    elif tipo == "subcategoria":
+        cargar_modelo_subcategoria()
+ 
+ 
+def _info_modelo_por_tipo(tipo: TipoModelo):
+    if tipo == "padtypes":
+        return {
+            "tipo": tipo,
+            "version": version_modelo,
+            "clases": list(modelo.classes_) if modelo is not None else []
+        }
+    elif tipo == "categoria":
+        return {
+            "tipo": tipo,
+            "version": version_categoria,
+            "clases": list(modelo_categoria["label_encoder"].classes_) if modelo_categoria else []
+        }
+    elif tipo == "subcategoria":
+        return {
+            "tipo": tipo,
+            "version": version_subcategoria,
+            "clases": list(modelo_subcategoria["label_encoder"].classes_) if modelo_subcategoria else []
+        }
+ 
+ 
+# endpoint para recargar modelo (padtypes | categoria | subcategoria)
+ 
 @app.post("/reload-model")
-
-def reload_model(username: str = Depends(autenticar_usuario)):
-
-    cargar_modelo_actual()
-
+def reload_model(tipo: TipoModelo, username: str = Depends(autenticar_usuario)):
+ 
+    try:
+        _cargar_modelo_por_tipo(tipo)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"No se pudo recargar el modelo de '{tipo}': {e}"
+        )
+ 
+    info = _info_modelo_por_tipo(tipo)
+ 
     return {
         "status": "modelo recargado",
-        "version": version_modelo
+        "tipo": tipo,
+        "version": info["version"]
     }
-
-# endpoint informacion del modelo
-
+ 
+ 
+# endpoint informacion del modelo (padtypes | categoria | subcategoria)
+ 
 @app.get("/model-info")
-
-def model_info():
-
-    return {
-        "version": version_modelo,
-        "clases": list(modelo.classes_)
-    }
-
+def model_info(tipo: TipoModelo):
+    return _info_modelo_por_tipo(tipo)
+ 
+ 
+# endpoint para activar un modelo especifico (padtypes | categoria | subcategoria)
+ 
 @app.post("/set-model")
-def set_model(nombre_modelo: str, username: str = Depends(autenticar_usuario)):
-
+def set_model(nombre_modelo: str, tipo: TipoModelo, username: str = Depends(autenticar_usuario)):
+ 
     query_buscar = text("""
         SELECT archivo
         FROM models
-        WHERE archivo = :archivo
+        WHERE archivo = :archivo AND tipo = :tipo
     """)
-
+ 
     query_reset = text("""
         UPDATE models
         SET activo = false
-        WHERE activo = true AND tipo = 'padtypes'
+        WHERE activo = true AND tipo = :tipo
     """)
-
+ 
     query_activate = text("""
         UPDATE models
         SET activo = true
-        WHERE archivo = :archivo
+        WHERE archivo = :archivo AND tipo = :tipo
         RETURNING version
     """)
-
+ 
     try:
         with engine.begin() as conn:
-
-            # verificar que existe
-            result = conn.execute(query_buscar, {"archivo": nombre_modelo})
+ 
+            # verificar que existe PARA ESE TIPO
+            result = conn.execute(query_buscar, {"archivo": nombre_modelo, "tipo": tipo})
             existe = result.mappings().first()
-
+ 
             if not existe:
-                return {"error": "modelo no existe en DB"}
-
-            # desactivar todos
-            conn.execute(query_reset)
-
+                return {"error": f"modelo '{nombre_modelo}' no existe en DB para tipo='{tipo}'"}
+ 
+            # desactivar solo los del mismo tipo
+            conn.execute(query_reset, {"tipo": tipo})
+ 
             # activar el nuevo
-            result = conn.execute(query_activate, {"archivo": nombre_modelo})
+            result = conn.execute(query_activate, {"archivo": nombre_modelo, "tipo": tipo})
             row = result.fetchone()
-
-        # recargar modelo en memoria
-        cargar_modelo_actual()
-
+ 
+        # recargar el modelo correspondiente en memoria
+        _cargar_modelo_por_tipo(tipo)
+ 
         return {
             "status": "modelo actualizado",
+            "tipo": tipo,
             "archivo": nombre_modelo,
             "version": row[0]
         }
-
+ 
     except Exception as e:
         return {
             "error": "fallo al cambiar modelo",
@@ -1016,33 +1354,19 @@ def confirmar_ticket_completo(
 
             # ---- TIPO ----
             if resumen_row["tipo_revision"] == "pendiente":
-                _upsert_correccion_tipo_feedback(
-                    payload.id, payload.titulo, payload.descripcion,
-                    resumen_row["tipo_id"],   
-                    resumen_row
-                )
+                _upsert_correccion_tipo_feedback(conn, payload.id, resumen_row["tipo_id"], resumen_row, "confirmado")
                 set_resumen_parts.append("tipo_revision = 'confirmado'")
                 campos_actualizados.append("tipo_revision")
 
             # ---- CATEGORIA ----
             if resumen_row["categoria_revision"] == "pendiente":
-                _upsert_correccion_categoria_feedback(
-                    conn, payload.id, payload.titulo, payload.descripcion,
-                    client_id, cliente_nombre,
-                    "categoria", resumen_row["categoria_id"],
-                    resumen_row
-                )
+                _upsert_correccion_categoria_feedback(conn, payload.id, client_id, cliente_nombre, "categoria", resumen_row["categoria_id"], resumen_row, "confirmado")
                 set_resumen_parts.append("categoria_revision = 'confirmado'")
                 campos_actualizados.append("categoria_revision")
 
             # ---- SUBCATEGORIA ----
             if resumen_row["subcategoria_revision"] == "pendiente":
-                _upsert_correccion_categoria_feedback(
-                    conn, payload.id, payload.titulo, payload.descripcion,
-                    client_id, cliente_nombre,
-                    "subcategoria", resumen_row["subcategoria_id"],
-                    resumen_row
-                )
+                _upsert_correccion_categoria_feedback(conn, payload.id, client_id, cliente_nombre, "subcategoria", resumen_row["subcategoria_id"], resumen_row, "confirmado")
                 set_resumen_parts.append("subcategoria_revision = 'confirmado'")
                 campos_actualizados.append("subcategoria_revision")
 
@@ -1086,29 +1410,18 @@ def corregir_ticket_completo(
                 if payload.tipo_nombre not in mapa_ids:
                     return {"error": "tipo invalido", "tipos_validos": list(mapa_ids.keys())}
                 tipo_id_corregido = mapa_ids[payload.tipo_nombre]
-                _upsert_correccion_tipo_feedback(
-                    payload.id, payload.titulo, payload.descripcion,
-                    tipo_id_corregido, resumen_row
-                )
+                _upsert_correccion_tipo_feedback(conn, payload.id, tipo_id_corregido, resumen_row, "corregido")
                 set_resumen_parts.append("tipo_revision = 'corregido'")
                 campos_actualizados.append("tipo_revision")
 
             # ---- CATEGORIA ----
-            _upsert_correccion_categoria_feedback(
-                conn, payload.id, payload.titulo, payload.descripcion,
-                client_id, cliente_nombre,
-                "categoria", payload.categoria_id, resumen_row
-            )
+            _upsert_correccion_categoria_feedback(conn, payload.id, client_id, cliente_nombre, "categoria", payload.categoria_id, resumen_row, "corregido")
             set_resumen_parts.append("categoria_revision = 'corregido'")
             campos_actualizados.append("categoria_revision")
 
             # ---- SUBCATEGORIA ----
             if payload.subcategoria_id:
-                _upsert_correccion_categoria_feedback(
-                    conn, payload.id, payload.titulo, payload.descripcion,
-                    client_id, cliente_nombre,
-                    "subcategoria", payload.subcategoria_id, resumen_row
-                )
+                _upsert_correccion_categoria_feedback(conn, payload.id, client_id, cliente_nombre, "subcategoria", payload.subcategoria_id, resumen_row, "corregido")
                 set_resumen_parts.append("subcategoria_revision = 'corregido'")
                 campos_actualizados.append("subcategoria_revision")
 

@@ -86,7 +86,13 @@ mapa_clientes = dict(zip(clientes["id"], clientes["name"]))
 
 # Resolver categoría padre en cada ticket
 data["cat_padre_id"]   = data["Category_id"].apply(resolver_categoria_padre)
-data["cliente_nombre"] = data["Client_id"].map(mapa_clientes)
+
+# IMPORTANTE: mapa_clientes usa ids en MAYUSCULAS (igual que main.py, que
+# siempre hace ticket.client_id.upper() antes de buscar en mapa_clientes).
+# El feedback nuevo llega con el client_id tal cual lo mando el caller
+# externo (puede venir en minusculas), asi que hay que normalizar aqui o
+# esas filas se pierden silenciosamente en el dropna de mas abajo.
+data["cliente_nombre"] = data["Client_id"].astype(str).str.upper().map(mapa_clientes)
 
 # Merge con nombre de categoría
 data = data.merge(cats_padre, on="cat_padre_id", how="left")

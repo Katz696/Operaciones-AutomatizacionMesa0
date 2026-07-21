@@ -92,7 +92,13 @@ print(f"    Tickets con subcategoría hijo: {len(data):,}  (descartados: {antes 
 data["subcategoria_nombre"] = data["Category_id"].map(mapa_hijo_nombre)
 data["cat_padre_id"]        = data["Category_id"].map(mapa_hijo_padre)
 data["cat_padre_nombre"]    = data["cat_padre_id"].map(mapa_padre_nombre)
-data["cliente_nombre"]      = data["Client_id"].map(mapa_clientes)
+
+# IMPORTANTE: mapa_clientes usa ids en MAYUSCULAS (igual que main.py, que
+# siempre hace ticket.client_id.upper() antes de buscar en mapa_clientes).
+# El feedback nuevo llega con el client_id tal cual lo mando el caller
+# externo (puede venir en minusculas), asi que hay que normalizar aqui o
+# esas filas se pierden silenciosamente en el dropna de mas abajo.
+data["cliente_nombre"]      = data["Client_id"].astype(str).str.upper().map(mapa_clientes)
 
 # Descartar tickets sin resolución completa
 antes = len(data)
