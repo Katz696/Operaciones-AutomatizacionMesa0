@@ -27,16 +27,16 @@ from text_preprocessing import limpiar_texto
 # =============================================================================
 
 DATASET_PATH    = "../data/dataset-training-category.csv"
-CATEGORIAS_PATH = "../data/categorias-activas.csv"    # id;name;padCategories_id;path;inactive
-CLIENTES_PATH   = "../data/clientes.csv"      # id;name
+CATEGORIAS_PATH = "../data/categorias-activas.csv"  
+CLIENTES_PATH   = "../data/clientes.csv"     
 MODEL_OUTPUT_DIR = "../models/"
 
 EMBEDDING_MODEL = "paraphrase-multilingual-MiniLM-L12-v2"
 
-BATCH_SIZE   = 64    # Reducir a 32 si hay problemas de memoria
+BATCH_SIZE   = 64    
 TEST_SIZE    = 0.2
 RANDOM_STATE = 42
-MIN_TICKETS  = 5     # Mínimo de tickets por categoría para incluirla
+MIN_TICKETS  = 5
 
 
 # =============================================================================
@@ -86,7 +86,8 @@ mapa_clientes = dict(zip(clientes["id"], clientes["name"]))
 
 # Resolver categoría padre en cada ticket
 data["cat_padre_id"]   = data["Category_id"].apply(resolver_categoria_padre)
-data["cliente_nombre"] = data["Client_id"].map(mapa_clientes)
+
+data["cliente_nombre"] = data["Client_id"].astype(str).str.upper().map(mapa_clientes)
 
 # Merge con nombre de categoría
 data = data.merge(cats_padre, on="cat_padre_id", how="left")
@@ -110,15 +111,6 @@ mapa_cliente_categorias = (
 )
 print(f"    Clientes con categorías mapeadas: {len(mapa_cliente_categorias)}")
 
-# # Visualizar mapa cliente → categorías
-# print(f"\n  {'CLIENTE':<30} {'CATEGORÍAS':>5}")
-# print("  " + "─" * 50)
-# for cliente, categorias in sorted(mapa_cliente_categorias.items()):
-#     print(f"  {cliente:<30} {len(categorias):>3} categorías")
-#     for cat in categorias:
-#         print(f"    {'':4}→ {cat}")
-#     print()
-
 
 # =============================================================================
 # 3. PREPROCESAMIENTO DE TEXTO
@@ -129,8 +121,6 @@ print(f"\n[3/7] Preprocesando texto...")
 data["titulo_limpio"] = data["IncidentTitle"].fillna("").apply(limpiar_texto)
 data["desc_limpia"]   = data["Description"].fillna("").apply(limpiar_texto)
 
-# Prefijo de cliente + título duplicado (mayor peso semántico) + descripción
-# Formato: "[CLIENTE] título título descripción"
 data["texto"] = (
     "[" + data["cliente_nombre"] + "] " +
     data["titulo_limpio"] + " " +
@@ -287,8 +277,8 @@ joblib.dump(
         "embedding_model_name"    : EMBEDDING_MODEL,
         "classifier"              : clf,
         "label_encoder"           : le,
-        "mapa_cliente_categorias" : mapa_cliente_categorias,  # cliente → [categorías válidas]
-        "mapa_clientes"           : mapa_clientes,            # UUID → nombre cliente
+        "mapa_cliente_categorias" : mapa_cliente_categorias, 
+        "mapa_clientes"           : mapa_clientes,          
         "version"                 : version,
         "metricas": {
             "accuracy"   : round(acc,  4),

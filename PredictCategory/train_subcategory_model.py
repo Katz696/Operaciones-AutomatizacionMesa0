@@ -20,8 +20,8 @@ from text_preprocessing import limpiar_texto
 # =============================================================================
 
 DATASET_PATH    = "../data/dataset-training-category.csv"
-CATEGORIAS_PATH = "../data/categorias-activas.csv"   # id;name;padCategories_id;path;inactive
-CLIENTES_PATH   = "../data/clientes.csv"         # id;name
+CATEGORIAS_PATH = "../data/categorias-activas.csv"
+CLIENTES_PATH   = "../data/clientes.csv"   
 MODEL_OUTPUT_DIR = "../models/"
 
 EMBEDDING_MODEL = "paraphrase-multilingual-MiniLM-L12-v2"
@@ -29,7 +29,7 @@ EMBEDDING_MODEL = "paraphrase-multilingual-MiniLM-L12-v2"
 BATCH_SIZE   = 64
 TEST_SIZE    = 0.2
 RANDOM_STATE = 42
-MIN_TICKETS  = 30     # Mínimo de tickets por subcategoría
+MIN_TICKETS  = 30
 
 
 # =============================================================================
@@ -92,7 +92,8 @@ print(f"    Tickets con subcategoría hijo: {len(data):,}  (descartados: {antes 
 data["subcategoria_nombre"] = data["Category_id"].map(mapa_hijo_nombre)
 data["cat_padre_id"]        = data["Category_id"].map(mapa_hijo_padre)
 data["cat_padre_nombre"]    = data["cat_padre_id"].map(mapa_padre_nombre)
-data["cliente_nombre"]      = data["Client_id"].map(mapa_clientes)
+
+data["cliente_nombre"]      = data["Client_id"].astype(str).str.upper().map(mapa_clientes)
 
 # Descartar tickets sin resolución completa
 antes = len(data)
@@ -148,7 +149,7 @@ antes_filtro = len(data)
 data = data[data["subcategoria_nombre"].isin(subs_validas)]
 print(f"\n    Tickets tras filtro : {len(data):,}  (descartados: {antes_filtro - len(data):,})")
 
-# Mapa inferido: (cliente, cat_padre) → subcategorías válidas
+# Mapa
 # Clave compuesta para filtrar en inferencia con máxima precisión
 mapa_padre_subcategorias = (
     data.groupby(["cliente_nombre", "cat_padre_nombre"])["subcategoria_nombre"]
@@ -156,7 +157,7 @@ mapa_padre_subcategorias = (
     .to_dict()
 )
 
-# También mapa plano: cat_padre → subcategorías (para búsqueda rápida)
+# También mapa plano: cat_padre → subcategorías
 mapa_solo_padre_subcats = (
     data.groupby("cat_padre_nombre")["subcategoria_nombre"]
     .apply(lambda x: sorted(x.unique().tolist()))
@@ -241,7 +242,7 @@ svc = LinearSVC(
     random_state=RANDOM_STATE
 )
 
-# CalibratedClassifierCV para obtener probabilidades (necesarias en inferencia)
+# CalibratedClassifierCV para obtener probabilidades
 clf = CalibratedClassifierCV(svc, cv=3)
 
 clf.fit(X_train_emb, y_train)
@@ -281,10 +282,10 @@ joblib.dump(
         "embedding_model_name"       : EMBEDDING_MODEL,
         "classifier"                 : clf,
         "label_encoder"              : le,
-        "mapa_padre_subcategorias"   : mapa_padre_subcategorias,   # (cliente, padre) → [subcats]
-        "mapa_solo_padre_subcats"    : mapa_solo_padre_subcats,    # padre → [subcats] fallback
-        "mapa_clientes"              : mapa_clientes,              # UUID → nombre cliente
-        "mapa_padre_nombre"          : mapa_padre_nombre,          # UUID padre → nombre padre
+        "mapa_padre_subcategorias"   : mapa_padre_subcategorias,   
+        "mapa_solo_padre_subcats"    : mapa_solo_padre_subcats,    
+        "mapa_clientes"              : mapa_clientes,       
+        "mapa_padre_nombre"          : mapa_padre_nombre,          
         "version"                    : version,
         "metricas": {
             "accuracy"    : round(acc,  4),
