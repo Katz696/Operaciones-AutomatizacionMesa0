@@ -822,6 +822,7 @@ def train_model(username: str = Depends(autenticar_usuario)):
         "output": proceso.stdout
     }
 
+<<<<<<< HEAD
 # endpoint para ejecutar entrenamiento de categoria (asincrono)
 
 @app.post("/train-category")
@@ -866,6 +867,63 @@ def train_status(job_id: str, username: str = Depends(autenticar_usuario)):
 
     return dict(job)
 
+=======
+# endpoint para ejecutar entrenamiento del modelo categoria
+ 
+@app.post("/train-category")
+def train_category_model(username: str = Depends(autenticar_usuario)):
+ 
+    proceso = subprocess.run(
+        ["python", "train_categorymodel.py"],
+        cwd=CATEGORY_SCRIPTS_DIR,
+        capture_output=True,
+        text=True
+    )
+ 
+    if proceso.returncode != 0:
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "status": "training failed",
+                "stdout": proceso.stdout,
+                "stderr": proceso.stderr
+            }
+        )
+ 
+    return {
+        "status": "training executed",
+        "output": proceso.stdout
+    }
+ 
+ 
+# endpoint para ejecutar entrenamiento del modelo subcategoria
+ 
+@app.post("/train-subcategory")
+def train_subcategory_model(username: str = Depends(autenticar_usuario)):
+ 
+    proceso = subprocess.run(
+        ["python", "train_subcategory_model.py"],
+        cwd=CATEGORY_SCRIPTS_DIR,
+        capture_output=True,
+        text=True
+    )
+ 
+    if proceso.returncode != 0:
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "status": "training failed",
+                "stdout": proceso.stdout,
+                "stderr": proceso.stderr
+            }
+        )
+ 
+    return {
+        "status": "training executed",
+        "output": proceso.stdout
+    }
+
+>>>>>>> af927fc2cb8647ce4faf871ee491eb2573e599fd
 # endpoint para ejecutar evaluación del modelo tipo
  
 @app.post("/evaluate")
