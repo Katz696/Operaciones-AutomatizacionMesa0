@@ -16,7 +16,7 @@ def process_tickets_batch(tickets) -> list[dict]:
     results = []
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(headless=True, slow_mo=500)
         context = browser.new_context()
         page = context.new_page()
 
@@ -39,13 +39,16 @@ def process_tickets_batch(tickets) -> list[dict]:
 
         # Procesar cada ticket
         for ticket in tickets:
-            log("info", f"Procesando ticket {ticket.code} | Categoría: {ticket.categoria}")
+            log("info", f"Procesando ticket {ticket.code} | Tipo: {ticket.tipo} | Categoría: {ticket.categoria}/{ticket.subcategoria}")
             try:
                 search_and_open_ticket(
                     page=page,
                     context=context,
                     incident_code=ticket.code,
-                    tipo=ticket.categoria
+                    # cliente=ticket.cliente,
+                    tipo=ticket.tipo,
+                    categoria=ticket.categoria,
+                    subcategoria=ticket.subcategoria
                 )
                 results.append({
                     "code": ticket.code,

@@ -1,7 +1,6 @@
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from pydantic import BaseModel
 from typing import List
-# from app.services.ticket_service import process_tickets_batch
 from app.services.ticket_service import process_tickets_batch_async
 import os
 import logging
@@ -13,6 +12,7 @@ from datetime import datetime
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 import secrets
 import bcrypt
+
 # ------------------------
 
 from sqlalchemy import create_engine, text
@@ -26,7 +26,10 @@ _batch_start_time: float | None = None
 
 class TicketItem(BaseModel):
     code: str
+    # cliente: str
+    tipo: str
     categoria: str
+    subcategoria: str
 
 class TicketBatchRequest(BaseModel):
     tickets: List[TicketItem]

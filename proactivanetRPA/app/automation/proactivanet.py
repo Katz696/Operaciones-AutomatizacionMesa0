@@ -4,6 +4,7 @@ from app.utils.screenshots import take_screenshot
 from dotenv import load_dotenv
 import os
 import re
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import Playwright, expect
 
 load_dotenv()
@@ -75,13 +76,11 @@ def ensure_session(context, page, username, password):
         log("warning", "No se pudo guardar el estado de sesión", error=str(e))
 
 
-def search_and_open_ticket(page, context, incident_code, tipo):
+def search_and_open_ticket(page, context, incident_code, tipo, categoria, subcategoria):
     try:
         ensure_session(context, page, USER, PASS)
     except Exception as e:
         raise Exception(f"Error al establecer sesión antes de buscar ticket '{incident_code}': {e}")
-
-    # take_screenshot(page, "before_search")
 
     # Buscar en el top frame
     try:
@@ -106,7 +105,6 @@ def search_and_open_ticket(page, context, incident_code, tipo):
         right_frame = content_frame.frame_locator("iframe[name='rightFrame']")
         rows = right_frame.locator("#pawTheTb tbody tr[class*='pawPTableTbDtTr']")
         rows.first.wait_for(timeout=10000)
-        # take_screenshot(page, f"results_{incident_code}")
     except PlaywrightTimeoutError as e:
         take_screenshot(page, "results_timeout")
         raise Exception(f"Timeout esperando resultados de búsqueda para '{incident_code}': {e}")
@@ -137,7 +135,6 @@ def search_and_open_ticket(page, context, incident_code, tipo):
         search_edit_button.click()
         page.wait_for_load_state("networkidle")
         page.wait_for_timeout(6000)
-        # take_screenshot(page, "after_edit_click")
         log("info", "Modo edición activado")
     except PlaywrightTimeoutError as e:
         take_screenshot(page, "edit_button_timeout")
@@ -146,17 +143,24 @@ def search_and_open_ticket(page, context, incident_code, tipo):
         take_screenshot(page, "edit_button_error")
         raise Exception(f"Error al activar modo edición del ticket '{incident_code}': {e}")
 
+
     # Ejecutar pasos de edición
+    # try:
+    #     select_client(page, cliente)
+    # except Exception as e:
+    #     # save_ticket(page)
+    #     raise Exception(f"Error al seleccionar cliente '{cliente}': {e}")
+    
     try:
         select_ticket_type(page, tipo)
     except Exception as e:
-        save_ticket(page)  # Intentar guardar antes de salir por error
+        # save_ticket(page)
         raise Exception(f"Error al seleccionar tipo de ticket '{tipo}': {e}")
 
     try:
-        select_category(page, "/")
+        select_category_and_subcategory(page, categoria, subcategoria)
     except Exception as e:
-        raise Exception(f"Error al seleccionar categoría '/': {e}")
+        raise Exception(f"Error al seleccionar categoría '{categoria}/{subcategoria}': {e}")
 
     try:
         fill_additional_info(page)
@@ -168,7 +172,109 @@ def search_and_open_ticket(page, context, incident_code, tipo):
     except Exception as e:
         raise Exception(f"Error al guardar el ticket '{incident_code}': {e}")
 
+def select_client(page, cliente_nombre: str):
 
+    right_frame_content = (
+        page.locator("iframe[name='pawContentFrame']").content_frame
+        .locator("iframe[name='rightFrame']").content_frame
+    )
+
+    client_table = right_frame_content.locator("table#padCustomers_id")
+
+    # -------------------------------------------------------
+    # Abrir buscador
+    # -------------------------------------------------------
+
+    client_table.wait_for(state="visible")
+
+    btn = client_table.get_by_role(
+        "button",
+        name="Pulse para buscar el valor"
+    )
+
+    log("info", f"Botones encontrados: {btn.count()}")
+
+    btn.first.click()
+
+    page.wait_for_timeout(2000)
+
+    # -------------------------------------------------------
+    # Mostrar TODOS los frames
+    # # -------------------------------------------------------
+
+    # log("info", "===== FRAMES =====")
+
+    # for frame in page.frames:
+    #     log("info", f"Frame encontrado - Nombre: {frame.name} | URL: {frame.url}")
+
+    # -------------------------------------------------------
+    # Buscar theIFrame
+    # -------------------------------------------------------
+
+    # log("info", "===== BUSCANDO theIFrame =====")
+
+    search_frame = None
+
+    for frame in page.frames:
+        if frame.name == "theIFrame":
+            search_frame = frame
+            break
+
+    if search_frame is None:
+        raise Exception("No existe ningún frame llamado 'theIFrame'")
+
+    log("info", "Frame encontrado")
+
+    # log("info", f"URL: {search_frame.url}")
+
+    # -------------------------------------------------------
+    # Buscar campo
+    # -------------------------------------------------------
+
+    locator = search_frame.locator("#pawDlgSearchStr")
+
+    # log("info", f"Cantidad #pawDlgSearchStr: {locator.count()}")
+
+    if locator.count() == 0:
+
+        log("warning", "===== HTML DEL FRAME =====")
+        log("warning", search_frame.locator("body").inner_html())
+
+        raise Exception(
+            "No existe #pawDlgSearchStr dentro de theIFrame"
+        )
+
+    locator.fill(cliente_nombre)
+
+    log("info", "Texto escrito")
+
+    aceptar = search_frame.get_by_role(
+        "button",
+        name="Aceptar"
+    )
+
+    log("info", f"Botones Aceptar: {aceptar.count()}")
+
+    aceptar.click()
+
+    page.wait_for_timeout(1500)
+
+    # -------------------------------------------------------
+    # Buscar resultados
+    # -------------------------------------------------------
+
+    log("info", "===== RESULTADOS =====")
+
+    resultados = right_frame_content.get_by_text(cliente_nombre)
+
+    log("info", f"Coincidencias: {resultados.count()}")
+
+    if resultados.count() > 0:
+        resultados.last.click()
+        log("info", "Cliente seleccionado")
+    else:
+        log("warning", "No apareció el resultado")
+    
 def select_ticket_type(page, tipo_nombre: str):
     try:
         type_span = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
@@ -189,97 +295,107 @@ def select_ticket_type(page, tipo_nombre: str):
         raise Exception(f"Error al seleccionar el tipo de ticket '{tipo_nombre}': {e}")
 
 
-def select_category(page, categoria_nombre: str):
-    right_frame = next(
-        (f for f in page.frames if f.name == "rightFrame"), None
+def select_category_and_subcategory(page, categoria_principal: str, subcategoria: str):
+ 
+    right_frame_content = (
+        page.locator("iframe[name='pawContentFrame']").content_frame
+        .locator("iframe[name='rightFrame']").content_frame
     )
-
-    if not right_frame:
-        raise Exception("No se encontró rightFrame al intentar seleccionar categoría")
-
-    try:
-        right_frame.wait_for_selector("#padCategories_id", timeout=15000)
-    except PlaywrightTimeoutError as e:
-        take_screenshot(page, "category_selector_timeout")
-        raise Exception(f"Timeout esperando el selector de categorías '#padCategories_id': {e}")
-
-    try:
-        btn = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
-            .locator("iframe[name=\"rightFrame\"]").content_frame \
-            .locator("#padCategories_id > tbody > .pawDFMultiFunReqTr > td:nth-child(4)")
-        btn.click()
-        page.wait_for_timeout(1500)
-        # take_screenshot(page, "category_popup_open")
-    except PlaywrightTimeoutError as e:
-        take_screenshot(page, "category_btn_timeout")
-        raise Exception(f"Timeout al abrir el popup de categorías: {e}")
-    except Exception as e:
-        take_screenshot(page, "category_btn_error")
-        raise Exception(f"Error al abrir el popup de categorías: {e}")
-
-    try:
-        clicked = right_frame.evaluate(f"""
-            () => {{
-                const target = {repr(categoria_nombre)}.trim();
-
-                const candidates = Array.from(document.querySelectorAll(
-                    'ul li, .pawDropDown li, .pawList li, [class*="List"] li, [class*="list"] li'
-                ));
-
-                let el = candidates.find(e => {{
-                    const text = (e.innerText || e.textContent || '').trim();
-                    return text === target;
-                }});
-
-                if (!el) {{
-                    const all = Array.from(document.querySelectorAll('span, div, td'));
-                    el = all.find(e => {{
-                        const directText = Array.from(e.childNodes)
-                            .filter(n => n.nodeType === Node.TEXT_NODE)
-                            .map(n => n.textContent.trim())
-                            .join('').trim();
-                        const rect = e.getBoundingClientRect();
-                        return directText === target && rect.width > 0 && rect.height > 0;
-                    }});
-                }}
-
-                if (el) {{
-                    el.click();
-                    return 'ok:' + (el.innerText || el.textContent || '').trim();
-                }}
-
-                const visible = Array.from(document.querySelectorAll('li, span'))
-                    .filter(e => {{
-                        const rect = e.getBoundingClientRect();
-                        return rect.width > 0 && rect.height > 0 && (e.innerText || '').trim().length > 0;
-                    }})
-                    .slice(0, 20)
-                    .map(e => JSON.stringify((e.innerText || '').trim()));
-                return 'not_found. Visible: ' + visible.join(', ');
-            }}
-        """)
-    except Exception as e:
-        take_screenshot(page, "category_js_error")
-        raise Exception(f"Error al ejecutar JS para seleccionar categoría '{categoria_nombre}': {e}")
-
-    if isinstance(clicked, str) and clicked.startswith("ok:"):
-        log("info", f"Categoría '{categoria_nombre}' seleccionada correctamente")
-        # take_screenshot(page, "category_selected")
+ 
+    # log("info", "========== DIAGNÓSTICO CATEGORÍA ==========")
+ 
+    category_table = right_frame_content.locator("table#padCategories_id")
+    category_table.wait_for(state="visible", timeout=10000)
+ 
+    target_full = f"/{categoria_principal}/{subcategoria}"
+ 
+    log("info", f"Buscando categoría: {categoria_principal}")
+    log("info", f"Ruta objetivo: {target_full}")
+ 
+    # --------------------------------------------------
+    # Abrir el buscador, llenar y aceptar
+    # --------------------------------------------------
+ 
+    search_btn = category_table.get_by_role("button", name="Pulse para buscar el valor")
+    if search_btn.count() == 0:
+        raise Exception("No se encontró el botón de búsqueda de categoría.")
+    search_btn.first.click()
+    page.wait_for_timeout(800)
+ 
+    search_frame = next((f for f in page.frames if f.name == "theIFrame"), None)
+    if search_frame is None:
+        raise Exception("No apareció el frame del buscador.")
+ 
+    search_input = search_frame.locator("#pawDlgSearchStr")
+    search_input.wait_for(state="visible", timeout=10000)
+    search_input.fill(categoria_principal)
+ 
+    search_frame.get_by_role("button", name="Aceptar").click()
+    right_frame_content.locator(".ui-dialog").wait_for(state="hidden", timeout=10000)
+    page.wait_for_timeout(800)
+ 
+    # --------------------------------------------------
+    # Seleccionar directamente el resultado con la ruta completa
+    # --------------------------------------------------
+    # El atributo 'title' SIEMPRE trae el texto completo sin truncar,
+ 
+    title_el = right_frame_content.get_by_title(target_full, exact=True)
+ 
+    if title_el.count() > 0:
+        title_el.first.click()
+        log("info", f"Categoría/subcategoría seleccionada por title: {target_full}")
+        # log("info", "========== FIN DIAGNÓSTICO ==========")
         return
-
-    log("info", f"[DEBUG] select_category result: {clicked}")
-    # take_screenshot(page, "select_category_failed")
-    raise Exception(
-        f"No se pudo seleccionar la categoría '{categoria_nombre}'. "
-        f"Elementos visibles en pantalla: {clicked}"
-    )
-
+ 
+    # Respaldo: JS tolerante a truncamiento en innerText, por si el elemento no expone 'title'.
+    right_frame_real = next((f for f in page.frames if f.name == "rightFrame"), None)
+    if not right_frame_real:
+        raise Exception("No se encontró el frame real 'rightFrame' para buscar la categoría")
+ 
+    clicked = right_frame_real.evaluate(f"""
+        () => {{
+            const targetFull = {repr(target_full)};
+            const candidates = Array.from(document.querySelectorAll('span, div, td, a, li'));
+            const matches = candidates.filter(e => {{
+                const titleAttr = (e.getAttribute && e.getAttribute('title')) || '';
+                if (titleAttr.trim() === targetFull) return true;
+                const text = (e.innerText || e.textContent || '').trim();
+                if (!text.startsWith('/')) return false;
+                if (text === targetFull) return true;
+                if (text.endsWith('...')) {{
+                    const stripped = text.slice(0, -3);
+                    return targetFull.startsWith(stripped);
+                }}
+                return false;
+            }});
+            if (matches.length === 0) return null;
+            matches.sort((a, b) =>
+                (b.innerText || b.textContent || '').length -
+                (a.innerText || a.textContent || '').length
+            );
+            const el = matches[0];
+            el.click();
+            return (el.innerText || el.textContent || '').trim();
+        }}
+    """)
+ 
+    if not clicked:
+        log("warning", "===== TEXTO DEL FORMULARIO (body de rightFrame) =====")
+        log("warning", right_frame_content.locator("body").inner_text())
+ 
+        raise Exception(
+            f"No se pudo seleccionar la ruta '{target_full}'."
+        )
+ 
+    log("info", f"✔ Categoría/subcategoría seleccionada (respaldo JS): {clicked}")
+ 
 
 def fill_additional_info(page):
     try:
         page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
             .locator("iframe[name=\"rightFrame\"]").content_frame \
-            .get_by_text("INFORMACIÓN ADICIONAL").click()
+            .locator("span.pawFormPageTabStripIndexTabLabel", has_text="INFORMACIÓN ADICIONAL") \
+            .click()
         log("info", "Pestaña 'INFORMACIÓN ADICIONAL' abierta")
     except PlaywrightTimeoutError as e:
         take_screenshot(page, "additional_info_tab_timeout")
@@ -302,11 +418,12 @@ def fill_additional_info(page):
         take_screenshot(page, "campo_empresa_error")
         raise Exception(f"Error al seleccionar 'Atendido por la empresa': {e}")
 
-    # Forma de servicio
+    # Forma de servicio — localizado por fila
     try:
         fs_span = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
             .locator("iframe[name=\"rightFrame\"]").content_frame \
-            .get_by_role("button", name="Pulse para seleccionar el").nth(4)
+            .get_by_role("row").filter(has_text="Forma de servicio") \
+            .get_by_role("button")
         option = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
             .locator("iframe[name=\"rightFrame\"]").content_frame \
             .get_by_text("Soporte 5 x")
@@ -316,11 +433,12 @@ def fill_additional_info(page):
         take_screenshot(page, "campo_forma_servicio_error")
         raise Exception(f"Error al seleccionar 'Forma de servicio': {e}")
 
-    # Medio
+    # Medio — mismo cambio: por fila, no por índice (nth(5)).
     try:
         medio_span = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
             .locator("iframe[name=\"rightFrame\"]").content_frame \
-            .get_by_role("button", name="Pulse para seleccionar el").nth(5)
+            .get_by_role("row").filter(has_text="Medio:") \
+            .get_by_role("button")
         option_medio = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
             .locator("iframe[name=\"rightFrame\"]").content_frame \
             .get_by_text("Portal", exact=True)
@@ -358,7 +476,6 @@ def fill_additional_info(page):
         take_screenshot(page, "campo_subtipo_error")
         raise Exception(f"Error al seleccionar 'Subtipo': {e}")
 
-
 def select_option(page, span, option):
     try:
         span.wait_for(state="visible", timeout=10000)
@@ -374,10 +491,20 @@ def select_option(page, span, option):
         option.wait_for(state="visible", timeout=5000)
         option.click()
         log("info", "Opción seleccionada correctamente")
-        # take_screenshot(page, "option_selected")
     except PlaywrightTimeoutError:
         take_screenshot(page, "select_option_option_timeout")
         log("warning", "La opción no apareció en el tiempo esperado, continuando...")
+        return
+
+    try:
+        popup = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
+            .locator("iframe[name=\"rightFrame\"]").content_frame \
+            .locator(".pawDFSelPopup")
+        popup.first.wait_for(state="hidden", timeout=5000)
+    except PlaywrightTimeoutError:
+        log("warning", "El popup de selección no se cerró solo; forzando cierre con Escape")
+        page.keyboard.press("Escape")
+        page.wait_for_timeout(300)
 
 
 def save_ticket(page):

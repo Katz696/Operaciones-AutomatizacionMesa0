@@ -52,7 +52,7 @@ services:
     ports:
       - "8001:8001"
     volumes:
-      - ./proactivanet/app:/app/app
+      - ./proactivanetRPA/app:/app/app
       - screenshots_data:/app/screenshots
     shm_size: "1gb"
 
