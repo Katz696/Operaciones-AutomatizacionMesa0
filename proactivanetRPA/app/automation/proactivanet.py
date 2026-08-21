@@ -4,8 +4,11 @@ from app.utils.screenshots import take_screenshot
 from dotenv import load_dotenv
 import os
 import re
+from datetime import datetime
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import Playwright, expect
+
+from sqlalchemy import create_engine, text
 
 load_dotenv()
 
@@ -16,6 +19,8 @@ USER = os.getenv("PROACTIVA_USER")
 PASS = os.getenv("PROACTIVA_PASSWORD")
 ACENTO = "\u00b4"
 
+DATABASE_URL = os.getenv("DATABASE_URL")
+engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 
 def is_logged_in(page):
     try:
@@ -23,7 +28,6 @@ def is_logged_in(page):
     except Exception as e:
         log("warning", "No se pudo verificar si hay sesión activa", error=str(e))
         return False
-
 
 def login(page, username, password):
     try:
@@ -75,11 +79,12 @@ def ensure_session(context, page, username, password):
     except Exception as e:
         log("warning", "No se pudo guardar el estado de sesión", error=str(e))
 
-
 def search_and_open_ticket(page, context, incident_code, tipo, categoria, subcategoria):
     try:
         ensure_session(context, page, USER, PASS)
     except Exception as e:
+        _registrar_error_automatizacion(incident_code, tipo, categoria, subcategoria, "sesion",
+                                         f"Error al establecer sesión: {e}")
         raise Exception(f"Error al establecer sesión antes de buscar ticket '{incident_code}': {e}")
 
     # Buscar en el top frame
@@ -94,9 +99,13 @@ def search_and_open_ticket(page, context, incident_code, tipo, categoria, subcat
         log("info", f"Búsqueda ejecutada para ticket '{incident_code}'")
     except PlaywrightTimeoutError as e:
         take_screenshot(page, "search_input_timeout")
+        _registrar_error_automatizacion(incident_code, tipo, categoria, subcategoria, "busqueda",
+                                         f"Timeout al buscar el ticket en el top frame: {e}")
         raise Exception(f"Timeout al intentar buscar el ticket '{incident_code}' en el top frame: {e}")
     except Exception as e:
         take_screenshot(page, "search_input_error")
+        _registrar_error_automatizacion(incident_code, tipo, categoria, subcategoria, "busqueda",
+                                         f"Error al buscar el ticket: {e}")
         raise Exception(f"Error al buscar el ticket '{incident_code}': {e}")
 
     # Esperar resultados
@@ -107,9 +116,13 @@ def search_and_open_ticket(page, context, incident_code, tipo, categoria, subcat
         rows.first.wait_for(timeout=10000)
     except PlaywrightTimeoutError as e:
         take_screenshot(page, "results_timeout")
+        _registrar_error_automatizacion(incident_code, tipo, categoria, subcategoria, "busqueda_resultados",
+                                         f"Timeout esperando resultados de búsqueda: {e}")
         raise Exception(f"Timeout esperando resultados de búsqueda para '{incident_code}': {e}")
     except Exception as e:
         take_screenshot(page, "results_error")
+        _registrar_error_automatizacion(incident_code, tipo, categoria, subcategoria, "busqueda_resultados",
+                                         f"Error al cargar resultados de búsqueda: {e}")
         raise Exception(f"Error al cargar resultados de búsqueda para '{incident_code}': {e}")
 
     # Abrir el ticket
@@ -123,6 +136,8 @@ def search_and_open_ticket(page, context, incident_code, tipo, categoria, subcat
         page.wait_for_timeout(6000)
     except Exception as e:
         take_screenshot(page, "open_ticket_error")
+        _registrar_error_automatizacion(incident_code, tipo, categoria, subcategoria, "abrir_ticket",
+                                         f"Error al abrir el ticket: {e}")
         raise Exception(f"Error al abrir el ticket '{incident_code}': {e}")
 
     # Click en pestaña GENERAL y botón editar
@@ -138,37 +153,40 @@ def search_and_open_ticket(page, context, incident_code, tipo, categoria, subcat
         log("info", "Modo edición activado")
     except PlaywrightTimeoutError as e:
         take_screenshot(page, "edit_button_timeout")
+        _registrar_error_automatizacion(incident_code, tipo, categoria, subcategoria, "modo_edicion",
+                                         f"Timeout al activar modo edición: {e}")
         raise Exception(f"Timeout al activar modo edición del ticket '{incident_code}': {e}")
     except Exception as e:
         take_screenshot(page, "edit_button_error")
+        _registrar_error_automatizacion(incident_code, tipo, categoria, subcategoria, "modo_edicion",
+                                         f"Error al activar modo edición: {e}")
         raise Exception(f"Error al activar modo edición del ticket '{incident_code}': {e}")
 
-
     # Ejecutar pasos de edición
-    # try:
-    #     select_client(page, cliente)
-    # except Exception as e:
-    #     # save_ticket(page)
-    #     raise Exception(f"Error al seleccionar cliente '{cliente}': {e}")
-    
+
     try:
         select_ticket_type(page, tipo)
     except Exception as e:
-        # save_ticket(page)
+        _registrar_error_automatizacion(incident_code, tipo, categoria, subcategoria, "tipo",
+                                         f"Error al seleccionar tipo de ticket: {e}")
         raise Exception(f"Error al seleccionar tipo de ticket '{tipo}': {e}")
 
     try:
         select_category_and_subcategory(page, categoria, subcategoria)
     except Exception as e:
+        _registrar_error_automatizacion(incident_code, tipo, categoria, subcategoria, "categoria",
+                                         f"Error al seleccionar categoría '{categoria}/{subcategoria}': {e}")
         raise Exception(f"Error al seleccionar categoría '{categoria}/{subcategoria}': {e}")
 
     try:
         fill_additional_info(page)
     except Exception as e:
+        _registrar_error_automatizacion(incident_code, tipo, categoria, subcategoria, "informacion_adicional",
+                                         f"Error al llenar información adicional: {e}")
         raise Exception(f"Error al llenar información adicional: {e}")
 
     try:
-        save_ticket(page)
+        save_ticket(page, incident_code, tipo, categoria, subcategoria)
     except Exception as e:
         raise Exception(f"Error al guardar el ticket '{incident_code}': {e}")
 
@@ -181,9 +199,7 @@ def select_client(page, cliente_nombre: str):
 
     client_table = right_frame_content.locator("table#padCustomers_id")
 
-    # -------------------------------------------------------
     # Abrir buscador
-    # -------------------------------------------------------
 
     client_table.wait_for(state="visible")
 
@@ -198,20 +214,7 @@ def select_client(page, cliente_nombre: str):
 
     page.wait_for_timeout(2000)
 
-    # -------------------------------------------------------
-    # Mostrar TODOS los frames
-    # # -------------------------------------------------------
-
-    # log("info", "===== FRAMES =====")
-
-    # for frame in page.frames:
-    #     log("info", f"Frame encontrado - Nombre: {frame.name} | URL: {frame.url}")
-
-    # -------------------------------------------------------
     # Buscar theIFrame
-    # -------------------------------------------------------
-
-    # log("info", "===== BUSCANDO theIFrame =====")
 
     search_frame = None
 
@@ -225,15 +228,10 @@ def select_client(page, cliente_nombre: str):
 
     log("info", "Frame encontrado")
 
-    # log("info", f"URL: {search_frame.url}")
-
-    # -------------------------------------------------------
     # Buscar campo
-    # -------------------------------------------------------
 
     locator = search_frame.locator("#pawDlgSearchStr")
 
-    # log("info", f"Cantidad #pawDlgSearchStr: {locator.count()}")
 
     if locator.count() == 0:
 
@@ -259,9 +257,7 @@ def select_client(page, cliente_nombre: str):
 
     page.wait_for_timeout(1500)
 
-    # -------------------------------------------------------
     # Buscar resultados
-    # -------------------------------------------------------
 
     log("info", "===== RESULTADOS =====")
 
@@ -274,7 +270,7 @@ def select_client(page, cliente_nombre: str):
         log("info", "Cliente seleccionado")
     else:
         log("warning", "No apareció el resultado")
-    
+
 def select_ticket_type(page, tipo_nombre: str):
     try:
         type_span = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
@@ -294,64 +290,56 @@ def select_ticket_type(page, tipo_nombre: str):
         take_screenshot(page, "ticket_type_error")
         raise Exception(f"Error al seleccionar el tipo de ticket '{tipo_nombre}': {e}")
 
-
 def select_category_and_subcategory(page, categoria_principal: str, subcategoria: str):
- 
+
     right_frame_content = (
         page.locator("iframe[name='pawContentFrame']").content_frame
         .locator("iframe[name='rightFrame']").content_frame
     )
- 
-    # log("info", "========== DIAGNÓSTICO CATEGORÍA ==========")
- 
+
     category_table = right_frame_content.locator("table#padCategories_id")
     category_table.wait_for(state="visible", timeout=10000)
- 
+
     target_full = f"/{categoria_principal}/{subcategoria}"
- 
+
     log("info", f"Buscando categoría: {categoria_principal}")
     log("info", f"Ruta objetivo: {target_full}")
- 
-    # --------------------------------------------------
+
     # Abrir el buscador, llenar y aceptar
-    # --------------------------------------------------
- 
+
     search_btn = category_table.get_by_role("button", name="Pulse para buscar el valor")
     if search_btn.count() == 0:
         raise Exception("No se encontró el botón de búsqueda de categoría.")
     search_btn.first.click()
     page.wait_for_timeout(800)
- 
+
     search_frame = next((f for f in page.frames if f.name == "theIFrame"), None)
     if search_frame is None:
         raise Exception("No apareció el frame del buscador.")
- 
+
     search_input = search_frame.locator("#pawDlgSearchStr")
     search_input.wait_for(state="visible", timeout=10000)
     search_input.fill(categoria_principal)
- 
+
     search_frame.get_by_role("button", name="Aceptar").click()
     right_frame_content.locator(".ui-dialog").wait_for(state="hidden", timeout=10000)
     page.wait_for_timeout(800)
- 
-    # --------------------------------------------------
+
     # Seleccionar directamente el resultado con la ruta completa
-    # --------------------------------------------------
-    # El atributo 'title' SIEMPRE trae el texto completo sin truncar,
- 
+    # El atributo 'title' SIEMPRE trae el texto completo sin truncar
+
     title_el = right_frame_content.get_by_title(target_full, exact=True)
- 
+
     if title_el.count() > 0:
         title_el.first.click()
         log("info", f"Categoría/subcategoría seleccionada por title: {target_full}")
-        # log("info", "========== FIN DIAGNÓSTICO ==========")
         return
- 
+
     # Respaldo: JS tolerante a truncamiento en innerText, por si el elemento no expone 'title'.
     right_frame_real = next((f for f in page.frames if f.name == "rightFrame"), None)
     if not right_frame_real:
         raise Exception("No se encontró el frame real 'rightFrame' para buscar la categoría")
- 
+
     clicked = right_frame_real.evaluate(f"""
         () => {{
             const targetFull = {repr(target_full)};
@@ -378,17 +366,16 @@ def select_category_and_subcategory(page, categoria_principal: str, subcategoria
             return (el.innerText || el.textContent || '').trim();
         }}
     """)
- 
+
     if not clicked:
         log("warning", "===== TEXTO DEL FORMULARIO (body de rightFrame) =====")
         log("warning", right_frame_content.locator("body").inner_text())
- 
+
         raise Exception(
             f"No se pudo seleccionar la ruta '{target_full}'."
         )
- 
+
     log("info", f"✔ Categoría/subcategoría seleccionada (respaldo JS): {clicked}")
- 
 
 def fill_additional_info(page):
     try:
@@ -433,7 +420,7 @@ def fill_additional_info(page):
         take_screenshot(page, "campo_forma_servicio_error")
         raise Exception(f"Error al seleccionar 'Forma de servicio': {e}")
 
-    # Medio — mismo cambio: por fila, no por índice (nth(5)).
+    # Medio
     try:
         medio_span = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
             .locator("iframe[name=\"rightFrame\"]").content_frame \
@@ -506,25 +493,111 @@ def select_option(page, span, option):
         page.keyboard.press("Escape")
         page.wait_for_timeout(300)
 
+# Validación del guardado
 
-def save_ticket(page):
+def _verificar_modo_lectura(right_frame_real, timeout=10000):
+    """
+    Un guardado exitoso regresa el formulario a modo lectura, lo cual
+    se confirma con la reaparición de #pageEditBtn.
+    """
+    try:
+        right_frame_real.locator("#pageEditBtn").wait_for(state="visible", timeout=timeout)
+        return True
+    except PlaywrightTimeoutError:
+        return False
+
+
+def _registrar_error_automatizacion(incident_code, tipo, categoria, subcategoria, paso, mensaje_error):
+    # insertar en la base de datos los errores tanto de time out o de seleccion etc
+    query = text("""
+        INSERT INTO tickets_guardado_fallido
+            (incidente_codigo, tipo, categoria, subcategoria,
+             paso, mensaje_error, fecha_deteccion, notificado)
+        VALUES (:incidente_codigo, :tipo, :categoria, :subcategoria,
+                :paso, :mensaje_error, :fecha_deteccion, :notificado)
+    """)
+    try:
+        with engine.connect() as conn:
+            conn.execute(query, {
+                "incidente_codigo": incident_code,
+                "tipo": tipo,
+                "categoria": categoria,
+                "subcategoria": subcategoria,
+                "paso": paso,
+                "mensaje_error": mensaje_error,
+                "fecha_deteccion": datetime.now(),
+                "notificado": False,
+            })
+            conn.commit()
+        log("info", "Error de automatización registrado en base de datos",
+            incident_code=incident_code, paso=paso)
+    except Exception as db_error:
+        # No se re-lanza: si la BD también falla, al menos queda el log y el screenshot.
+        log("error", "No se pudo registrar el error de automatización en base de datos",
+            incident_code=incident_code, paso=paso, db_error=str(db_error))
+
+
+def save_ticket(page, incident_code=None, tipo=None, categoria=None, subcategoria=None):
     right_frame_real = next(
         (f for f in page.frames if f.name == "rightFrame"), None
     )
     if not right_frame_real:
         raise Exception("No se encontró el frame 'rightFrame' al intentar guardar el ticket")
 
+    # Proactivanet reporta errores de validación mediante un windows alert
+    dialog_info = {"appeared": False, "message": None}
+
+    def handle_dialog(dialog):
+        dialog_info["appeared"] = True
+        dialog_info["message"] = dialog.message
+        log("warning", "Diálogo de error detectado al guardar ticket", mensaje=dialog.message)
+        dialog.accept()
+
+    page.on("dialog", handle_dialog)
+
     try:
         save_btn = right_frame_real.locator("#pageSaveBtn img")
         save_btn.wait_for(state="visible", timeout=10000)
         save_btn.click()
+        # Margen para que, de aparecer, el diálogo nativo dispare el evento
+        # y el handler lo cierre antes de continuar.
+        page.wait_for_timeout(2000)
         page.wait_for_load_state("networkidle")
         page.wait_for_timeout(3000)
-        # take_screenshot(page, "after_save")
-        log("info", "Ticket guardado correctamente")
     except PlaywrightTimeoutError as e:
         take_screenshot(page, "save_btn_timeout")
+        page.remove_listener("dialog", handle_dialog)
+        _registrar_error_automatizacion(incident_code, tipo, categoria, subcategoria, "guardado",
+                                         f"Timeout al intentar guardar: {e}")
         raise Exception(f"Timeout al intentar guardar el ticket: {e}")
     except Exception as e:
         take_screenshot(page, "save_error")
+        page.remove_listener("dialog", handle_dialog)
+        _registrar_error_automatizacion(incident_code, tipo, categoria, subcategoria, "guardado",
+                                         f"Error inesperado al guardar: {e}")
         raise Exception(f"Error al guardar el ticket: {e}")
+
+    page.remove_listener("dialog", handle_dialog)
+
+    # Caso 1: Proactivanet mostró un alert de validación (campos vacíos, etc.)
+    if dialog_info["appeared"]:
+        take_screenshot(page, "save_validation_error")
+        _registrar_error_automatizacion(incident_code, tipo, categoria, subcategoria, "guardado",
+                                         dialog_info["message"])
+        raise Exception(
+            f"El ticket '{incident_code}' no se guardó — Proactivanet reportó: {dialog_info['message']}"
+        )
+
+    # Caso 2: no hubo alert, pero tampoco se confirma el regreso a modo lectura
+    if not _verificar_modo_lectura(right_frame_real):
+        take_screenshot(page, "save_unconfirmed")
+        _registrar_error_automatizacion(
+            incident_code, tipo, categoria, subcategoria, "guardado",
+            "No se pudo confirmar el guardado: no reapareció el botón de edición (#pageEditBtn) tras guardar",
+        )
+        raise Exception(
+            f"No se pudo confirmar que el ticket '{incident_code}' se guardó correctamente"
+        )
+
+    # Caso 3: guardado confirmado
+    log("info", "Ticket guardado y verificado correctamente", incident_code=incident_code)

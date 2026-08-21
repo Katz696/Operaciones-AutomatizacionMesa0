@@ -10,7 +10,7 @@ BASE_DATASET = "data/dataset-base.csv"
 FEEDBACK_DATASET = "logs/low_confidence_predictions.csv"
 OUTPUT_DATASET = "data/dataset-training.csv"
 
-MIN_FEEDBACK = 50
+MIN_FEEDBACK = 1
 
 print("Construyendo dataset de entrenamiento...")
 

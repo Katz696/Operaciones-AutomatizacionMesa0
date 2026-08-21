@@ -261,11 +261,24 @@ def cargar_modelo_subcategoria():
     version_subcategoria   = datos["version"]
 
     logger.info(f"Modelo subcategoría cargado: {ruta} — v{version_subcategoria}")
+
+def cargar_threshold_desde_db():
+    global THRESHOLD
+    query = text("SELECT valor FROM ml_config WHERE clave = 'confidence_threshold'")
+    try:
+        with engine.connect() as conn:
+            row = conn.execute(query).mappings().first()
+        if row:
+            THRESHOLD = float(row["valor"])
+            logger.info(f"Threshold cargado desde DB: {THRESHOLD}")
+    except Exception as e:
+        logger.error(f"No se pudo cargar threshold desde DB, usando default: {e}")
  
 # Cargar al arranque
 cargar_modelo_categoria()
 cargar_modelo_subcategoria()
-cargar_modelo_tipo()
+cargar_modelo_tipo() 
+cargar_threshold_desde_db()
 
 # mapa de categorias
 _cats_df = pd.read_csv("data/categorias-activas.csv", sep=";")
@@ -624,9 +637,42 @@ def health_check():
 
     return resultado
 
+class ThresholdUpdate(BaseModel):
+    valor: float
+
+@app.get("/config/confidence-threshold")
+def obtener_threshold(username: str = Depends(autenticar_usuario)):
+    return {"confidence_threshold": THRESHOLD}
+
+@app.put("/config/confidence-threshold")
+def actualizar_threshold(payload: ThresholdUpdate, username: str = Depends(autenticar_usuario)):
+    global THRESHOLD
+
+    if not (0.0 <= payload.valor <= 1.0):
+        raise HTTPException(status_code=400, detail="El valor debe estar entre 0.0 y 1.0")
+
+    query = text("""
+        INSERT INTO ml_config (clave, valor, actualizado_en)
+        VALUES ('confidence_threshold', :valor, NOW())
+        ON CONFLICT (clave) DO UPDATE SET
+            valor = EXCLUDED.valor,
+            actualizado_en = NOW()
+    """)
+    try:
+        with engine.connect() as conn:
+            conn.execute(query, {"valor": str(payload.valor)})
+            conn.commit()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"No se pudo persistir el threshold: {e}")
+
+    THRESHOLD = payload.valor
+    logger.info(f"Threshold actualizado a {THRESHOLD} por {username}")
+
+    return {"status": "actualizado", "confidence_threshold": THRESHOLD}
+
 @app.post("/predict")
 
-def predecir_ticket(ticket: Ticket, username: str = Depends(autenticar_usuario)):
+def predecir_tipo(ticket: Ticket, username: str = Depends(autenticar_usuario)):
 
     texto = limpiar_texto(ticket.titulo or "") + " " + limpiar_texto(ticket.descripcion or "")
 
@@ -1427,6 +1473,68 @@ def marcar_correo_enviado(ids: List[str] = Body(...), username: str = Depends(au
         return {
             "ids_recibidos": len(ids),
             "actualizados":  len(updated_ids),
+            "status": "ok"
+        }
+    except Exception as e:
+        return {"error": "fallo interno", "detalle": str(e)}
+
+# enpoints de notificacion de errores
+
+# pendientes de notificar
+ 
+@app.get("/tickets-fallidos/hay-pendientes")
+def hay_tickets_fallidos_pendientes(username: str = Depends(autenticar_usuario)):
+    query = text("""
+        SELECT COUNT(*) AS total
+        FROM tickets_guardado_fallido
+        WHERE notificado = FALSE
+    """)
+    try:
+        with engine.connect() as conn:
+            total = conn.execute(query).scalar()
+        return {"hay_pendientes": total > 0, "total": total}
+    except Exception as e:
+        return {"error": "fallo en consulta", "detalle": str(e)}
+
+# endpoint para recuperar el detalle de los tickets con errores
+ 
+@app.get("/tickets-fallidos/pendientes")
+def obtener_tickets_fallidos_pendientes(limit: int = 50, username: str = Depends(autenticar_usuario)):
+    query = text("""
+        SELECT
+            id, incidente_codigo, tipo, categoria, subcategoria,
+            paso, mensaje_error, fecha_deteccion
+        FROM tickets_guardado_fallido
+        WHERE notificado = FALSE
+        ORDER BY fecha_deteccion ASC
+        LIMIT :limit
+    """)
+    try:
+        with engine.connect() as conn:
+            rows = conn.execute(query, {"limit": limit}).mappings().all()
+        return {"total": len(rows), "tickets": [dict(r) for r in rows]}
+    except Exception as e:
+        return {"error": "fallo en consulta", "detalle": str(e)}
+
+# endpoint para marcar como notificados los errores ya enviados por correo
+ 
+@app.post("/tickets-fallidos/notificado")
+def marcar_tickets_fallidos_notificados(ids: List[int] = Body(..., embed=True), username: str = Depends(autenticar_usuario)):
+    query = text("""
+        UPDATE tickets_guardado_fallido
+        SET notificado = TRUE, fecha_notificado = NOW()
+        WHERE id = ANY(:ids)
+          AND notificado = FALSE
+        RETURNING id
+    """)
+    try:
+        with engine.connect() as conn:
+            result = conn.execute(query, {"ids": ids})
+            updated_ids = [row[0] for row in result]
+            conn.commit()
+        return {
+            "ids_recibidos": len(ids),
+            "actualizados": len(updated_ids),
             "status": "ok"
         }
     except Exception as e:

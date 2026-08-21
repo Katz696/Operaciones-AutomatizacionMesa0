@@ -127,9 +127,10 @@ TEMPLATES = {
 # ─────────────────────────────────────────────────────────────────────────────
 
 EMPRESAS = [
-    "YUCASA", "BE GRAND", "CONAUTO", "GC", "CHANGAN", "AUTOFIN",
-    "GRUPO NORTE", "INMOBILIA", "CASAS GEO", "VINTE", "ARQ STUDIO",
-    "CONSTRUCTORA ALFA", "DESARROLLOS DEL BAJÍO", "MEGACABLE", "SIGMA",
+    "GC", "GRUPO CONSULTORES"
+    # "YUCASA", "BE GRAND", "CONAUTO", "GC", "CHANGAN", "AUTOFIN",
+    # "GRUPO NORTE", "INMOBILIA", "CASAS GEO", "VINTE", "ARQ STUDIO",
+    # "CONSTRUCTORA ALFA", "DESARROLLOS DEL BAJÍO", "MEGACABLE", "SIGMA",
 ]
 
 SISTEMAS = [
