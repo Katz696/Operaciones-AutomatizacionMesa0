@@ -636,39 +636,37 @@ def health_check():
         resultado["database"] = "error"
 
     return resultado
+class ConfigValor(BaseModel):
+    valor: str
 
-class ThresholdUpdate(BaseModel):
-    valor: float
+@app.get("/config/{clave}")
+def obtener_config(clave: str, username: str = Depends(autenticar_usuario)):
+    query = text("SELECT valor, actualizado_en FROM ml_config WHERE clave = :clave")
+    with engine.connect() as conn:
+        row = conn.execute(query, {"clave": clave}).fetchone()
 
-@app.get("/config/confidence-threshold")
-def obtener_threshold(username: str = Depends(autenticar_usuario)):
-    return {"confidence_threshold": THRESHOLD}
+    if row is None:
+        raise HTTPException(status_code=404, detail=f"No existe la clave '{clave}' en ml_config")
 
-@app.put("/config/confidence-threshold")
-def actualizar_threshold(payload: ThresholdUpdate, username: str = Depends(autenticar_usuario)):
-    global THRESHOLD
+    return {"clave": clave, "valor": row.valor, "actualizado_en": row.actualizado_en}
 
-    if not (0.0 <= payload.valor <= 1.0):
-        raise HTTPException(status_code=400, detail="El valor debe estar entre 0.0 y 1.0")
 
-    query = text("""
-        INSERT INTO ml_config (clave, valor, actualizado_en)
-        VALUES ('confidence_threshold', :valor, NOW())
-        ON CONFLICT (clave) DO UPDATE SET
-            valor = EXCLUDED.valor,
-            actualizado_en = NOW()
+@app.put("/config/{clave}")
+def actualizar_config(clave: str, payload: ConfigValor, username: str = Depends(autenticar_usuario)):
+    update_query = text("""
+        UPDATE ml_config
+        SET valor = :valor, actualizado_en = now()
+        WHERE clave = :clave
     """)
-    try:
-        with engine.connect() as conn:
-            conn.execute(query, {"valor": str(payload.valor)})
-            conn.commit()
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"No se pudo persistir el threshold: {e}")
 
-    THRESHOLD = payload.valor
-    logger.info(f"Threshold actualizado a {THRESHOLD} por {username}")
+    with engine.connect() as conn:
+        result = conn.execute(update_query, {"clave": clave, "valor": payload.valor})
+        conn.commit()
 
-    return {"status": "actualizado", "confidence_threshold": THRESHOLD}
+        if result.rowcount == 0:
+            raise HTTPException(status_code=404, detail=f"No existe la clave '{clave}' en ml_config")
+
+    return {"clave": clave, "valor": payload.valor}
 
 @app.post("/predict")
 
@@ -759,7 +757,7 @@ def predecir_ticket_completo(ticket: TicketCompleto, username: str = Depends(aut
                     )
 
     # ---------- SUBCATEGORÍA ----------
-    subcat_nombre, subcategoria_id, subcat_confianza = "/", "/", 0.0
+    subcat_nombre, subcategoria_id, subcat_confianza = "", "", 0.0
 
     if categoria_nombre != "/":
         clave   = (cliente_nombre, categoria_nombre)
@@ -782,7 +780,7 @@ def predecir_ticket_completo(ticket: TicketCompleto, username: str = Depends(aut
                 top_sub          = _predecir_con_filtro(embedder_subcategoria, modelo_subcategoria, texto_sub, indices_validos_sub)
                 subcat_nombre    = top_sub[0]["nombre"]
                 subcat_confianza = top_sub[0]["probabilidad"]
-                subcategoria_id  = MAPA_NOMBRE_A_ID.get(subcat_nombre, "/")
+                subcategoria_id  = MAPA_NOMBRE_A_ID.get(subcat_nombre, "")
 
                 if subcat_confianza < THRESHOLD:
                     registrar_baja_confianza_categoria(

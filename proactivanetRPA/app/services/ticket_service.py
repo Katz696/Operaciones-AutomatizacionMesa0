@@ -16,8 +16,13 @@ def process_tickets_batch(tickets) -> list[dict]:
     results = []
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True, slow_mo=500)
-        context = browser.new_context()
+        browser = p.chromium.launch(headless=True)
+        context = browser.new_context(
+            viewport={
+                "width": 1920,
+                "height": 1080
+            }
+        )
         page = context.new_page()
 
         # Establecer sesión una sola vez

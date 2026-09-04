@@ -468,6 +468,9 @@
     "('TERE CAZOLA', 'UNIR12 Servicio de Respaldo de Información')": [
       "UNIR 12.3 Backup Datos FileServer"
     ],
+    "('Telered', 'Proyectos')": [
+      "CONAUTO: Estabilización de Operaciones Progress_GC Conautopción"
+    ],
     "('Tersys Group', 'PUNTOS12. Servicios de infraestructura')": [
       "PUNTOS12.1 Instalación o modificación de infraestructura."
     ],
@@ -520,8 +523,7 @@
       "UNIR 8.5 Alta de huellas"
     ],
     "('UNIR', 'UNIR12 Servicio de Respaldo de Información')": [
-      "UNIR 12.3 Backup Datos FileServer",
-      "UNIR 12.4 Backup Directorio Activo"
+      "UNIR 12.3 Backup Datos FileServer"
     ],
     "('UNIR', 'UNIR15 Servicio de apoyo actividades administrativas')": [
       "UNIR15.1 Credencialización",
@@ -532,7 +534,6 @@
       "UNIR16.1 Fallo de conexión a internet",
       "UNIR16.2 Problemas de logeo a internet",
       "UNIR16.4 Lentitud en  servicio de internet",
-      "UNIR16.7 Monitoreo de trafico de red",
       "UNIR16.9 Administración de ancho de banda."
     ],
     "('UNIR2', 'UNIR01. Soporte a Equipo de Cómputo Personal')": [
@@ -789,8 +790,7 @@
       "UNIR 8.5 Alta de huellas"
     ],
     "UNIR12 Servicio de Respaldo de Información": [
-      "UNIR 12.3 Backup Datos FileServer",
-      "UNIR 12.4 Backup Directorio Activo"
+      "UNIR 12.3 Backup Datos FileServer"
     ],
     "UNIR15 Servicio de apoyo actividades administrativas": [
       "UNIR15.1 Credencialización",
@@ -801,7 +801,6 @@
       "UNIR16.1 Fallo de conexión a internet",
       "UNIR16.2 Problemas de logeo a internet",
       "UNIR16.4 Lentitud en  servicio de internet",
-      "UNIR16.7 Monitoreo de trafico de red",
       "UNIR16.9 Administración de ancho de banda."
     ]
   }

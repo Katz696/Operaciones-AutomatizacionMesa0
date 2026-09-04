@@ -11,8 +11,8 @@ PASS = os.getenv("PROACTIVA_PASSWORD")
 # --- datos de prueba, edítalos según el ticket que quieras probar ---
 INCIDENT_CODE = "INC 2026-003937"
 TIPO = "Incidente"
-CATEGORIA_PRINCIPAL = "GCTI 11. Soporte a SAP"
-CATEGORIA_SECUNDARIA = "11.1 Falla de SAP"
+CATEGORIA_PRINCIPAL = "GCTI 01. Apoyo administrativo"
+CATEGORIA_SECUNDARIA = "1.5 Revisión y diagnóstico de infraestructura"
 CLIENTE = "Gconsultores"
 # ---------------------------------------------------------------
 
@@ -26,12 +26,12 @@ with sync_playwright() as p:
     search_and_open_ticket(
     page=page,
     context=context,
-    incident_code=INCIDENT_CODE,
+    incident_code="INC 2026-003937",
     # cliente="Gconsultores",
-    tipo=TIPO,
-    categoria=CATEGORIA_PRINCIPAL,
-    subcategoria=CATEGORIA_SECUNDARIA
+    tipo="Incidente",
+    categoria="GCTI 01. Apoyo administrativo",
+    subcategoria="1.5 Revisión y diagnóstico de infraestructura"
     )
 
-    # input("Presiona ENTER para cerrar el navegador...")
+    input("Presiona ENTER para cerrar el navegador...")
     browser.close()

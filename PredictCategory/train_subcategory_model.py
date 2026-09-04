@@ -29,7 +29,7 @@ EMBEDDING_MODEL = "paraphrase-multilingual-MiniLM-L12-v2"
 BATCH_SIZE   = 64
 TEST_SIZE    = 0.2
 RANDOM_STATE = 42
-MIN_TICKETS  = 30
+MIN_TICKETS  = 30     # Mínimo de tickets por subcategoría
 
 
 # =============================================================================
@@ -93,14 +93,6 @@ data["subcategoria_nombre"] = data["Category_id"].map(mapa_hijo_nombre)
 data["cat_padre_id"]        = data["Category_id"].map(mapa_hijo_padre)
 data["cat_padre_nombre"]    = data["cat_padre_id"].map(mapa_padre_nombre)
 
-<<<<<<< HEAD
-=======
-# IMPORTANTE: mapa_clientes usa ids en MAYUSCULAS (igual que main.py, que
-# siempre hace ticket.client_id.upper() antes de buscar en mapa_clientes).
-# El feedback nuevo llega con el client_id tal cual lo mando el caller
-# externo (puede venir en minusculas), asi que hay que normalizar aqui o
-# esas filas se pierden silenciosamente en el dropna de mas abajo.
->>>>>>> af927fc2cb8647ce4faf871ee491eb2573e599fd
 data["cliente_nombre"]      = data["Client_id"].astype(str).str.upper().map(mapa_clientes)
 
 # Descartar tickets sin resolución completa
@@ -290,10 +282,10 @@ joblib.dump(
         "embedding_model_name"       : EMBEDDING_MODEL,
         "classifier"                 : clf,
         "label_encoder"              : le,
-        "mapa_padre_subcategorias"   : mapa_padre_subcategorias,   
-        "mapa_solo_padre_subcats"    : mapa_solo_padre_subcats,    
-        "mapa_clientes"              : mapa_clientes,       
-        "mapa_padre_nombre"          : mapa_padre_nombre,          
+        "mapa_padre_subcategorias"   : mapa_padre_subcategorias,   # (cliente, padre) → [subcats]
+        "mapa_solo_padre_subcats"    : mapa_solo_padre_subcats,    # padre → [subcats] fallback
+        "mapa_clientes"              : mapa_clientes,              # UUID → nombre cliente
+        "mapa_padre_nombre"          : mapa_padre_nombre,          # UUID padre → nombre padre
         "version"                    : version,
         "metricas": {
             "accuracy"    : round(acc,  4),

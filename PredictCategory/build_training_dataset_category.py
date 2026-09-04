@@ -13,7 +13,20 @@ engine = create_engine(DATABASE_URL)
 BASE_DATASET   = "../data/dataset-base-category.csv"
 OUTPUT_DATASET = "../data/dataset-training-category.csv"
 
-MIN_FEEDBACK = 1
+def obtener_min_feedback(engine, clave: str, default: int = 1) -> int:
+    query = text("SELECT valor FROM ml_config WHERE clave = :clave")
+    with engine.connect() as conn:
+        row = conn.execute(query, {"clave": clave}).fetchone()
+
+    if row is None:
+        print(f"Advertencia: no existe la clave '{clave}' en ml_config, usando default={default}")
+        return default
+
+    return int(row.valor)
+
+
+MIN_FEEDBACK = obtener_min_feedback(engine, "min_feedback_categoria")
+print("MIN_FEEDBACK configurado:", MIN_FEEDBACK)
 
 COLUMNAS_MODELO = ["IncidentTitle", "Description", "Category_id", "Client_id"]
 

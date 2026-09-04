@@ -179,7 +179,14 @@ def search_and_open_ticket(page, context, incident_code, tipo, categoria, subcat
         raise Exception(f"Error al seleccionar categoría '{categoria}/{subcategoria}': {e}")
 
     try:
-        fill_additional_info(page)
+        info_adicional = _obtener_info_adicional()
+    except Exception as e:
+        _registrar_error_automatizacion(incident_code, tipo, categoria, subcategoria, "informacion_adicional",
+                                         f"Error al obtener configuración de información adicional: {e}")
+        raise Exception(f"Error al obtener configuración de información adicional: {e}")
+
+    try:
+        fill_additional_info(page, info_adicional)
     except Exception as e:
         _registrar_error_automatizacion(incident_code, tipo, categoria, subcategoria, "informacion_adicional",
                                          f"Error al llenar información adicional: {e}")
@@ -273,12 +280,17 @@ def select_client(page, cliente_nombre: str):
 
 def select_ticket_type(page, tipo_nombre: str):
     try:
-        type_span = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
-            .locator("iframe[name=\"rightFrame\"]").content_frame \
-            .locator("#padTypes_id > tbody > .pawDFMultiFunTr > .pawDFMultiFunTd1")
+        right_frame_content = (
+            page.locator("iframe[name=\"pawContentFrame\"]").content_frame
+            .locator("iframe[name=\"rightFrame\"]").content_frame
+        )
 
-        option = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
-            .locator("iframe[name=\"rightFrame\"]").content_frame \
+        type_span = right_frame_content.locator(
+            "#padTypes_id > tbody > .pawDFMultiFunTr > .pawDFMultiFunTd1"
+        )
+
+        # Se acota la búsqueda al popup de opciones (#viewAllIncidents_padTypes_id_Selector)
+        option = right_frame_content.locator("#viewAllIncidents_padTypes_id_Selector") \
             .get_by_text(tipo_nombre, exact=True)
 
         select_option(page, type_span, option)
@@ -375,14 +387,46 @@ def select_category_and_subcategory(page, categoria_principal: str, subcategoria
             f"No se pudo seleccionar la ruta '{target_full}'."
         )
 
-    log("info", f"✔ Categoría/subcategoría seleccionada (respaldo JS): {clicked}")
+    log("info", f"Categoría/subcategoría seleccionada (respaldo JS): {clicked}")
 
-def fill_additional_info(page):
+def _obtener_info_adicional(nombre="default"):
+    query = text("""
+        SELECT empresa, forma_servicio, medio, cis, subtipo
+        FROM info_adicional_config
+        WHERE nombre = :nombre AND activo = TRUE
+        LIMIT 1
+    """)
     try:
-        page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
-            .locator("iframe[name=\"rightFrame\"]").content_frame \
-            .locator("span.pawFormPageTabStripIndexTabLabel", has_text="INFORMACIÓN ADICIONAL") \
-            .click()
+        with engine.connect() as conn:
+            row = conn.execute(query, {"nombre": nombre}).mappings().first()
+    except Exception as e:
+        raise Exception(f"Error al consultar info_adicional_config: {e}")
+
+    if row is None:
+        raise Exception(f"No se encontró configuración activa '{nombre}' en info_adicional_config")
+
+    return dict(row)
+
+def _campo_esta_vacio(container_locator, textos_a_ignorar: list[str], timeout=3000) -> bool:
+
+    try:
+        container_locator.wait_for(state="visible", timeout=timeout)
+        texto = container_locator.inner_text()
+    except PlaywrightTimeoutError:
+        log("warning", "No se pudo leer el valor actual del campo antes de decidir si rellenarlo")
+        return True  # se asume vacío para no bloquear el flujo, pero queda en log
+
+    for fragmento in textos_a_ignorar:
+        texto = texto.replace(fragmento, "")
+
+    return texto.strip() == ""
+
+def fill_additional_info(page, info_adicional: dict):
+    right_frame_content = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
+        .locator("iframe[name=\"rightFrame\"]").content_frame
+
+    try:
+        right_frame_content.locator("span.pawFormPageTabStripIndexTabLabel", has_text="INFORMACIÓN ADICIONAL").click()
         log("info", "Pestaña 'INFORMACIÓN ADICIONAL' abierta")
     except PlaywrightTimeoutError as e:
         take_screenshot(page, "additional_info_tab_timeout")
@@ -393,72 +437,67 @@ def fill_additional_info(page):
 
     # Empresa
     try:
-        emp_span = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
-            .locator("iframe[name=\"rightFrame\"]").content_frame \
-            .get_by_role("row", name="Atendido por la empresa::").get_by_role("button")
-        option = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
-            .locator("iframe[name=\"rightFrame\"]").content_frame \
-            .get_by_text("Gconsultores - OP", exact=True)
-        select_option(page, emp_span, option)
-        log("info", "Campo 'Atendido por la empresa' completado")
+        emp_row = right_frame_content.get_by_role("row", name="Atendido por la empresa::")
+        if _campo_esta_vacio(emp_row, ["Atendido por la empresa::", "Pulse para buscar el valor", "Pulse para seleccionar el valor"]):
+            emp_span = emp_row.get_by_role("button")
+            option = right_frame_content.get_by_text(info_adicional["empresa"], exact=True)
+            select_option(page, emp_span, option)
+            log("info", "Campo 'Atendido por la empresa' completado")
+        else:
+            log("info", "Campo 'Atendido por la empresa' ya tenía valor, se omite")
     except Exception as e:
         take_screenshot(page, "campo_empresa_error")
         raise Exception(f"Error al seleccionar 'Atendido por la empresa': {e}")
 
-    # Forma de servicio — localizado por fila
+    # Forma de servicio
     try:
-        fs_span = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
-            .locator("iframe[name=\"rightFrame\"]").content_frame \
-            .get_by_role("row").filter(has_text="Forma de servicio") \
-            .get_by_role("button")
-        option = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
-            .locator("iframe[name=\"rightFrame\"]").content_frame \
-            .get_by_text("Soporte 5 x")
-        select_option(page, fs_span, option)
-        log("info", "Campo 'Forma de servicio' completado")
+        fs_table = right_frame_content.get_by_role("table", name="Forma de servicio")
+        if _campo_esta_vacio(fs_table, ["Forma de servicio", "Pulse para buscar el valor", "Pulse para seleccionar el valor"]):
+            option = right_frame_content.get_by_text(info_adicional["forma_servicio"])
+            select_option(page, fs_table, option)
+            log("info", "Campo 'Forma de servicio' completado")
+        else:
+            log("info", "Campo 'Forma de servicio' ya tenía valor, se omite")
     except Exception as e:
         take_screenshot(page, "campo_forma_servicio_error")
         raise Exception(f"Error al seleccionar 'Forma de servicio': {e}")
 
     # Medio
     try:
-        medio_span = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
-            .locator("iframe[name=\"rightFrame\"]").content_frame \
-            .get_by_role("row").filter(has_text="Medio:") \
-            .get_by_role("button")
-        option_medio = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
-            .locator("iframe[name=\"rightFrame\"]").content_frame \
-            .get_by_text("Portal", exact=True)
-        select_option(page, medio_span, option_medio)
-        log("info", "Campo 'Medio' completado")
+        medio_row = right_frame_content.get_by_role("row").filter(has_text="Medio:")
+        if _campo_esta_vacio(medio_row, ["Medio:", "Pulse para buscar el valor", "Pulse para seleccionar el valor"]):
+            medio_span = medio_row.get_by_role("button")
+            option_medio = right_frame_content.get_by_text(info_adicional["medio"], exact=True)
+            select_option(page, medio_span, option_medio)
+            log("info", "Campo 'Medio' completado")
+        else:
+            log("info", "Campo 'Medio' ya tenía valor, se omite")
     except Exception as e:
         take_screenshot(page, "campo_medio_error")
         raise Exception(f"Error al seleccionar 'Medio': {e}")
 
     # CI'S
     try:
-        ci_span = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
-            .locator("iframe[name=\"rightFrame\"]").content_frame \
-            .get_by_role("table", name="CI´S")
-        option_ci = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
-            .locator("iframe[name=\"rightFrame\"]").content_frame \
-            .get_by_text("NINGUNO", exact=True)
-        select_option(page, ci_span, option_ci)
-        log("info", "Campo 'CI´S' completado")
+        ci_table = right_frame_content.get_by_role("table", name="CI´S")
+        if _campo_esta_vacio(ci_table, ["CI´S", "Pulse para buscar el valor", "Pulse para seleccionar el valor"]):
+            option_ci = right_frame_content.get_by_text(info_adicional["cis"], exact=True)
+            select_option(page, ci_table, option_ci)
+            log("info", "Campo 'CI´S' completado")
+        else:
+            log("info", "Campo 'CI´S' ya tenía valor, se omite")
     except Exception as e:
         take_screenshot(page, "campo_cis_error")
         raise Exception(f"Error al seleccionar 'CI´S': {e}")
 
     # Subtipo
     try:
-        subtipo_span = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
-            .locator("iframe[name=\"rightFrame\"]").content_frame \
-            .get_by_role("table", name="Aplica para la subcategoria")
-        option_subtipo = page.locator("iframe[name=\"pawContentFrame\"]").content_frame \
-            .locator("iframe[name=\"rightFrame\"]").content_frame \
-            .get_by_text("Operación Continua").nth(1)
-        select_option(page, subtipo_span, option_subtipo)
-        log("info", "Campo 'Subtipo' completado")
+        subtipo_table = right_frame_content.get_by_role("table", name="Aplica para la subcategoria")
+        if _campo_esta_vacio(subtipo_table, ["Aplica para la subcategoria", "Pulse para buscar el valor", "Pulse para seleccionar el valor"]):
+            option_subtipo = right_frame_content.get_by_text(info_adicional["subtipo"]).nth(1)
+            select_option(page, subtipo_table, option_subtipo)
+            log("info", "Campo 'Subtipo' completado")
+        else:
+            log("info", "Campo 'Subtipo' ya tenía valor, se omite")
     except Exception as e:
         take_screenshot(page, "campo_subtipo_error")
         raise Exception(f"Error al seleccionar 'Subtipo': {e}")
