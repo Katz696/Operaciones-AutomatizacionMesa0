@@ -7,7 +7,6 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 engine = create_engine(DATABASE_URL)
 
 BASE_DATASET = "data/dataset-base.csv"
-FEEDBACK_DATASET = "logs/low_confidence_predictions.csv"
 OUTPUT_DATASET = "data/dataset-training.csv"
 
 def obtener_min_feedback(engine, clave: str, default: int = 1) -> int:
@@ -45,26 +44,24 @@ dataset_final = dataset_actual
 dataset_built = False
 
 # =========================
-# Cargar feedback desde db
+# Cargar feedback (correcciones de tipo) desde db
 # =========================
 
 query = """
-SELECT *
-FROM tickets_feedback
+SELECT
+    c.id                    AS correccion_id,
+    p.id                    AS ticket_id,
+    p.incident_title,
+    p.description,
+    c.valor_id_corregido    AS padtypes_id
+FROM correcciones c
+JOIN predicciones p ON p.id = c.prediccion_id
+WHERE c.campo = 'tipo'
+  AND c.accion IN ('corregido', 'confirmado')
+  AND c.used_for_training = false
 """
 
-feedback = pd.read_sql(query, engine)
-
-print("Total feedback en DB:", len(feedback))
-
-# =========================
-# filtrar feedback nuevo
-# =========================
-
-feedback_nuevo = feedback[
-    (feedback["ml_revision"].isin(["corregido", "confirmado"])) &
-    (feedback["used_for_training"] == False)
-]
+feedback_nuevo = pd.read_sql(query, engine)
 
 print("Feedback nuevo disponible:", len(feedback_nuevo))
 
@@ -75,15 +72,15 @@ print("Feedback nuevo disponible:", len(feedback_nuevo))
 if len(feedback_nuevo) >= MIN_FEEDBACK:
 
     feedback_final = pd.DataFrame({
-        "id": feedback_nuevo["id"],
+        "id": feedback_nuevo["ticket_id"],
         "incidentTitle": feedback_nuevo["incident_title"],
         "description": feedback_nuevo["description"],
-        "padTypes_id": feedback_nuevo["padtypes_id_corregido"]
+        "padTypes_id": feedback_nuevo["padtypes_id"]
     })
 
     print("Tickets agregados al entrenamiento:", len(feedback_final))
 
-        # dataset acumulativo
+    # dataset acumulativo
     dataset_final = pd.concat(
         [dataset_actual, feedback_final],
         ignore_index=True
@@ -91,25 +88,18 @@ if len(feedback_nuevo) >= MIN_FEEDBACK:
 
     dataset_built = True
 
-    # marcar feedback como usado
-    ids_usados = feedback_nuevo["id"].tolist()
+    # marcar como usadas las correcciones que se incluyeron
+    correccion_ids_usadas = feedback_nuevo["correccion_id"].tolist()
 
     update_query = text("""
-        UPDATE tickets_feedback
+        UPDATE correcciones
         SET used_for_training = true
         WHERE id = ANY(:ids)
     """)
 
     with engine.connect() as conn:
-        conn.execute(update_query, {"ids": ids_usados})
+        conn.execute(update_query, {"ids": correccion_ids_usadas})
         conn.commit()
-
-    # feedback.loc[
-    #     feedback["id"].isin(feedback_nuevo["id"]),
-    #     "used_for_training"
-    # ] = True
-
-    # feedback.to_csv(FEEDBACK_DATASET, sep=";", index=False)
 
 else:
 

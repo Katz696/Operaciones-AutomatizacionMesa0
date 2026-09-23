@@ -52,34 +52,32 @@ dataset_final = dataset_actual
 dataset_built = False
 
 # =========================
-# Cargar feedback desde db
+# Cargar feedback (correcciones de categoria/subcategoria) desde db
 # =========================
 
 query = """
-SELECT *
-FROM categoria_feedback
-WHERE tipo_modelo IN ('categoria', 'subcategoria')
+SELECT
+    c.id                    AS correccion_id,
+    c.campo,
+    p.incident_title,
+    p.description,
+    c.valor_id_corregido    AS category_id,
+    p.client_id
+FROM correcciones c
+JOIN predicciones p ON p.id = c.prediccion_id
+WHERE c.campo IN ('categoria', 'subcategoria')
+  AND c.accion IN ('corregido', 'confirmado')
+  AND c.used_for_training = false
 """
 
-feedback = pd.read_sql(query, engine)
-
-print("Total feedback en DB (categoria + subcategoria):", len(feedback))
-
-# =========================
-# filtrar feedback nuevo
-# =========================
-
-feedback_nuevo = feedback[
-    (feedback["ml_revision"].isin(["corregido", "confirmado"])) &
-    (feedback["used_for_training"] == False)
-]
+feedback_nuevo = pd.read_sql(query, engine)
 
 print("Feedback nuevo disponible:", len(feedback_nuevo))
 print(
     "  - categoria:",
-    len(feedback_nuevo[feedback_nuevo["tipo_modelo"] == "categoria"]),
+    len(feedback_nuevo[feedback_nuevo["campo"] == "categoria"]),
     "| subcategoria:",
-    len(feedback_nuevo[feedback_nuevo["tipo_modelo"] == "subcategoria"])
+    len(feedback_nuevo[feedback_nuevo["campo"] == "subcategoria"])
 )
 
 # =========================
@@ -91,7 +89,7 @@ if len(feedback_nuevo) >= MIN_FEEDBACK:
     feedback_final = pd.DataFrame({
         "IncidentTitle": feedback_nuevo["incident_title"],
         "Description": feedback_nuevo["description"],
-        "Category_id": feedback_nuevo["categoria_id_corregida"],
+        "Category_id": feedback_nuevo["category_id"],
         "Client_id":   feedback_nuevo["client_id"].astype(str).str.upper()
     })[COLUMNAS_MODELO]
 
@@ -105,21 +103,21 @@ if len(feedback_nuevo) >= MIN_FEEDBACK:
 
     dataset_built = True
 
-    # marcar feedback como usado
+    # marcar como usadas las correcciones que se incluyeron
     update_query = text("""
-        UPDATE categoria_feedback
+        UPDATE correcciones
         SET used_for_training = true
-        WHERE id = ANY(:ids) AND tipo_modelo = :tipo_modelo
+        WHERE id = ANY(:ids) AND campo = :campo
     """)
 
     with engine.connect() as conn:
         for dimension in ("categoria", "subcategoria"):
-            ids_usados = feedback_nuevo.loc[
-                feedback_nuevo["tipo_modelo"] == dimension, "id"
+            correccion_ids_usadas = feedback_nuevo.loc[
+                feedback_nuevo["campo"] == dimension, "correccion_id"
             ].tolist()
 
-            if ids_usados:
-                conn.execute(update_query, {"ids": ids_usados, "tipo_modelo": dimension})
+            if correccion_ids_usadas:
+                conn.execute(update_query, {"ids": correccion_ids_usadas, "campo": dimension})
 
         conn.commit()
 
