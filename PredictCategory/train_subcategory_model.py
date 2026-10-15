@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import joblib
 import json
+import os
 from datetime import datetime
 
 from sentence_transformers import SentenceTransformer
@@ -24,6 +25,8 @@ CATEGORIAS_PATH = "../data/categorias-activas.csv"
 CLIENTES_PATH   = "../data/clientes.csv"   
 MODEL_OUTPUT_DIR = "../models/"
 
+os.makedirs(MODEL_OUTPUT_DIR, exist_ok=True)
+
 EMBEDDING_MODEL = "paraphrase-multilingual-MiniLM-L12-v2"
 
 BATCH_SIZE   = 64
@@ -31,24 +34,40 @@ TEST_SIZE    = 0.2
 RANDOM_STATE = 42
 MIN_TICKETS  = 30     # Mínimo de tickets por subcategoría
 
-
 # =============================================================================
 # 1. CARGAR DATOS
 # =============================================================================
 
-print("=" * 60)
-print("  MODELO DE SUBCATEGORÍA (categoría hijo)")
-print("=" * 60)
+data = pd.read_csv(DATASET_PATH, sep=";")
+cats = pd.read_csv(CATEGORIAS_PATH, sep=";")
+clientes = pd.read_csv(CLIENTES_PATH, sep=";")
 
-data     = pd.read_csv(DATASET_PATH,    sep=";")
-cats     = pd.read_csv(CATEGORIAS_PATH, sep=";")
-clientes = pd.read_csv(CLIENTES_PATH,   sep=";")
+# Limpiar espacios en los nombres de las columnas
+data.columns = data.columns.str.strip()
+cats.columns = cats.columns.str.strip()
+clientes.columns = clientes.columns.str.strip()
 
-print(f"\n[1/7] Archivos cargados:")
-print(f"    Tickets    : {len(data):,}")
-print(f"    Categorías : {len(cats):,}")
-print(f"    Clientes   : {len(clientes):,}")
+# Normalizar IDs del dataset de tickets
+for columna in ["Category_id", "Client_id"]:
+    data[columna] = (
+        data[columna].astype("string").str.strip().str.upper()
+    )
 
+# Normalizar IDs del catálogo de categorías
+for columna in ["id", "padCategories_id"]:
+    cats[columna] = (
+        cats[columna].astype("string").str.strip().str.upper()
+    )
+
+# Normalizar IDs del catálogo de clientes
+clientes["id"] = (
+    clientes["id"].astype("string").str.strip().str.upper()
+)
+
+print("\nArchivos cargados y IDs normalizados:")
+print(f"Tickets: {len(data):,}")
+print(f"Categorías: {len(cats):,}")
+print(f"Clientes: {len(clientes):,}")
 
 # =============================================================================
 # 2. SEPARAR PADRES E HIJOS + CONSTRUIR MAPAS
@@ -98,6 +117,12 @@ data["cliente_nombre"]      = data["Client_id"].astype(str).str.upper().map(mapa
 # Descartar tickets sin resolución completa
 antes = len(data)
 data  = data.dropna(subset=["subcategoria_nombre", "cat_padre_nombre", "cliente_nombre"])
+if data.empty:
+    raise ValueError(
+        "No quedaron tickets con subcategoría, categoría padre y cliente válidos. "
+        "Verifica Category_id, padCategories_id y Client_id, así como "
+        "la coincidencia de los UUID entre los tres CSV."
+    )
 print(f"    Tickets con resolución completa: {len(data):,}  (descartados: {antes - len(data):,})")
 
 

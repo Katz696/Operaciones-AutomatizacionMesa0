@@ -9,13 +9,21 @@ import time
 from datetime import datetime
 
 # autentificacion imports
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi.security import HTTPBasic, HTTPBasicCredentials, OAuth2PasswordBearer
 import secrets
 import bcrypt
 
-# ------------------------
+from jose import jwt, JWTError
 
 from sqlalchemy import create_engine, text
+
+JWT_SECRET = os.getenv("JWT_SECRET")
+JWT_ALGORITHM = "HS256"
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/no-aplica", auto_error=False)
+security = HTTPBasic(auto_error=False)
+
+# ------------------------
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
@@ -61,41 +69,53 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
         hashed_password.encode("utf-8")
     )
 
-security = HTTPBasic()
-
 # funcion para autentificar usuario
 
-def autenticar_usuario(credentials: HTTPBasicCredentials = Depends(security)):
+def autenticar_usuario(
+    token: str = Depends(oauth2_scheme),
+    credentials: HTTPBasicCredentials = Depends(security),
+):
+    # Camino 1: Bearer JWT (api-admin reenviando el token del usuario logueado)
+    if token:
+        try:
+            payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        except JWTError:
+            raise HTTPException(status_code=401, detail="Token inválido o expirado")
 
-    query = text("""
-        SELECT username, password_hash, is_active
-        FROM api_users
-        WHERE username = :username
-    """)
+        username = payload.get("sub")
+        if not username:
+            raise HTTPException(status_code=401, detail="Token inválido")
+        return username
 
-    with engine.connect() as conn:
-        result = conn.execute(query, {"username": credentials.username})
-        user = result.mappings().first()
+    # Camino 2: Basic Auth (n8n u otros clientes de servicio, como ya funcionaba)
+    if credentials:
+        query = text("""
+            SELECT username, password_hash, is_active
+            FROM api_users
+            WHERE username = :username
+        """)
+        with engine.connect() as conn:
+            result = conn.execute(query, {"username": credentials.username})
+            user = result.mappings().first()
 
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Credenciales inválidas",
-            headers={"WWW-Authenticate": "Basic"},
-        )
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Credenciales inválidas",
+                headers={"WWW-Authenticate": "Basic"},
+            )
+        if not user["is_active"]:
+            raise HTTPException(status_code=403, detail="Usuario inactivo")
+        if not verify_password(credentials.password, user["password_hash"]):
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Credenciales inválidas",
+                headers={"WWW-Authenticate": "Basic"},
+            )
 
-    if not user["is_active"]:
-        raise HTTPException(status_code=403, detail="Usuario inactivo")
+        return user["username"]
 
-    # comparar password con hash
-    if not verify_password(credentials.password, user["password_hash"]):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Credenciales inválidas",
-            headers={"WWW-Authenticate": "Basic"},
-        )
-
-    return user["username"]
+    raise HTTPException(status_code=401, detail="Falta autenticación", headers={"WWW-Authenticate": "Bearer"})
     
     
 logging.basicConfig(level=logging.INFO)

@@ -11,6 +11,10 @@ from .predicciones import router as predicciones_router
 from .modelos import router as modelos_router
 from .metricas import router as metricas_router
 from fastapi.middleware.cors import CORSMiddleware
+from .modelos import router as modelos_router
+from .erroresauto import router as errores_router
+from .usuarios import router as usuarios_router
+from .historial import router as historial_router
 import os
 
 app = FastAPI(
@@ -30,6 +34,10 @@ app.include_router(predicciones_router)
 app.include_router(predicciones_router)
 app.include_router(modelos_router)
 app.include_router(metricas_router)
+app.include_router(modelos_router)
+app.include_router(errores_router)
+app.include_router(usuarios_router)
+app.include_router(historial_router)
 
 
 @app.get("/health")

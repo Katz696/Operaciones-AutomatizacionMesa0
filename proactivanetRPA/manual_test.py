@@ -26,11 +26,11 @@ with sync_playwright() as p:
     search_and_open_ticket(
     page=page,
     context=context,
-    incident_code="INC 2026-003937",
+    incident_code="INC 2026-005119",
     # cliente="Gconsultores",
     tipo="Incidente",
-    categoria="GCTI 01. Apoyo administrativo",
-    subcategoria="1.5 Revisión y diagnóstico de infraestructura"
+    categoria="GCTI 11. Soporte a SAP",
+    subcategoria="11.1 Falla de SAP"
     )
 
     input("Presiona ENTER para cerrar el navegador...")

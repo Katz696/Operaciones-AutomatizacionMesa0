@@ -21,6 +21,13 @@ from sklearn.metrics import (
 
 from text_preprocessing import limpiar_texto
 
+EMBEDDING_MODEL = "paraphrase-multilingual-MiniLM-L12-v2"
+
+BATCH_SIZE   = 64    
+TEST_SIZE    = 0.2
+RANDOM_STATE = 42
+MIN_TICKETS  = 5
+
 
 # =============================================================================
 # CONFIGURACIÓN
@@ -31,30 +38,70 @@ CATEGORIAS_PATH = "../data/categorias-activas.csv"
 CLIENTES_PATH   = "../data/clientes.csv"     
 MODEL_OUTPUT_DIR = "../models/"
 
-EMBEDDING_MODEL = "paraphrase-multilingual-MiniLM-L12-v2"
-
-BATCH_SIZE   = 64    
-TEST_SIZE    = 0.2
-RANDOM_STATE = 42
-MIN_TICKETS  = 5
-
-
 # =============================================================================
-# 1. CARGAR DATOS
+# 1. CARGAR DATOS Y NORMALIZAR IDENTIFICADORES
 # =============================================================================
 
-print("=" * 60)
-print("  MODELO DE CATEGORÍA PRINCIPAL (con contexto cliente)")
-print("=" * 60)
+print("\n[1/7] Cargando archivos...")
 
-data  = pd.read_csv(DATASET_PATH,    sep=";")
-cats  = pd.read_csv(CATEGORIAS_PATH, sep=";")
+data = pd.read_csv(DATASET_PATH, sep=";")
+cats = pd.read_csv(CATEGORIAS_PATH, sep=";")
 clientes = pd.read_csv(CLIENTES_PATH, sep=";")
 
-print(f"\n[1/7] Archivos cargados:")
-print(f"    Tickets    : {len(data):,}")
-print(f"    Categorías : {len(cats):,}")
-print(f"    Clientes   : {len(clientes):,}")
+# Limpiar espacios accidentales en los encabezados
+data.columns = data.columns.str.strip()
+cats.columns = cats.columns.str.strip()
+clientes.columns = clientes.columns.str.strip()
+
+# Verificar columnas requeridas
+requeridas_data = {
+    "IncidentTitle", "Description", "Category_id", "Client_id"
+}
+requeridas_cats = {"id", "name", "padCategories_id"}
+requeridas_clientes = {"id", "name"}
+
+for nombre, df, requeridas in [
+    ("tickets", data, requeridas_data),
+    ("categorías", cats, requeridas_cats),
+    ("clientes", clientes, requeridas_clientes),
+]:
+    faltantes = requeridas - set(df.columns)
+    if faltantes:
+        raise ValueError(
+            f"Columnas faltantes en {nombre}: {sorted(faltantes)}. "
+            f"Columnas encontradas: {df.columns.tolist()}"
+        )
+
+# Normalizar UUID del dataset de tickets
+for columna in ["Category_id", "Client_id"]:
+    data[columna] = (
+        data[columna]
+        .astype("string")
+        .str.strip()
+        .str.upper()
+    )
+
+# Normalizar UUID del catálogo de categorías
+for columna in ["id", "padCategories_id"]:
+    cats[columna] = (
+        cats[columna]
+        .astype("string")
+        .str.strip()
+        .str.upper()
+    )
+
+# Normalizar UUID del catálogo de clientes
+clientes["id"] = (
+    clientes["id"]
+    .astype("string")
+    .str.strip()
+    .str.upper()
+)
+
+print(f"    Tickets cargados    : {len(data):,}")
+print(f"    Categorías cargadas : {len(cats):,}")
+print(f"    Clientes cargados   : {len(clientes):,}")
+print("    UUID normalizados a mayúsculas.")
 
 
 # =============================================================================
@@ -101,6 +148,12 @@ print(f"    Tickets sin cliente resoluble   : {sin_cliente:,}")
 # Conservar solo tickets con categoría Y cliente válidos
 antes = len(data)
 data  = data.dropna(subset=["category_name", "cliente_nombre"])
+if data.empty:
+    raise ValueError(
+        "No quedaron tickets con categoría y cliente válidos. "
+        "Revisa la coincidencia de Category_id, padCategories_id "
+        "y Client_id después de normalizar los UUID."
+    )
 print(f"    Tickets válidos: {len(data):,}  (descartados: {antes - len(data):,})")
 
 # Mapa inferido: cliente → set de categorías que le pertenecen

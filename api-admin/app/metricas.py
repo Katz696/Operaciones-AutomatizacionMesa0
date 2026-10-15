@@ -37,6 +37,19 @@ COLUMNAS = {
 def resumen(usuario: dict = Depends(obtener_usuario_actual)):
     query = text("""
         SELECT
+
+            COUNT(*) AS tickets_total,
+            COUNT(*) FILTER (
+                WHERE tipo_revision = 'pendiente'
+                   OR categoria_revision = 'pendiente'
+                   OR subcategoria_revision = 'pendiente'
+            ) AS tickets_pendientes,
+            COUNT(*) FILTER (
+                WHERE tipo_revision = 'NA'
+                  AND categoria_revision = 'NA'
+                  AND subcategoria_revision = 'NA'
+            ) AS tickets_auto_aceptados,
+
             COUNT(*) FILTER (WHERE tipo_predicho IS NOT NULL) AS tipo_total,
             SUM(CASE WHEN tipo_revision = 'pendiente' THEN 1 ELSE 0 END) AS tipo_pendientes,
             SUM(CASE WHEN tipo_revision = 'NA' THEN 1 ELSE 0 END) AS tipo_auto_aceptados,
@@ -54,6 +67,11 @@ def resumen(usuario: dict = Depends(obtener_usuario_actual)):
         row = conn.execute(query).mappings().first()
 
     return {
+        "tickets": {
+            "total": row["tickets_total"],
+            "pendientes": row["tickets_pendientes"],
+            "auto_aceptados": row["tickets_auto_aceptados"],
+        },
         "tipo": {
             "total": row["tipo_total"], "pendientes": row["tipo_pendientes"],
             "auto_aceptados": row["tipo_auto_aceptados"]

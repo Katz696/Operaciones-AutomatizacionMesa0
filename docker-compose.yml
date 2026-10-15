@@ -69,6 +69,7 @@ services:
       PROACTIVA_PASSWORD: ${PROACTIVA_PASSWORD}
       BASE_URL: ${BASE_URL}
       LOGIN_URL: ${LOGIN_URL}
+      JWT_SECRET: ${JWT_SECRET}
     ports:
       - "8001:8001"
     volumes:

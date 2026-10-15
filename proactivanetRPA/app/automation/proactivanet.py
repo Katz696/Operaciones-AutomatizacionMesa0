@@ -146,11 +146,12 @@ def search_and_open_ticket(page, context, incident_code, tipo, categoria, subcat
             .locator("iframe[name=\"rightFrame\"]").content_frame \
             .locator("span").filter(has_text="GENERAL").nth(1).click()
 
-        search_edit_button = right_frame.locator("#pageEditBtn img")
-        search_edit_button.click()
-        page.wait_for_load_state("networkidle")
-        page.wait_for_timeout(6000)
-        log("info", "Modo edición activado")
+        # search_edit_button = right_frame.locator("#pageEditBtn img")
+        # search_edit_button.click()
+        # page.wait_for_load_state("networkidle")
+        # page.wait_for_timeout(6000)
+        # log("info", "Modo edición activado")
+        activar_modo_edicion(page, right_frame)
     except PlaywrightTimeoutError as e:
         take_screenshot(page, "edit_button_timeout")
         _registrar_error_automatizacion(incident_code, tipo, categoria, subcategoria, "modo_edicion",
@@ -196,6 +197,31 @@ def search_and_open_ticket(page, context, incident_code, tipo, categoria, subcat
         save_ticket(page, incident_code, tipo, categoria, subcategoria)
     except Exception as e:
         raise Exception(f"Error al guardar el ticket '{incident_code}': {e}")
+
+def activar_modo_edicion(page, right_frame, intentos=3):
+    real_frame = lambda: next((f for f in page.frames if f.name == "rightFrame"), None)
+
+    for intento in range(1, intentos + 1):
+        try:
+            page.locator("iframe[name='pawContentFrame']").content_frame \
+                .locator("iframe[name='rightFrame']").content_frame \
+                .locator("span").filter(has_text="GENERAL").nth(1).click()
+
+            edit_btn = right_frame.locator("#pageEditBtn img")
+            edit_btn.wait_for(state="visible", timeout=10000)
+            page.wait_for_timeout(1500)          # deja que se enlacen los handlers
+            edit_btn.click()
+
+            # Confirmar que realmente entró en edición: aparece el botón guardar
+            right_frame.locator("#pageSaveBtn img").wait_for(state="visible", timeout=10000)
+            log("info", f"Modo edición activado (intento {intento})")
+            return
+        except PlaywrightTimeoutError:
+            log("warning", f"Modo edición no se activó (intento {intento}/{intentos})")
+            take_screenshot(page, f"modo_edicion_intento_{intento}")
+            page.wait_for_timeout(2000)
+
+    raise PlaywrightTimeoutError("El ticket no entró en modo edición; puede estar protegido, bloqueado o en un estado que no permite edición")
 
 def select_client(page, cliente_nombre: str):
 
@@ -312,7 +338,10 @@ def select_category_and_subcategory(page, categoria_principal: str, subcategoria
     category_table = right_frame_content.locator("table#padCategories_id")
     category_table.wait_for(state="visible", timeout=10000)
 
-    target_full = f"/{categoria_principal}/{subcategoria}"
+    if subcategoria in ("", "/"):
+        target_full = f"/{categoria_principal}"
+    else:
+        target_full = f"/{categoria_principal}/{subcategoria}"
 
     log("info", f"Buscando categoría: {categoria_principal}")
     log("info", f"Ruta objetivo: {target_full}")

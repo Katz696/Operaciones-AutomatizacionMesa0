@@ -157,11 +157,6 @@
     "('Conauto', 'CONAUTO 20. Soporte CDFI')": [
       "20.1 Cambios CFDI"
     ],
-    "('Conauto', 'Proyectos')": [
-      "CONAUTO: Estabilización de Operaciones Progress_GC Conautopción",
-      "CONAUTO: Onboarding Digital",
-      "CONAUTO: Transición a SOFOM"
-    ],
     "('Coopera', 'PUNTOS12. Servicios de infraestructura')": [
       "PUNTOS12.1 Instalación o modificación de infraestructura.",
       "PUNTOS12.2 Revisión y diagnóstico de infraestructura"
@@ -237,8 +232,6 @@
       "FINBE1.1. Depuración de Mes"
     ],
     "('Gconsultores', 'GCTI 01. Apoyo administrativo')": [
-      "1.4  Instalación o modificación de infraestructura",
-      "1.5  Revisión y diagnóstico de infraestructura",
       "1.8  Solicitud de información"
     ],
     "('Gconsultores', 'GCTI 03. Correo Electrónico')": [
@@ -263,7 +256,11 @@
       "1.4 Configuraciones de la herramienta"
     ],
     "('Gconsultores', 'GESTI 02. Compras')": [
+      "Adquisicion de equipo de computo",
       "Compra de certificados"
+    ],
+    "('Gconsultores', 'Gestion de compras')": [
+      "Adquisicion de equipo de computo"
     ],
     "('Gconsultores', 'PUNTOS12. Servicios de infraestructura')": [
       "PUNTOS12.1 Instalación o modificación de infraestructura.",
@@ -333,7 +330,6 @@
       "1.1 Aplicaciones"
     ],
     "('Integra', 'GCTI 01. Apoyo administrativo')": [
-      "1.4  Instalación o modificación de infraestructura",
       "1.8  Solicitud de información"
     ],
     "('Integra', 'PUNTOS12. Servicios de infraestructura')": [
@@ -467,9 +463,6 @@
     ],
     "('TERE CAZOLA', 'UNIR12 Servicio de Respaldo de Información')": [
       "UNIR 12.3 Backup Datos FileServer"
-    ],
-    "('Telered', 'Proyectos')": [
-      "CONAUTO: Estabilización de Operaciones Progress_GC Conautopción"
     ],
     "('Tersys Group', 'PUNTOS12. Servicios de infraestructura')": [
       "PUNTOS12.1 Instalación o modificación de infraestructura."
@@ -702,8 +695,6 @@
       "FINBE1.1. Depuración de Mes"
     ],
     "GCTI 01. Apoyo administrativo": [
-      "1.4  Instalación o modificación de infraestructura",
-      "1.5  Revisión y diagnóstico de infraestructura",
       "1.8  Solicitud de información"
     ],
     "GCTI 03. Correo Electrónico": [
@@ -728,7 +719,11 @@
       "1.4 Configuraciones de la herramienta"
     ],
     "GESTI 02. Compras": [
+      "Adquisicion de equipo de computo",
       "Compra de certificados"
+    ],
+    "Gestion de compras": [
+      "Adquisicion de equipo de computo"
     ],
     "MST Especializada.- SAP": [
       "Falla de aplicación SAP",
@@ -744,9 +739,6 @@
       "PUNTOS23.3 Actualizacion SAP"
     ],
     "Proyectos": [
-      "CONAUTO: Estabilización de Operaciones Progress_GC Conautopción",
-      "CONAUTO: Onboarding Digital",
-      "CONAUTO: Transición a SOFOM",
       "GESTI: Telered (Consultoria 1)",
       "INFRAESTRUCTURA: GEY",
       "PROALMEX: MIDDLEWARE"

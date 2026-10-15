@@ -127,39 +127,46 @@ embedder_subcategoria = None
 
 oauth2_scheme_admin = OAuth2PasswordBearer(tokenUrl="/no-aplica", auto_error=False)
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/no-aplica", auto_error=False)
+
 # funcion para autentificar usuario
 
-def autenticar_usuario(credentials: HTTPBasicCredentials = Depends(security)):
+def autenticar_usuario(
+    token: str = Depends(oauth2_scheme),
+    credentials: HTTPBasicCredentials = Depends(HTTPBasic(auto_error=False)),
+):
+    # Camino 1: Bearer JWT (api-admin reenviando el token del usuario logueado)
+    if token:
+        try:
+            payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        except JWTError:
+            raise HTTPException(status_code=401, detail="Token inválido o expirado")
 
-    query = text("""
-        SELECT username, password_hash, is_active
-        FROM api_users
-        WHERE username = :username
-    """)
+        username = payload.get("sub")
+        if not username:
+            raise HTTPException(status_code=401, detail="Token inválido")
+        return username
 
-    with engine.connect() as conn:
-        result = conn.execute(query, {"username": credentials.username})
-        user = result.mappings().first()
+    # Camino 2: Basic Auth (n8n u otros clientes de servicio, como ya funcionaba)
+    if credentials:
+        query = text("""
+            SELECT username, password_hash, is_active
+            FROM api_users
+            WHERE username = :username
+        """)
+        with engine.connect() as conn:
+            user = conn.execute(query, {"username": credentials.username}).mappings().first()
 
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Credenciales inválidas",
-            headers={"WWW-Authenticate": "Basic"},
-        )
+        if not user:
+            raise HTTPException(status_code=401, detail="Credenciales inválidas", headers={"WWW-Authenticate": "Basic"})
+        if not user["is_active"]:
+            raise HTTPException(status_code=403, detail="Usuario inactivo")
+        if not verify_password(credentials.password, user["password_hash"]):
+            raise HTTPException(status_code=401, detail="Credenciales inválidas", headers={"WWW-Authenticate": "Basic"})
 
-    if not user["is_active"]:
-        raise HTTPException(status_code=403, detail="Usuario inactivo")
+        return user["username"]
 
-    # comparar password con hash
-    if not verify_password(credentials.password, user["password_hash"]):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Credenciales inválidas",
-            headers={"WWW-Authenticate": "Basic"},
-        )
-
-    return user["username"]
+    raise HTTPException(status_code=401, detail="Falta autenticación", headers={"WWW-Authenticate": "Bearer"})
 
 def verificar_admin(
     token: str = Depends(oauth2_scheme_admin),
@@ -1017,6 +1024,29 @@ def build_dataset_category(username: str = Depends(autenticar_usuario)):
         "stdout": proceso.stdout,
         "stderr": proceso.stderr
     }
+
+# endpoin para recuperar modelos
+
+TipoModelo = Literal["padtypes", "categoria", "subcategoria"]
+
+@app.get("/models")
+def listar_modelos(
+    tipo: Optional[TipoModelo] = None,
+    username: str = Depends(autenticar_usuario)
+):
+    query = text("""
+        SELECT id, nombre, version, archivo, accuracy, f1_score,
+               fecha_entrenamiento, activo, tipo
+        FROM models
+        WHERE (:tipo IS NULL OR tipo = :tipo)
+        ORDER BY tipo, fecha_entrenamiento DESC
+    """)
+    try:
+        with engine.connect() as conn:
+            rows = conn.execute(query, {"tipo": tipo}).mappings().all()
+        return {"total": len(rows), "modelos": [dict(r) for r in rows]}
+    except Exception as e:
+        return {"error": "fallo en consulta", "detalle": str(e)}
 
 # endpoint para ejecutar entrenamiento del modelo tipo
 
@@ -1928,21 +1958,54 @@ def opciones_categoria(client_id: str, username: str = Depends(autenticar_usuari
     return {"cliente": cliente_nombre, "opciones": opciones}
 
 @app.get("/subcategoria/opciones")
-def opciones_subcategoria(client_id: str, categoria: str, username: str = Depends(autenticar_usuario)):
-    cliente_nombre = modelo_categoria["mapa_clientes"].get(client_id.upper(), "/")
-    if cliente_nombre == "/":
-        return {"cliente": None, "opciones": []}
+def opciones_subcategoria(
+    client_id: str,
+    categoria: str,
+    username: str = Depends(autenticar_usuario)
+):
+    cliente_nombre = modelo_categoria["mapa_clientes"].get(
+        client_id.upper(),
+        "/"
+    )
 
-    clave   = (cliente_nombre, categoria)
-    subcats = modelo_subcategoria["mapa_padre_subcategorias"].get(clave, [])
+    if cliente_nombre == "/":
+        return {
+            "cliente": None,
+            "categoria": categoria,
+            "opciones": []
+        }
+
+    clave = (cliente_nombre, categoria)
+
+    subcats = modelo_subcategoria[
+        "mapa_padre_subcategorias"
+    ].get(clave, [])
+
     if not subcats:
-        subcats = modelo_subcategoria["mapa_solo_padre_subcats"].get(categoria, [])
+        return {
+            "cliente": cliente_nombre,
+            "categoria": categoria,
+            "opciones": [
+                {
+                    "nombre": "/",
+                    "id": "/"
+                }
+            ]
+        }
 
     opciones = [
-        {"nombre": nombre, "id": MAPA_NOMBRE_A_ID.get(nombre, "/")}
+        {
+            "nombre": nombre,
+            "id": MAPA_NOMBRE_A_ID.get(nombre, "/")
+        }
         for nombre in subcats
     ]
-    return {"cliente": cliente_nombre, "categoria": categoria, "opciones": opciones}
+
+    return {
+        "cliente": cliente_nombre,
+        "categoria": categoria,
+        "opciones": opciones
+    }
 
 # ##########################################################
 # -----------------Predict Subcategoria---------------------
