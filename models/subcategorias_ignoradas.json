@@ -1,0 +1,1806 @@
+{
+  " 6.21 Información o reproceso a servicios fiscales cerrados - 90 Hrs": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "1. 1 Generación de reportes": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "1.1 Compra de recursos tecnológicos - 104 Hrs": {
+    "tickets": 18,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 4
+  },
+  "1.1 Configuraciones": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.1 Creación de usuario": {
+    "tickets": 7,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "1.1 Generación de reportes": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.1 Implementación y actualización de tecnologías": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.1 Instalación o modificación de infraestructura": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.1 Modificación a Reportes (Nuevo, Agregar o Quitar columnas)": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.1. Alta de cliente": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "1.10 Mantenimiento Correctivo": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.10 OT": {
+    "tickets": 12,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 2
+  },
+  "1.11 Gestión Administrativa": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.12 Actividades de Conocimiento e Investigación": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.13 Capacitación y Certificación": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.2  Generación de reportes de puntos": {
+    "tickets": 10,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 2
+  },
+  "1.2 Afectación parcial de plataforma -12Hrs": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "1.2 Diagnóstico informático": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.2 Infraestructura": {
+    "tickets": 9,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 2
+  },
+  "1.2 Modificacion a Pantalla (Nuevo, Agregar o Quitar campos)": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.2 Preventa": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "1.2 Revisión y diagnóstico de infraestructura": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.2 Sistema Operativo": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.2. Alta de nuevos servicios de clientes activos": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.3  Gestión de Garantías": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "1.3 Fallo de correo de la herramienta": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.3 Fallo en infraestructura": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "1.3 Hardware (Cambios)": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.3 Lentitud en plataforma -24Hrs": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "1.3 Promociones nuevas que no son soportadas por el sistema": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.3 Usuario": {
+    "tickets": 250,
+    "motivo": "baja_confianza",
+    "f1": 0.0741,
+    "soporte_test": 50
+  },
+  "1.4 Actualización de Software - 8 Hrs": {
+    "tickets": 158,
+    "motivo": "baja_confianza",
+    "f1": 0.4727,
+    "soporte_test": 32
+  },
+  "1.4 Aplicación contable que no es soportada por el sistema": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.4 Funcion - Rol": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.4 Restablecimiento de respaldo x fallo -16 Hrs": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "1.5 Almacenamiento": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.5 Interface de aplicativos con nuevos desarrollos": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.5 Modificacion de informacion de usuario": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "1.5. Consultoría para cliente final": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "1.6  Revisión de estado de cuenta de puntos": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.6 Cambio de Funcionalidad": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.6 Mantenimiento Preventivo": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.6 Reseteo de contraseña": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "1.6. Agregar o eliminar en cuentas de empresa ya creadas": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.7  Generación de informe de usuarios activos en el dominio": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.7 Publicacion Servidor DMZ": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.7. Restablecimiento de respaldos": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.8 Firewall Local": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.8. Alta de nuevos usuarios con empresa ya creada": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "1.9 Seguidad Local": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "10.1 Creación de cuenta de Salesforce": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "11.1 Pase a productivo": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "11.2 Falla con la DIOT": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "11.2 No presenta alertas - 12 Hrs": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "11.2 Pase a QA": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "11.3 Cambio de lenguaje": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "11.3 Pase PASS": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "11.4 Permisos en SAP": {
+    "tickets": 8,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 2
+  },
+  "11.5 Administración de cuentas": {
+    "tickets": 22,
+    "motivo": "baja_confianza",
+    "f1": 0.3333,
+    "soporte_test": 4
+  },
+  "11.7 Capacitación SAP": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "11.7 Optimización de Procesos": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "11.9 Modificación de desarrollo SAP": {
+    "tickets": 46,
+    "motivo": "baja_confianza",
+    "f1": 0.4167,
+    "soporte_test": 9
+  },
+  "12.1 Configurar una impresora": {
+    "tickets": 7,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "12.2 Fallas de impresión": {
+    "tickets": 6,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "12.3 Desbloqueo de usuario de BD - 2 Hrs": {
+    "tickets": 16,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 3
+  },
+  "12.6 Alta en Proactiva": {
+    "tickets": 17,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 3
+  },
+  "13.1 Internet está lento": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "13.2 Administración de carpetas Compartidas - 13 Hrs": {
+    "tickets": 56,
+    "motivo": "baja_confianza",
+    "f1": 0.3333,
+    "soporte_test": 11
+  },
+  "13.2 Sin acceso a ernet": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "13.3 Solución a falla de navegación": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "14.1  Creación de máquina virtual": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "14.10 Error en la generación de layout de contabilidad - 8 Hrs": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "14.11 Error al ejecutar el sistema - 4 Hrs": {
+    "tickets": 27,
+    "motivo": "baja_confianza",
+    "f1": 0.3333,
+    "soporte_test": 5
+  },
+  "14.12 Correcciones en SAPS": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "14.3 Error al generar cotización de Seguro Automotriz - 8 Hrs": {
+    "tickets": 31,
+    "motivo": "baja_confianza",
+    "f1": 0.4286,
+    "soporte_test": 6
+  },
+  "14.4 Error en emisión de Seguro Automotriz  - 8 Hrs": {
+    "tickets": 30,
+    "motivo": "baja_confianza",
+    "f1": 0.4615,
+    "soporte_test": 6
+  },
+  "14.6 Error en la cancelación de Seguro Automotriz - 8 Hrs": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "14.7 Error al generar Recibos de Auto - 8 Hrs": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "14.8 Error al generar Recibos de vida - 8 Hrs": {
+    "tickets": 7,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "14.9 Error al generar el orden de Trabajo - 8 Hrs": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "15.1 Cuenta sin acceso": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "15.3 Creación de cuenta de sharefile": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "15.4 Baja de cuenta": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "15.5 Eliminación de cuenta": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "15.6 Configuración fileserver": {
+    "tickets": 6,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "16.1 Falla de un portal": {
+    "tickets": 6,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "16.2 Falla general de portal Sharepoint": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "17.1 Activación de office": {
+    "tickets": 5,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "17.2 Instalación de software básico": {
+    "tickets": 6,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "17.3 Sin acceso a carpeta o celda - 4 hrs": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "17.4 Asesoría en el uso de aplicaciones de escritorio": {
+    "tickets": 8,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 2
+  },
+  "17.5 Actualización de Antivirus": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "17.6 Formateo de equipo": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "17.8 Falla de aplicaciones office": {
+    "tickets": 6,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "17.9 Mapeo de Unidad": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "18.1 Fallo de aplicaciones en dispositivo Móvil": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "19.1 Falla de Respaldos Commvault": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "19.2 Fallas en NetSuite": {
+    "tickets": 26,
+    "motivo": "baja_confianza",
+    "f1": 0.25,
+    "soporte_test": 5
+  },
+  "19.5 Crear Contraseña": {
+    "tickets": 14,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 3
+  },
+  "2.1 Cambio de contraseña": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "2.1 Licencias windows Server": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "2.1 Rutas Estaticas": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "2.2 Aplicación de cambios mayores en infraestructura": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "2.2 Configuración o Actualizaciones en SAP": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "2.2 Direccionamiento IP Público": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "2.2 ISO de Windows Server": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "2.3 Fallo en SAP": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "2.4 Restablecimiento de respaldos": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "2.5 Registros DNS": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "2.6 Administración de Dominios Publicos": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "2.7 Puertas de Enlace": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "20.1 Fallo de Hipervisor Hyper-V": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "20.2 Falla CFDI": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "21.1 Falla de Respaldos PHD-Unitrends": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "21.2 Falla FINANCIERA": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "22.1 Evento": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "22.2 Fallas SUBASTAS": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "22.3 Proyecto": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "23.1 Reporte de asistencias": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "24.2 Modificación de contraseña -4Hrs": {
+    "tickets": 12,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 2
+  },
+  "3.1 Alta de Extensión - 6 Hrs": {
+    "tickets": 89,
+    "motivo": "baja_confianza",
+    "f1": 0.32,
+    "soporte_test": 18
+  },
+  "3.1 Capación remota": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "3.10 Conexiones VPN Site-to-Site": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "3.11 Configuración de Hardware": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "3.12 Configuracion de nombre a mostrar": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "3.2 Capacitación presencial": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "3.2 Crear lista de distribución": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "3.2 Direccionamiento IP Público": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "3.3 Falla de correo outlook": {
+    "tickets": 8,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 2
+  },
+  "3.5 Bajas de cuentas": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "3.5 Politicas de Seguridad": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "3.6 Politicas de Monitoreo": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "3.6 Respaldos de cuentas": {
+    "tickets": 5,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "3.7 Creación de Alias": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "3.7 Reglas de Firewall": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "3.8 Configuración de idioma": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "3.8 Gestion de Usuarios y Permisos": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "3.9 Alta de cuentas": {
+    "tickets": 16,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 3
+  },
+  "3.9 Conexiones Remotas": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "4.1 Configuracion de Switches": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "4.2 Agregar una impresora": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "4.4 Creación de cuenta": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "4.5 Instalar una aplicación": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "4.6 baja de cuenta": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "5.1 Listas de Distribucion": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "5.2 Grupos de Seguridad": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "5.2 Solicitud de permisos para imprimir a color - 2 Hrs": {
+    "tickets": 11,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 2
+  },
+  "5.4 DLP en Correo Electrónico": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "5.4 Solicitud de impresión - 2 Hrs": {
+    "tickets": 7,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "5.5 Actualización Contraseña Escáner - 2 Hrs": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "6.1 Falla de portal de Analitics": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "6.10 Aplicación de Notas de Crédito - 8 Hrs": {
+    "tickets": 53,
+    "motivo": "baja_confianza",
+    "f1": 0.4211,
+    "soporte_test": 11
+  },
+  "6.11 Recalcular Estado de cuenta (Conauto) - 8 Hrs": {
+    "tickets": 153,
+    "motivo": "baja_confianza",
+    "f1": 0.1579,
+    "soporte_test": 31
+  },
+  "6.13 Modificación de Contrato - 8 Hrs": {
+    "tickets": 214,
+    "motivo": "baja_confianza",
+    "f1": 0.2727,
+    "soporte_test": 43
+  },
+  "6.15 Desglose de Cobranza Financiera- Conauto - 8 Hrs": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "6.16 Eliminar imágenes que no pertenecen al contrato solicitado - 2 Hrs": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "6.18 Complemento de carga de carteras - 8 Hrs": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "6.2 Configuración de aplicación - 12 Hrs": {
+    "tickets": 497,
+    "motivo": "baja_confianza",
+    "f1": 0.3825,
+    "soporte_test": 100
+  },
+  "6.2 Falla de Tablero": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "6.24 Falla de Aplicaciones Administrativas - 8 Hrs": {
+    "tickets": 158,
+    "motivo": "baja_confianza",
+    "f1": 0.1429,
+    "soporte_test": 32
+  },
+  "6.25 Error en emisión de póliza - 2 Hrs": {
+    "tickets": 10,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 2
+  },
+  "6.26 Envío masivo de correos electrónicos -2 Hrs": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "6.27 Cesión de Derechos No localizables - 3 Hrs": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "6.28 Cotizaciones Externas - 4 Hrs": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "6.29 Error Servicio Progress 4 Hrs": {
+    "tickets": 6,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "6.3 Tablero no Cuadra o no se actualiza": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "6.30 Falla en Progress Financiera - 6 Hrs": {
+    "tickets": 138,
+    "motivo": "baja_confianza",
+    "f1": 0.2727,
+    "soporte_test": 28
+  },
+  "6.5 Agregar o Eliminar etiquetas FINANCIERA - 6 Hrs": {
+    "tickets": 136,
+    "motivo": "baja_confianza",
+    "f1": 0.3077,
+    "soporte_test": 27
+  },
+  "7.1 Alta de usuario CONTPAQ - 16 Hrs": {
+    "tickets": 21,
+    "motivo": "baja_confianza",
+    "f1": 0.4,
+    "soporte_test": 4
+  },
+  "7.1 Monitoreo de alertas": {
+    "tickets": 11,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 2
+  },
+  "7.5 Falla en timbrado de factura - 16 Hrs": {
+    "tickets": 18,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 4
+  },
+  "8.2 Falla de Contpaq": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "8.2 Modificación de BD - 26 Hrs": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "8.3 Eliminación de BD - 26 Hrs": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "8.5 Respaldo de base de datos - 26 Hrs": {
+    "tickets": 21,
+    "motivo": "baja_confianza",
+    "f1": 0.4,
+    "soporte_test": 4
+  },
+  "8.7 Crear base de datos congelada - 1 Hrs": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "8.8 Limpieza de tabla Amorosos - 1 Hrs": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "8.9 Reestablecer Base de Datos CONTPAQ - 13 Hrs": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "9.1 Corrección a RFC - 8 Hrs": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "9.1 Falla de Project": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "9.2 Falla de una cuenta de usuario de project": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "9.5 Error en uso del CFDI - 8 Hrs": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Administración de Correo Office 365": {
+    "tickets": 14,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 3
+  },
+  "Administración de Dominios Públicos": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Administración de Recursos": {
+    "tickets": 10,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 2
+  },
+  "Almacenamiento y Depuracion": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Buzones de Voz": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "CDA: Outsourcing TI": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "CONAUTO 26.1 Alta de usuarios": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "CONAUTO 26.2 Captura de Contrato": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "CONAUTO 26.3 Actualización de Datos": {
+    "tickets": 8,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 2
+  },
+  "CONAUTO 26.4 Envío de archivos para firma": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Compra de licencias": {
+    "tickets": 9,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 2
+  },
+  "Conexiones Remotas": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Conexiones VPN": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Configuración DHCP": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Configuración de Accesos y Permisos": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Configuración de Almacenamiento FileServer": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Configuración de Almacenamiento One Drive": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Configuración de Almacenamiento SharePoint": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Configuración de Hardware": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Configuración de IVR": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Configuración de Interfases": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Configuración de Políticas de Operación": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Configuración de Switches": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "DES-CONA-01 Desarrollo": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Direccionamiento IP Publico": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "ENKONTROL 1.4 Consultoría para cliente final": {
+    "tickets": 13,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 3
+  },
+  "ENKONTROL 1.6 Respaldo de Base de Datos": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "ENKONTROL 1.7 Monitoreo y reportes": {
+    "tickets": 18,
+    "motivo": "baja_confianza",
+    "f1": 0.3333,
+    "soporte_test": 4
+  },
+  "Facturación Proyecto AFORE XXI BANORTE": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Facturación Proyecto PALACE RESORTS": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Facturación Proyecto Prueba": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Fase 1- Conciencia del cambio": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Fase 2- Catalogo de servicios": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Fase 3- Niveles de servicio": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Fase 4- Mejora Continua": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "GRUPO FASA: Definición de RFP": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Gestión de Accesos a Base de Datos": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Gestión de Almacenamiento FileServer": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Gestión de Almacenamiento One Drive": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Gestión de Almacenamiento SharePoint": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Gestión de BD (Alta, Baja y Cambio)": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Gestión de Extensiones": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Gestión de Licencias": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Gestión de Redes y Permisos": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Gestión de Usuarios": {
+    "tickets": 9,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 2
+  },
+  "Gestión de Usuarios (Inalámbrica)": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Gestión de VLAN": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Gestión de VLAN Voz": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Gestión de usuarios y permisos": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Grupos de Seguridad": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "INF-CONA-02 Internet (MCM - C3ntro)": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "INF-CONA-03 Firewall": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "INF-CONA-04 Redes LAN e Inalmabricas": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "INF-CONA-05 Correo electronico": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "INF-CONA-06 Equipo de Cómputo": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "INF-CONA-07 Telefonia": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "INF-CONA-08 Base de Datos": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "INF-CONA-09 Gestion de Usuarios": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "INF-CONA-10 Repositorios de Informacion": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "INF-CONA-11 Despliegues": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Incremento Ancho de Banda": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Instalación de Servidor": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Listas de Distribución": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Mantenimiento Correctivo": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Mejoras o Cambios de Firmware": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Monitoreo de dispositivos": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS 12.3 Revision de maquina virtual": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS 12.4 Cambio de password": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS 12.5 Plan de trabajo": {
+    "tickets": 21,
+    "motivo": "baja_confianza",
+    "f1": 0.3333,
+    "soporte_test": 4
+  },
+  "PUNTOS 12.6 Programación Encendido - Apagado de MV": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS1.1. Falla de BlueCoat Proxy SG": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS10.1  Falla de DNS": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS11.1 Falla de Directorio IIS": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS11.2 Generar Certificados": {
+    "tickets": 9,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 2
+  },
+  "PUNTOS13.1. Cuenta sin acceso": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS13.2  Sin servicio de Fileserver": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS14.1 Falla de un portal": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS14.2 Falla general de portal de sharepoint": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS15.1 Fallas de Access Gateway": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS16.2 Consulta Citrix": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS17.1 Falla de Cloud Bridge": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS18.1 Fallas de Aplicación Cristal Reports": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS19.1 Falla de hipervisor Hyper-V": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS2.1. Falla de respaldos de CommVault": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS20.1 Fallas de Aplicación Ibolt": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS20.2 Modificaciones en Aplicación Ibolt": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS21.1 Falla de Netscaler": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS22.1 Falla de respaldos PHD,Unitrends": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS23.10 Portal de facturación ": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS23.11 Validación de espacio SAP": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS23.12 Cambio de usuario": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS23.4 Revision de cuentas contables": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS23.5 Creacion de consulta": {
+    "tickets": 5,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "PUNTOS23.6 Modificacion de reportes": {
+    "tickets": 9,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 2
+  },
+  "PUNTOS23.7 Creacion de BD": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS23.8 Creacion de reportes": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS23.9 Revisión de embarques ": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS24.1 Fallas SQL Server": {
+    "tickets": 5,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "PUNTOS25.1 Falla de Acceso a Web Interface": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS26.1 Fallas en XenApp": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS27.1 Fallas de Impresión": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS27.2 Fallas de XenDesktop": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS28.1 Fallas en XenServer": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS29.1 Falla de System Center": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS3.1 Falla de tablero": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS3.2 Tablero no cuadra o no se actualiza": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS30.1 Falla de Vware ESX": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS4.1 Cotizacion": {
+    "tickets": 27,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 5
+  },
+  "PUNTOS7.1 Falla de portal de analitics": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS7.2 Falla de tablero": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS7.3 Tablero no cuadra o no se actualiza": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS8.1 Falla de Packet Shaper": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS9.1 Fallas de project": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS9.2 Falla de una cuenta de usuario de project": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Permisos Administrativos": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Permisos en BD": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Politicas de Monitoreo": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Políticas de Seguridad": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Portal WEB -36 hrs": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Programación Encendido - Apagado de MV": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Prueba 1.2": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Prueba 1.3": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Puertas de Enlace": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Reemplazo o Sustitución de Hardware": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Registros DNS": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Reglas de Firewall": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Renovacion de certificados y dominios": {
+    "tickets": 18,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 4
+  },
+  "Respaldos de configuracion": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Rutas Estáticas": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Rutas estáticas (IP Fija)": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Seguridad Local": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "Servicios de Correo en la Nube": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "TELERED 1.1 Interrupción total del  servicio del portal": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "TELERED 1.2 Fallo de acceso al portal": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "TELERED 1.3 Fallo en funcionamiento del portal": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "TELERED 1.4 Inconsistencia de Datos": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "TELERED 1.5 Asesoramiento en configuraciones del portal": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "TELERED 1.6 Capacitaciones del funcionamiento del Portal": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "TELERED 1.7 Configuraciones Generales": {
+    "tickets": 6,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "TELERED 2.1 Interrupción del servicio del portal": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "TELERED 2.2 Fallo en funcionamiento del portal": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "TELERED 2.3 Inconsistencia de Datos": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "TELERED 2.4 Capacitaciones del funcionamiento del Portal": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "TELERED 2.5 Asesoria de API's": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "TELERED 2.6 Configuraciones Generales": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR 10.2 Creación de Carpetas en el FileServer": {
+    "tickets": 7,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "UNIR 10.3 Creación de Cuentas de AD para FileServer": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR 10.4 Mapeo de Unidades de Red del FileServer": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR 11.1 Administración de Cuenta para Citrix": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR 11.2 Soporte a Conexión de Escritorio Virtual": {
+    "tickets": 6,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "UNIR 11.3 Mapeo de Unidad en Escritorio Virtual": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR 11.4 Permisos en carpetas Compartidas GCTI": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR 11.5 Servicios de Impresión en Citrix": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR 11.6 Falla en Servicio Citrix": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR 12.1 Backup Servidor ISA Admin": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR 12.2 Backup Servidor ISA Alumnos": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR 12.4 Backup Directorio Activo": {
+    "tickets": 16,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 3
+  },
+  "UNIR 12.5 Backup NAS 1": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR 12.6 Backup CRM": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR 12.7 Backup Reloj Checador": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR 8.1 Instalación y Configuración del Software OTM": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR 8.3 Generación de Respaldos del OTM": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR 8.4 Corrección de Fallas en OTM": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR 9.1 Instalación y Configuración del Software Retail One": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR 9.2 Asesoría en el Software Retail One": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR 9.4 Actualización de SW Retail One": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR1.14 Solución a fallas del equipo.": {
+    "tickets": 27,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 5
+  },
+  "UNIR1.2 Administración de Garantía de HW": {
+    "tickets": 7,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "UNIR1.3 Eliminación de virus": {
+    "tickets": 5,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "UNIR1.4 Incidentes de Impresión": {
+    "tickets": 57,
+    "motivo": "baja_confianza",
+    "f1": 0.3333,
+    "soporte_test": 11
+  },
+  "UNIR1.9 Configuración de Cuentas": {
+    "tickets": 33,
+    "motivo": "baja_confianza",
+    "f1": 0.2222,
+    "soporte_test": 7
+  },
+  "UNIR13.1 Pago de Dominios": {
+    "tickets": 6,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "UNIR14.1 Seguimiento a solicitudes de desarrollo de software.": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR14.2 Administración de Proyectos": {
+    "tickets": 5,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "UNIR16.2 Problemas de logeo a internet": {
+    "tickets": 37,
+    "motivo": "baja_confianza",
+    "f1": 0.4,
+    "soporte_test": 7
+  },
+  "UNIR16.3 No se despliega pagina de acceso a internet": {
+    "tickets": 12,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 2
+  },
+  "UNIR16.5 Desconexión al servicio de internet": {
+    "tickets": 5,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "UNIR16.6 Fallo por bloqueo a pagina web": {
+    "tickets": 6,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "UNIR16.8 Configuración de filtrado de contenido web": {
+    "tickets": 7,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "UNIR17.1. Creeze": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR17.1.1 Fallo en la aplicación": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR17.1.1.1 Lentitud en el sistema": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR17.1.1.2 No permite cargar materias": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR17.1.1.3 No permite subir tareas": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR17.1.1.4 Plataforma no responde": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR17.1.1.5 Usuarios no pueden entrar a los cursos": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR17.1.1.6 Errores de registro": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR17.1.2 Soporte de plataforma": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR17.1.2.1 Respaldo de información": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR17.1.2.2 Publicación de enlace Sincrónico": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR17.1.2.3 Publicación de link de grabaciones": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR18.1. Creeze": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR18.1.1 Configuración de cursos": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR18.1.1.1 Desactivación de cursos": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR18.1.1.2 Reactivación de cursos": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR18.1.1.3 Diseño de cursos": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR18.1.1.4 Estructuración de cargas": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR18.1.2 Administración de credenciales": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR18.1.2.1 Reseteo de contraseña": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR18.1.2.2 Alta de usuarios": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR18.1.2.3 Reactivación de cuentas": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR18.1.3 Control de Calificaciones": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR18.1.3.1 Alta de calificaciones en BitAcademic": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR2.11 Asesoría en el uso de Cliente de correo electrónico Outlook": {
+    "tickets": 52,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 10
+  },
+  "UNIR2.12 Creación de reglas Office 365": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR2.13 Fallo de envio de correo": {
+    "tickets": 7,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "UNIR2.3 Compartir Recursos": {
+    "tickets": 13,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 3
+  },
+  "UNIR2.4 Configuración de Perfil": {
+    "tickets": 156,
+    "motivo": "baja_confianza",
+    "f1": 0.0571,
+    "soporte_test": 31
+  },
+  "UNIR2.5 Organización y Depuración de Buzón": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR2.6 Respaldo o Recuperación de Datos": {
+    "tickets": 17,
+    "motivo": "baja_confianza",
+    "f1": 0.4,
+    "soporte_test": 3
+  },
+  "UNIR2.7 Administración de listas de Distribución": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR2.8 Servicio de información masiva (Notificaciones)": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR3.3 Fallas de Red Local": {
+    "tickets": 43,
+    "motivo": "baja_confianza",
+    "f1": 0.3636,
+    "soporte_test": 9
+  },
+  "UNIR3.4 Falla de NAS": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR4.1 Publicación de Página WEB": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR4.2 Publicación de Contenido de la Página WEB": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR4.3 Publicación del CRM": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR4.4 Correcciones del CRM": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "UNIR4.5 Publicación de SAP": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR4.7 Asesoría de SAP": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR5.5. Mantenimiento Correctivo de SW de Centro de Cómputo": {
+    "tickets": 5,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "UNIR6.1. Configuración de Red Inalámbrica": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR6.2. Falla de conexión a Internet": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR7.2. Corrección de Fallas de Configuración de equipos de Vigilancia": {
+    "tickets": 18,
+    "motivo": "baja_confianza",
+    "f1": 0.4,
+    "soporte_test": 4
+  },
+  "UNIR7.3. Gestión de Garantías con el Proveedor": {
+    "tickets": 5,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "XCARET: Consultoría ITSM": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  }
+}

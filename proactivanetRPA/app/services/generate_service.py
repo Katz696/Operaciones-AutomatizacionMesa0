@@ -123,11 +123,16 @@ TEMPLATES = {
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-#  DATOS FICTICIOS COHERENTES CON EL CONTEXTO
+#  DATOS FICTICIOS COHERENTES CON EL CONTEXTO 
 # ─────────────────────────────────────────────────────────────────────────────
 
 EMPRESAS = [
+<<<<<<< HEAD
+    "BEPENSA"
+    # "GC", "GRUPO CONSULTORES"
+=======
     "GC", "GRUPO CONSULTORES"
+>>>>>>> 0cd777d9e435266f99d7e0b5f43263882b102b18
     # "YUCASA", "BE GRAND", "CONAUTO", "GC", "CHANGAN", "AUTOFIN",
     # "GRUPO NORTE", "INMOBILIA", "CASAS GEO", "VINTE", "ARQ STUDIO",
     # "CONSTRUCTORA ALFA", "DESARROLLOS DEL BAJÍO", "MEGACABLE", "SIGMA",

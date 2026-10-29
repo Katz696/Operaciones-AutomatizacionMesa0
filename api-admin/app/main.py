@@ -15,6 +15,10 @@ from .modelos import router as modelos_router
 from .erroresauto import router as errores_router
 from .usuarios import router as usuarios_router
 from .historial import router as historial_router
+<<<<<<< HEAD
+from .datasets_csv import router as datasets_router
+=======
+>>>>>>> 0cd777d9e435266f99d7e0b5f43263882b102b18
 import os
 
 app = FastAPI(
@@ -38,6 +42,10 @@ app.include_router(modelos_router)
 app.include_router(errores_router)
 app.include_router(usuarios_router)
 app.include_router(historial_router)
+<<<<<<< HEAD
+app.include_router(datasets_router)
+=======
+>>>>>>> 0cd777d9e435266f99d7e0b5f43263882b102b18
 
 
 @app.get("/health")

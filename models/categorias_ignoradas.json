@@ -1,0 +1,396 @@
+{
+  "AEME 01. Apoyo administrativo": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Begrand 01. Fallos en infraestructura Azure": {
+    "tickets": 12,
+    "motivo": "baja_confianza",
+    "f1": 0.4,
+    "soporte_test": 2
+  },
+  "CONAUTO - CAMBIOS": {
+    "tickets": 24,
+    "motivo": "baja_confianza",
+    "f1": 0.3077,
+    "soporte_test": 5
+  },
+  "CONAUTO 10. Soporte a Seguros AON": {
+    "tickets": 88,
+    "motivo": "baja_confianza",
+    "f1": 0.4118,
+    "soporte_test": 18
+  },
+  "CONAUTO 11. Soporte a Soporte a PLD - Anfexi": {
+    "tickets": 11,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 2
+  },
+  "CONAUTO 14. Soporte a SAPS ": {
+    "tickets": 276,
+    "motivo": "baja_confianza",
+    "f1": 0.4845,
+    "soporte_test": 55
+  },
+  "CONAUTO 15. Herramientas de colaboración (O365)": {
+    "tickets": 287,
+    "motivo": "baja_confianza",
+    "f1": 0.4969,
+    "soporte_test": 57
+  },
+  "CONAUTO 18. Tareas Internas": {
+    "tickets": 255,
+    "motivo": "baja_confianza",
+    "f1": 0.1769,
+    "soporte_test": 51
+  },
+  "CONAUTO 24. Estado de cuenta WEB": {
+    "tickets": 27,
+    "motivo": "baja_confianza",
+    "f1": 0.3448,
+    "soporte_test": 5
+  },
+  "CONAUTO 25. Arrendadora Conautopcion": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "CONAUTO 26. Web SIR": {
+    "tickets": 17,
+    "motivo": "baja_confianza",
+    "f1": 0.4615,
+    "soporte_test": 3
+  },
+  "Ferreterias Mandiola 01. Soporte en infraestructura": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "Ferreterias Mandiola 02. Soporte SAP": {
+    "tickets": 5,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "Ferreterias Mandiola 03. Capacitación": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "GCTI 01. Apoyo administrativo": {
+    "tickets": 248,
+    "motivo": "baja_confianza",
+    "f1": 0.4466,
+    "soporte_test": 50
+  },
+  "GCTI 02. Windows Server": {
+    "tickets": 69,
+    "motivo": "baja_confianza",
+    "f1": 0.303,
+    "soporte_test": 14
+  },
+  "GCTI 04. Escritorios virtuales": {
+    "tickets": 45,
+    "motivo": "baja_confianza",
+    "f1": 0.3529,
+    "soporte_test": 9
+  },
+  "GCTI 06. Microstrategy": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "GCTI 08. Nomipaq": {
+    "tickets": 19,
+    "motivo": "baja_confianza",
+    "f1": 0.4444,
+    "soporte_test": 4
+  },
+  "GCTI 09. Project Server": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "GCTI 10. Salesforce": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "GCTI 12. Servicio de Impresión": {
+    "tickets": 15,
+    "motivo": "baja_confianza",
+    "f1": 0.3333,
+    "soporte_test": 3
+  },
+  "GCTI 13. Servicio de internet": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "GCTI 14. Servicio en AWS": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "GCTI 15. Sharefile": {
+    "tickets": 17,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 3
+  },
+  "GCTI 16. Sharepoint": {
+    "tickets": 32,
+    "motivo": "baja_confianza",
+    "f1": 0.4,
+    "soporte_test": 6
+  },
+  "GCTI 17. Soporte a equipo de cómputo personal": {
+    "tickets": 83,
+    "motivo": "baja_confianza",
+    "f1": 0.4324,
+    "soporte_test": 17
+  },
+  "GCTI 18. Soporte Citrix MDM": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "GCTI 19. Soporte Commvault": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "GCTI 20. Soporte Hyper-V": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "GCTI 21. Soporte PHD-Unitrends": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "GCTI 23  Reloj checador": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "GCTI. CC-Base de Datos": {
+    "tickets": 16,
+    "motivo": "baja_confianza",
+    "f1": 0.4,
+    "soporte_test": 3
+  },
+  "GCTI. CC-Correo Electronico": {
+    "tickets": 33,
+    "motivo": "baja_confianza",
+    "f1": 0.4,
+    "soporte_test": 7
+  },
+  "GCTI. CC-Firewall": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "GCTI. CC-Internet": {
+    "tickets": 5,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 1
+  },
+  "GCTI. CC-Red LAN e Inalámbrica": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "GCTI. CC-Repositorios de Información": {
+    "tickets": 9,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 2
+  },
+  "GCTI. CC-Servidores": {
+    "tickets": 30,
+    "motivo": "baja_confianza",
+    "f1": 0.2222,
+    "soporte_test": 6
+  },
+  "GCTI. CC-Telefonía": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "GCTI. Servicios de Infraestructura": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "MST Especializada.- SAP": {
+    "tickets": 129,
+    "motivo": "baja_confianza",
+    "f1": 0.4828,
+    "soporte_test": 26
+  },
+  "PETROMAYAB 01. Apoyo administrativo": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS01. Bluecoat": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS02. CommVault": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS03. Corporater EPM": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS04. Cotizacion": {
+    "tickets": 33,
+    "motivo": "baja_confianza",
+    "f1": 0.4286,
+    "soporte_test": 7
+  },
+  "PUNTOS05. Directorio activo": {
+    "tickets": 12,
+    "motivo": "baja_confianza",
+    "f1": 0.3333,
+    "soporte_test": 2
+  },
+  "PUNTOS07. Microstrategy": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS08. Packet Shaper": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS09. Project server": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS10. Servicio de DNS": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS11. Servicio IIS": {
+    "tickets": 12,
+    "motivo": "baja_confianza",
+    "f1": 0.25,
+    "soporte_test": 2
+  },
+  "PUNTOS13. Sharefile": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS14. Sharepoint": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS15. Soporte access gateway": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS16. Soporte citrix MDM": {
+    "tickets": 46,
+    "motivo": "baja_confianza",
+    "f1": 0.2857,
+    "soporte_test": 9
+  },
+  "PUNTOS17. Soporte cloud bridge": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS18. Soporte cristal reports": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS19. Soporte hyper-V": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS20. Soporte ibolt": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS21. Soporte netscaler": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS22. Soporte PHN,UNITRENDS": {
+    "tickets": 1,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS24. Soporte SQL": {
+    "tickets": 16,
+    "motivo": "baja_confianza",
+    "f1": 0.0,
+    "soporte_test": 3
+  },
+  "PUNTOS25. Soporte web interface": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS26. Soporte Xenapp": {
+    "tickets": 16,
+    "motivo": "baja_confianza",
+    "f1": 0.1818,
+    "soporte_test": 3
+  },
+  "PUNTOS27. Soporte XenDesktop": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS28. Soporte XenServer": {
+    "tickets": 4,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS29. System center": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  },
+  "PUNTOS30. VWARE ESX": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "PUNTOS31. Windows server": {
+    "tickets": 45,
+    "motivo": "baja_confianza",
+    "f1": 0.1579,
+    "soporte_test": 9
+  },
+  "PUNTOS32. Queja": {
+    "tickets": 3,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR04. Administración de Servidores (Primer Nivel)": {
+    "tickets": 75,
+    "motivo": "baja_confianza",
+    "f1": 0.439,
+    "soporte_test": 15
+  },
+  "UNIR06. Servicio de Asesoría a Alumnos y Maestros": {
+    "tickets": 22,
+    "motivo": "baja_confianza",
+    "f1": 0.4615,
+    "soporte_test": 4
+  },
+  "UNIR10. Administración del File Server": {
+    "tickets": 32,
+    "motivo": "baja_confianza",
+    "f1": 0.1818,
+    "soporte_test": 6
+  },
+  "UNIR11. Servicio de Escritorios Virtuales": {
+    "tickets": 22,
+    "motivo": "baja_confianza",
+    "f1": 0.3077,
+    "soporte_test": 4
+  },
+  "UNIR13. Administración de Dominios": {
+    "tickets": 13,
+    "motivo": "baja_confianza",
+    "f1": 0.2857,
+    "soporte_test": 3
+  },
+  "UNIR14. Servicio de gestion de proyectos": {
+    "tickets": 10,
+    "motivo": "baja_confianza",
+    "f1": 0.25,
+    "soporte_test": 2
+  },
+  "UNIR17. Soporte a aplicaciones": {
+    "tickets": 2,
+    "motivo": "sin_minimo_tecnico"
+  },
+  "UNIR18. Aplicaciones Académicas": {
+    "tickets": 0,
+    "motivo": "sin_tickets"
+  }
+}

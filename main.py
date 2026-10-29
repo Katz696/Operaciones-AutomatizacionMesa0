@@ -9,7 +9,12 @@ import logging
 import json
 from datetime import datetime
 from unidecode import unidecode
+<<<<<<< HEAD
+from fastapi import Body, FastAPI,Depends, HTTPException, status, BackgroundTasks, UploadFile, File
+from fastapi.responses import FileResponse
+=======
 from fastapi import Body, FastAPI,Depends, HTTPException, status, BackgroundTasks
+>>>>>>> 0cd777d9e435266f99d7e0b5f43263882b102b18
 from pydantic import BaseModel
 from typing import List, Union, Literal
 import smtplib
@@ -24,6 +29,11 @@ import uuid
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.security import HTTPBasicCredentials
 from jose import jwt, JWTError
+<<<<<<< HEAD
+import io
+import shutil
+=======
+>>>>>>> 0cd777d9e435266f99d7e0b5f43263882b102b18
 
 JWT_SECRET = os.getenv("JWT_SECRET")
 JWT_ALGORITHM = "HS256"
@@ -112,6 +122,9 @@ app = FastAPI(
 # Cargar modelo
 
 MODELS_DIR = "models"
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+CATEGORY_SCRIPTS_DIR = os.path.join(BASE_DIR, "PredictCategory")
 
 modelo = None
 mapa_ids = None
@@ -323,8 +336,246 @@ cargar_modelo_tipo()
 cargar_threshold_desde_db()
 
 # mapa de categorias
-_cats_df = pd.read_csv("data/categorias-activas.csv", sep=";")
-MAPA_NOMBRE_A_ID = dict(zip(_cats_df["name"], _cats_df["id"]))
+DATA_DIR   = os.path.join(BASE_DIR, "data")
+BACKUP_DIR = os.path.join(DATA_DIR, "_backups")
+TRASH_DIR  = os.path.join(DATA_DIR, "_papelera")
+
+MAPA_NOMBRE_A_ID: dict = {}
+
+def cargar_mapa_categorias():
+    """Recarga MAPA_NOMBRE_A_ID desde data/categorias-activas.csv (in place)."""
+    ruta = os.path.join(DATA_DIR, "categorias-activas.csv")
+    MAPA_NOMBRE_A_ID.clear()
+    if not os.path.exists(ruta):
+        logger.warning("categorias-activas.csv no existe; MAPA_NOMBRE_A_ID vacío")
+        return
+    df = pd.read_csv(ruta, sep=";", encoding="utf-8-sig")
+    MAPA_NOMBRE_A_ID.update(dict(zip(df["name"], df["id"])))
+
+cargar_mapa_categorias()
+
+# ============================================================
+# Administración de datasets CSV (carpeta data/)
+# ============================================================
+
+MAX_CSV_BYTES = 5 * 1024 * 1024
+
+DATASETS = {
+    "categorias-activas": {
+        "archivo": "categorias-activas.csv",
+        "sep": ";",
+        "estructura": "exacta",
+        "columnas": None,                    # sin fallback: se compara con el archivo actual
+        "requeridas": ["name", "id"],
+        "unicas": ["name", "id"],
+        "aplicacion": "inmediata",
+    },
+    "clientes": {
+        "archivo": "clientes.csv",
+        "sep": ";",
+        "estructura": "exacta",
+        "columnas": ["id", "name"],          # fallback si el archivo no existe
+        "requeridas": ["id", "name"],
+        "unicas": ["id", "name"],
+        "aplicacion": "reentrenamiento",
+    },
+    "clientes-categorias": {
+        "archivo": "clientes-categorias.csv",
+        "sep": ",",
+        "estructura": "ancha",
+        "requeridas": ["customerId", "customerName"],
+        "patron_extra": r"^categories/\d+/(id|name)$",
+        "unicas": ["customerId"],
+        "aplicacion": "reentrenamiento",
+    },
+}
+
+
+def _dataset_cfg(key: str):
+    cfg = DATASETS.get(key)
+    if not cfg:
+        raise HTTPException(status_code=404, detail=f"Dataset '{key}' no reconocido")
+    return cfg, os.path.join(DATA_DIR, cfg["archivo"])
+
+
+def _leer_dataset(ruta: str, sep: str, **kw) -> pd.DataFrame:
+    return pd.read_csv(ruta, sep=sep, dtype=str, keep_default_na=False,
+                       encoding="utf-8-sig", **kw)
+
+
+def _validar_csv_subido(cfg: dict, ruta_actual: str, raw: bytes):
+    try:
+        texto = raw.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        raise HTTPException(400, "El archivo debe estar codificado en UTF-8")
+
+    try:
+        df = pd.read_csv(io.StringIO(texto), sep=cfg["sep"], dtype=str, keep_default_na=False)
+    except Exception as e:
+        raise HTTPException(400, f"CSV inválido: {e}")
+
+    if df.empty:
+        raise HTTPException(400, "El CSV no tiene filas")
+
+    df.columns = [c.strip() for c in df.columns]
+    cols = list(df.columns)
+
+    # --- estructura ---
+    if cfg["estructura"] == "exacta":
+        esperadas = None
+        if os.path.exists(ruta_actual):
+            esperadas = [c.strip() for c in
+                         pd.read_csv(ruta_actual, sep=cfg["sep"], nrows=0, encoding="utf-8-sig").columns]
+        elif cfg.get("columnas"):
+            esperadas = cfg["columnas"]
+        if esperadas and cols != esperadas:
+            raise HTTPException(400, {"error": "La estructura no coincide",
+                                      "esperadas": esperadas, "recibidas": cols})
+    else:  # ancha
+        patron = re.compile(cfg["patron_extra"])
+        extras_invalidas = [c for c in cols if c not in cfg["requeridas"] and not patron.match(c)]
+        if extras_invalidas:
+            raise HTTPException(400, {"error": "Columnas no permitidas",
+                                      "columnas": extras_invalidas})
+        ids = {m.group(1) for c in cols if (m := re.match(r"^categories/(\d+)/id$", c))}
+        nombres = {m.group(1) for c in cols if (m := re.match(r"^categories/(\d+)/name$", c))}
+        if ids != nombres:
+            raise HTTPException(400, {"error": "Cada categories/N/id necesita su categories/N/name",
+                                      "columnas": sorted(ids ^ nombres, key=int)})
+
+    faltantes = [c for c in cfg["requeridas"] if c not in cols]
+    if faltantes:
+        raise HTTPException(400, f"Faltan columnas requeridas: {faltantes}")
+
+    # --- contenido ---
+    for c in cfg["requeridas"]:
+        if (df[c].str.strip() == "").any():
+            raise HTTPException(400, f"La columna '{c}' tiene valores vacíos")
+
+    advertencias = []
+    for c in cfg.get("unicas", []):
+        dup = df[c][df[c].duplicated()].unique().tolist()
+        if dup:
+            advertencias.append(f"Valores duplicados en '{c}': {dup[:10]}")
+
+    return texto, df, advertencias
+
+
+@app.get("/datasets")
+def listar_datasets(username: str = Depends(verificar_admin)):
+    resultado = []
+    for key, cfg in DATASETS.items():
+        ruta = os.path.join(DATA_DIR, cfg["archivo"])
+        item = {"key": key, "archivo": cfg["archivo"],
+                "existe": os.path.exists(ruta), "aplicacion": cfg["aplicacion"]}
+        if item["existe"]:
+            try:
+                df = _leer_dataset(ruta, cfg["sep"])
+                item.update({"filas": len(df), "columnas": list(df.columns)})
+            except Exception as e:
+                item["error_lectura"] = str(e)
+            stat = os.stat(ruta)
+            item["tamano_bytes"] = stat.st_size
+            item["modificado"] = datetime.fromtimestamp(stat.st_mtime).isoformat()
+        resultado.append(item)
+    return {"datasets": resultado}
+
+
+@app.get("/datasets/{key}/preview")
+def preview_dataset(key: str, limit: int = 100, offset: int = 0,
+                    username: str = Depends(verificar_admin)):
+    cfg, ruta = _dataset_cfg(key)
+    if not os.path.exists(ruta):
+        raise HTTPException(404, "El archivo no existe")
+    limit = max(1, min(limit, 500))
+    offset = max(0, offset)
+    df = _leer_dataset(ruta, cfg["sep"])
+    pagina = df.iloc[offset:offset + limit]
+
+    if cfg["estructura"] == "ancha":
+        indices = sorted(int(m.group(1)) for c in df.columns
+                         if (m := re.match(r"^categories/(\d+)/name$", c)))
+        base = cfg["requeridas"]
+        filas = []
+        for _, fila in pagina.iterrows():
+            cats = [fila[f"categories/{n}/name"] for n in indices
+                    if fila[f"categories/{n}/name"].strip()]
+            filas.append({**{c: fila[c] for c in base}, "categorias": cats})
+        columnas = base + ["categorias"]
+    else:
+        columnas = list(df.columns)
+        filas = pagina.to_dict("records")
+
+    return {"key": key, "total": len(df), "offset": offset, "limit": limit,
+            "columnas": columnas, "filas": filas}
+
+
+@app.get("/datasets/{key}/download")
+def descargar_dataset(key: str, username: str = Depends(verificar_admin)):
+    cfg, ruta = _dataset_cfg(key)
+    if not os.path.exists(ruta):
+        raise HTTPException(404, "El archivo no existe")
+    return FileResponse(ruta, media_type="text/csv", filename=cfg["archivo"])
+
+
+@app.put("/datasets/{key}")
+def reemplazar_dataset(key: str, archivo: UploadFile = File(...),
+                       username: str = Depends(verificar_admin)):
+    cfg, ruta = _dataset_cfg(key)
+
+    raw = archivo.file.read(MAX_CSV_BYTES + 1)
+    if len(raw) > MAX_CSV_BYTES:
+        raise HTTPException(413, f"El archivo supera {MAX_CSV_BYTES // (1024*1024)} MB")
+
+    texto, df, advertencias = _validar_csv_subido(cfg, ruta, raw)
+
+    os.makedirs(BACKUP_DIR, exist_ok=True)
+    backup_path = None
+    if os.path.exists(ruta):
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        backup_path = os.path.join(BACKUP_DIR, f"{os.path.splitext(cfg['archivo'])[0]}.{ts}.csv")
+        shutil.copy2(ruta, backup_path)
+
+    tmp = ruta + ".tmp"
+    with open(tmp, "wb") as f:
+        f.write(texto.encode("utf-8"))     
+    os.replace(tmp, ruta)     
+
+    if key == "categorias-activas":
+        try:
+            cargar_mapa_categorias()
+        except Exception as e:
+            if backup_path:                 # rollback
+                shutil.copy2(backup_path, ruta)
+                cargar_mapa_categorias()
+            raise HTTPException(500, f"No se pudo aplicar el dataset, se restauró el anterior: {e}")
+
+    logger.info(f"[datasets] {key} reemplazado por {username} ({len(df)} filas)")
+    return {
+        "status": "dataset reemplazado", "key": key, "filas": len(df),
+        "backup": os.path.basename(backup_path) if backup_path else None,
+        "advertencias": advertencias,
+        "aplicacion": cfg["aplicacion"],
+    }
+
+
+@app.delete("/datasets/{key}")
+def eliminar_dataset(key: str, username: str = Depends(verificar_admin)):
+    cfg, ruta = _dataset_cfg(key)
+    if not os.path.exists(ruta):
+        raise HTTPException(404, "El archivo no existe")
+
+    os.makedirs(TRASH_DIR, exist_ok=True)
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    destino = os.path.join(TRASH_DIR, f"{os.path.splitext(cfg['archivo'])[0]}.{ts}.csv")
+    shutil.move(ruta, destino)               # papelera, no borrado definitivo
+
+    if key == "categorias-activas":
+        cargar_mapa_categorias()
+
+    logger.warning(f"[datasets] {key} eliminado por {username} -> {os.path.basename(destino)}")
+    return {"status": "dataset eliminado", "key": key,
+            "papelera": os.path.basename(destino)}
 
 # limpiar texto
 
@@ -341,6 +592,12 @@ def limpiar_texto(texto):
 
     return texto.strip()
 
+<<<<<<< HEAD
+# ============================================================
+# Persistencia de predicciones (tabla central `predicciones`)
+# ============================================================
+
+=======
 # # funcion upsert para tabla de resumen de tickets pendientes
 # def upsert_resumen_feedback(
 #     ticket_id, titulo, descripcion,
@@ -522,6 +779,7 @@ def limpiar_texto(texto):
 # Persistencia de predicciones (tabla central `predicciones`)
 # ============================================================
 
+>>>>>>> 0cd777d9e435266f99d7e0b5f43263882b102b18
 def _revision_inicial(confianza: float) -> str:
     """Toda predicción se registra. Si pasa el confidence_threshold
     no necesita revisión humana ('NA'); si no lo pasa, queda
@@ -1003,9 +1261,6 @@ def build_dataset(username: str = Depends(autenticar_usuario)):
 
 # endpoint para crear dataset para categoria y subcategoria
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-CATEGORY_SCRIPTS_DIR = os.path.join(BASE_DIR, "PredictCategory")
-
 @app.post("/build-dataset-category")
 def build_dataset_category(username: str = Depends(autenticar_usuario)):
  
@@ -1209,10 +1464,11 @@ def evaluate_model(username: str = Depends(autenticar_usuario)):
             "tipo": "padtypes"
         })
         conn.commit()
- 
+    
+    recarga = _recargar_si_promovido("padtypes", data["promovido"])
     return {
         "status": "evaluation executed",
-        "metrics": data
+        "metrics": data, "recarga": recarga
     }
 
 # endpoint para ejecutar evaluación del modelo de categoria
@@ -1316,10 +1572,11 @@ def evaluate_category_model(username: str = Depends(autenticar_usuario)):
             "tipo": "categoria"
         })
         conn.commit()
- 
+    
+    recarga = _recargar_si_promovido("categoria", data["promovido"])
     return {
         "status": "evaluation executed",
-        "metrics": data
+        "metrics": data, "recarga": recarga
     }
  
 # endpoint para ejecutar evaluación del modelo de subcategoria
@@ -1423,10 +1680,11 @@ def evaluate_subcategory_model(username: str = Depends(autenticar_usuario)):
             "tipo": "subcategoria"
         })
         conn.commit()
- 
+    
+    recarga = _recargar_si_promovido("subcategoria", data["promovido"])
     return {
         "status": "evaluation executed",
-        "metrics": data
+        "metrics": data, "recarga": recarga
     }
 
 TipoModelo = Literal["padtypes", "categoria", "subcategoria"]
@@ -1483,6 +1741,17 @@ def reload_model(tipo: TipoModelo, username: str = Depends(autenticar_usuario)):
         "version": info["version"]
     }
  
+# endpoint para recargar modelo en caso de ser promovido
+
+def _recargar_si_promovido(tipo: TipoModelo, promovido: bool) -> dict:
+    if not promovido:
+        return {"recargado": False, "motivo": "modelo no promovido"}
+    try:
+        _cargar_modelo_por_tipo(tipo)
+        return {"recargado": True, "version_activa": _info_modelo_por_tipo(tipo)["version"]}
+    except Exception as e:
+        logger.error(f"Modelo '{tipo}' promovido pero falló la recarga: {e}")
+        return {"recargado": False, "error": str(e)}
  
 # endpoint informacion del modelo (padtypes | categoria | subcategoria)
  
